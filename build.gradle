@@ -1,6 +1,7 @@
 plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 	id 'maven-publish'
+	id "me.modmuss50.mod-publish-plugin" version "2.2.0"
 }
 
 version = project.mod_version
@@ -164,5 +165,52 @@ publishing {
 	}
 
 	repositories {
+	}
+}
+
+publishMods {
+	changelog = System.getenv("CHANGELOG")
+	type = project.mod_version.contains("-") ? BETA : STABLE
+	file = jar.archiveFile
+	modLoaders.add("fabric")
+
+	if (System.getenv("CURSEFORGE")) {
+		curseforge {
+			projectId = "536638"
+			accessToken = System.getenv("CURSEFORGE")
+			client = true
+			server = true
+
+			minecraftVersions.add((project.minecraft_version.contains("-") ? ((String) project.minecraft_version.split("-")[0] + "-snapshot") : project.minecraft_version))
+			for (String a : project.mc_extra_supported.split(",")) {
+				if (!a.strip().isEmpty()) {
+					minecraftVersions.add(a.strip())
+				}
+			}
+
+			requires("fabric-api")
+			requires("yacl")
+			requires("lithostitched")
+			requires("trim-patcher")
+		}
+	}
+
+	if (System.getenv("MODRINTH")) {
+		modrinth {
+			accessToken = System.getenv("MODRINTH")
+			projectId = 'btCrWvHr'
+
+			minecraftVersions.add(project.minecraft_version);
+			for (String a : project.mc_extra_supported.split(",")) {
+				if (!a.strip().isEmpty()) {
+					minecraftVersions.add(a.strip())
+				}
+			}
+
+			requires("fabric-api")
+			requires("yacl")
+			requires("lithostitched")
+			requires("trim-patcher")
+		}
 	}
 }
