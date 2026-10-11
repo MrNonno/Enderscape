@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:chiseled_mirestone"
+        "recipes": "enderscape:chiseled_mirestone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

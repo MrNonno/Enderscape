@@ -1,7 +1,7 @@
 {
     "type": "add",
-    "argument2": "enderscape:outer_cutoff_depth",
-    "argument1": {
+    "right": "enderscape:outer_cutoff_depth",
+    "left": {
         "type": "minecraft:spline",
         "spline": {
             "coordinate": {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:music_disc_bliss_from_music_disc_decay"
+        "recipes": "enderscape:music_disc_bliss_from_music_disc_decay"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

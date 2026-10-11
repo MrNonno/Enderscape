@@ -7,17 +7,20 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.fog.FogData;
 import net.minecraft.client.renderer.fog.environment.FogEnvironment;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.material.FogType;
 import net.penumbra.enderscape.manager.ClientsideVoidManager;
+import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public class VoidLachrymaFogEnvironment extends FogEnvironment {
+    private static final Vector3fc BASE_COLOR = ARGB.vector3fFromRGB24(0x06000C);
 
     @Override
-    public int getBaseColor(final ClientLevel level, final Camera camera, final int renderDistance, final float partialTicks) {
-        return 0x06000C;
+    public Vector3fc getBaseColor(final ClientLevel level, final Camera camera, final int renderDistance, final float partialTicks) {
+        return BASE_COLOR;
     }
 
     @Override

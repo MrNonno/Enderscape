@@ -111,7 +111,7 @@ public record EntityMagnet(
 
                 for (ItemStackTemplate template : contents.items()) {
                     if (ItemStack.isSameItemSameComponents(template.create(), toAdd)) {
-                        BundleContents.Mutable mutableContents = new BundleContents.Mutable(contents);
+                        BundleContents.Mutable mutableContents = contents.asMutable();
                         if (mutableContents.tryInsert(toAdd) > 0) {
                             stack.set(DataComponents.BUNDLE_CONTENTS, mutableContents.toImmutable());
                             return true;

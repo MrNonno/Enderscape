@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veiled_shelf"
+        "recipes": "enderscape:veiled_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

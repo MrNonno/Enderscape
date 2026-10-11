@@ -7,9 +7,11 @@ import net.minecraft.advancements.predicates.*;
 import net.minecraft.advancements.predicates.entity.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -24,9 +26,9 @@ public class LodestoneTeleportationCriterion extends SimpleCriterionTrigger<Lode
         return Conditions.CODEC;
     }
 
-    public record Conditions(Optional<ContextAwarePredicate> player, Optional<ItemPredicate> item, Optional<LocationPredicate> prior, Optional<LocationPredicate> latter, Optional<DistancePredicate> distance, Optional<Boolean> differentDimensions) implements SimpleCriterionTrigger.SimpleInstance {
+    public record Conditions(Optional<Holder<LootItemCondition>> player, Optional<ItemPredicate> item, Optional<LocationPredicate> prior, Optional<LocationPredicate> latter, Optional<DistancePredicate> distance, Optional<Boolean> differentDimensions) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+                LootItemCondition.CODEC.optionalFieldOf("player").forGetter(Conditions::player),
                 ItemPredicate.CODEC.optionalFieldOf("item").forGetter(Conditions::item),
                 LocationPredicate.CODEC.optionalFieldOf("location").forGetter(Conditions::prior),
                 LocationPredicate.CODEC.optionalFieldOf("latter").forGetter(Conditions::latter),

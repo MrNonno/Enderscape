@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:celestial_shelf"
+        "recipes": "enderscape:celestial_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

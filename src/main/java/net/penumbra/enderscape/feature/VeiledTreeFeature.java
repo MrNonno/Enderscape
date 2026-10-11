@@ -1,6 +1,7 @@
 package net.penumbra.enderscape.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,11 +12,11 @@ import net.minecraft.util.valueproviders.FloatProviders;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.penumbra.enderscape.block.VeiledLeafPileBlock;
 import net.penumbra.enderscape.block.VeiledVinesBlock;
 import net.penumbra.enderscape.block.state.StateProperties;
@@ -32,33 +33,35 @@ import static net.penumbra.enderscape.block.VeiledLeavesBlock.DISTANCE;
 import static net.penumbra.enderscape.util.BlockUtil.replace;
 import static net.penumbra.enderscape.util.BlockUtil.set;
 
-public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
+public record VeiledTreeFeature(IntProvider log_height, IntProvider branch_count, IntProvider branch_segments, IntProvider leaf_radius, FloatProvider vine_generation_chance, Optional<GrowthFeature> vineConfig, Optional<VeiledLeafPileFeature> leafPileConfig) implements Feature {
+    public static final MapCodec<VeiledTreeFeature> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            IntProviders.codec(1, 64).fieldOf("log_height").forGetter(config -> config.log_height),
+            IntProviders.codec(1, 64).fieldOf("branch_count").forGetter(config -> config.branch_count),
+            IntProviders.codec(1, 64).fieldOf("branch_segments").forGetter(config -> config.branch_segments),
+            IntProviders.codec(1, 64).fieldOf("leaf_radius").forGetter(config -> config.leaf_radius),
+            FloatProviders.codec(0, 1).fieldOf("vine_generation_chance").forGetter(config -> config.vine_generation_chance),
+            GrowthFeature.CODEC.codec().optionalFieldOf("vine_config").forGetter((config -> config.vineConfig)),
+            VeiledLeafPileFeature.CODEC.codec().optionalFieldOf("leaf_pile_config").forGetter((config -> config.leafPileConfig))
+    ).apply(instance, VeiledTreeFeature::new));
+
 
     protected static final Block LEAVES = EnderscapeBlocks.VEILED_LEAVES;
     protected static final Block LOG = EnderscapeBlocks.VEILED_LOG;
 
-    public VeiledTreeFeature(Codec<Config> codec) {
-        super(codec);
-    }
-
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        LevelAccessor level = context.level();
-        RandomSource random = context.random();
-        BlockPos origin = context.origin();
-        Config config = context.config();
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 
         if (level.getBlockState(origin.below()).isSolidRender() && BlockUtil.hasTerrainDepth(level, origin.below(), 8, Direction.DOWN)) {
             int heightOffset = Mth.nextInt(random, 0, 2);
 
-            generateLogs(level, origin.above(heightOffset), random, config);
+            generateLogs(level, origin.above(heightOffset), random);
 
             for (Direction dir : Direction.values()) if (dir.getAxis() != Direction.Axis.Y) {
                 setLeaves(level, origin.above(heightOffset).relative(dir));
             }
 
-            generateLeaves(level, origin.above(heightOffset + 1), random, config);
-            if (config.leafPileConfig().isPresent()) generateLeafPiles(level, origin, random, config.leafPileConfig().get());
+            generateLeaves(level, origin.above(heightOffset + 1), random);
+            if (this.leafPileConfig().isPresent()) generateLeafPiles(level, origin, random, this.leafPileConfig().get());
 
             return true;
         } else {
@@ -66,21 +69,21 @@ public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
         }
     }
 
-    protected void generateLogs(LevelAccessor level, BlockPos pos, RandomSource random, VeiledTreeFeature.Config config) {
+    protected void generateLogs(LevelAccessor level, BlockPos pos, RandomSource random) {
         BlockPos.MutableBlockPos mutable = pos.above().mutable();
 
-        for (int i = 0; i < config.log_height().sample(random); i++) {
+        for (int i = 0; i < this.log_height().sample(random); i++) {
             setLog(level, mutable);
             mutable.move(Direction.DOWN);
         }
 
-        for (int i = 0; i < config.branch_count().sample(random); i++) {
-            generateBranch(level, mutable.mutable(), random, config);
+        for (int i = 0; i < this.branch_count().sample(random); i++) {
+            generateBranch(level, mutable.mutable(), random);
         }
     }
 
-    protected void generateBranch(LevelAccessor level, BlockPos.MutableBlockPos mutable, RandomSource random, VeiledTreeFeature.Config config) {
-        for (int i = 0; i < (config.branch_segments().sample(random) * random.nextInt(1, 2)); i++) {
+    protected void generateBranch(LevelAccessor level, BlockPos.MutableBlockPos mutable, RandomSource random) {
+        for (int i = 0; i < (this.branch_segments().sample(random) * random.nextInt(1, 2)); i++) {
 
             int x = (int) (Mth.nextInt(random, 3, 4) * (random.nextBoolean() ? 1 : -1) * calculateHorizontalFactor(random, i));
             int y = (int) (Mth.nextInt(random, -4, -6) * calculateVerticalFactor(random, i));
@@ -103,10 +106,10 @@ public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
         }
     }
 
-    protected void generateLeaves(LevelAccessor level, BlockPos origin, RandomSource random, VeiledTreeFeature.Config config) {
+    protected void generateLeaves(LevelAccessor level, BlockPos origin, RandomSource random) {
         List<BlockPos> leavesBlocks = new ArrayList<>();
 
-        int radius = config.leaf_radius().sample(random);
+        int radius = this.leaf_radius().sample(random);
 
         for (int x = -radius + 1; x < radius; x++) {
             for (int z = -radius + 1; z < radius; z++) {
@@ -129,15 +132,15 @@ public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
             }
         }
 
-        if (!leavesBlocks.isEmpty() && config.vineConfig().isPresent()) generateVines(level, leavesBlocks, random, config);
+        if (!leavesBlocks.isEmpty() && this.vineConfig().isPresent()) generateVines(level, leavesBlocks, random);
     }
 
-    protected void generateVines(LevelAccessor level, List<BlockPos> leaves, RandomSource random, VeiledTreeFeature.Config config) {
-        GrowthFeature.Config vineConfig = config.vineConfig().get();
+    protected void generateVines(LevelAccessor level, List<BlockPos> leaves, RandomSource random) {
+        GrowthFeature vineConfig = this.vineConfig().get();
         BlockState state = vineConfig.state();
 
         for (BlockPos pos : leaves.stream().filter((pos) -> level.isEmptyBlock(pos.above())).toList()) {
-            if (random.nextFloat() > config.vine_generation_chance().sample(random)) continue;
+            if (random.nextFloat() > this.vine_generation_chance().sample(random)) continue;
 
             Direction direction = state.getValue(StateProperties.FACING);
             BlockPos offset = pos.relative(direction);
@@ -146,7 +149,7 @@ public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
         }
     }
 
-    protected void generateLeafPiles(LevelAccessor level, BlockPos origin, RandomSource random, VeiledLeafPileFeature.Config config) {
+    protected void generateLeafPiles(LevelAccessor level, BlockPos origin, RandomSource random, VeiledLeafPileFeature config) {
         float radius = config.radius().sample(random);
         float noiseScale = 0.1F;
 
@@ -191,15 +194,8 @@ public class VeiledTreeFeature extends Feature<VeiledTreeFeature.Config> {
         return index % 2 == 0 ? Mth.nextFloat(random, 0.5F, 0.6F) : Mth.nextFloat(random, 0.9F, 1.2F);
     }
 
-    public record Config(IntProvider log_height, IntProvider branch_count, IntProvider branch_segments, IntProvider leaf_radius, FloatProvider vine_generation_chance, Optional<GrowthFeature.Config> vineConfig, Optional<VeiledLeafPileFeature.Config> leafPileConfig) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                IntProviders.codec(1, 64).fieldOf("log_height").forGetter(config -> config.log_height),
-                IntProviders.codec(1, 64).fieldOf("branch_count").forGetter(config -> config.branch_count),
-                IntProviders.codec(1, 64).fieldOf("branch_segments").forGetter(config -> config.branch_segments),
-                IntProviders.codec(1, 64).fieldOf("leaf_radius").forGetter(config -> config.leaf_radius),
-                FloatProviders.codec(0, 1).fieldOf("vine_generation_chance").forGetter(config -> config.vine_generation_chance),
-                GrowthFeature.Config.CODEC.optionalFieldOf("vine_config").forGetter((config -> config.vineConfig)),
-                VeiledLeafPileFeature.Config.CODEC.optionalFieldOf("leaf_pile_config").forGetter((config -> config.leafPileConfig))
-        ).apply(instance, Config::new));
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 }

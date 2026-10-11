@@ -15,6 +15,7 @@ body:
       label: Mod Loader
       options:
         - Fabric
+        - NeoForge
       default: 0
     validations:
       required: true
@@ -24,7 +25,6 @@ body:
       label: Minecraft Version
       options:
         - 26.1
-        - 26.2
       default: 0
     validations:
       required: true

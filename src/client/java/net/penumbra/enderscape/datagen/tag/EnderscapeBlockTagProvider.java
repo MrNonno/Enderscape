@@ -3,6 +3,7 @@ package net.penumbra.enderscape.datagen.tag;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockItemTags;
@@ -10,6 +11,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SignBlock;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -470,6 +474,24 @@ public class EnderscapeBlockTagProvider extends FabricTagsProvider.BlockTagsProv
                 POLARIZED_MAGNIA,
                 REPULSIVE_MAGNIA_SPROUT
         );
+
+        var motionBlockingNoLeaves = this.builder(BlockTags.BLOCKS_MOTION_NO_LEAVES);
+        var washedAwayByFluids = this.builder(BlockTags.WASHED_AWAY_BY_FLUIDS);
+
+        // Use the same logic as 26.2 and older for adding blocks to the tags
+        // Might need to define this by hand in the future
+        for (var block : BuiltInRegistries.BLOCK) {
+            var id = BuiltInRegistries.BLOCK.getKey(block);
+            if (!id.getNamespace().equals("enderscape")) {
+                continue;
+            }
+
+            if (block.defaultBlockState().isSolid()) {
+                motionBlockingNoLeaves.add(block.builtInRegistryHolder().key());
+            } else if (!(block instanceof DoorBlock) && !(block instanceof SignBlock)) {
+                washedAwayByFluids.add(block.builtInRegistryHolder().key());
+            }
+        }
     }
 
     private TagKey<Block> externalKey(String namespace, String path) {

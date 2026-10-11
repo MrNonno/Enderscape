@@ -1,33 +1,39 @@
 {
     "type": "interpolated",
-    "argument": {
+    "cell_size_xz": 2,
+    "cell_size_y": 1,
+    "input": {
         "type": "minecraft:clamp",
         "input": {
             "type": "minecraft:add",
-            "argument1": -0.5,
-            "argument2": {
+            "left": -0.5,
+            "right": {
                 "type": "minecraft:add",
-                "argument1": {
+                "left": {
                     "type": "minecraft:add",
-                    "argument1": {
-                        "type": "minecraft:y_clamped_gradient",
-                        "from_y": -16,
-                        "to_y": 48,
+                    "left": {
+                        "type": "minecraft:gradient",
+                        "from_coordinate": -16,
+                        "to_coordinate": 48,
                         "from_value": -4,
-                        "to_value": 0
+                        "to_value": 0,
+                        "axis": "y",
+                        "tiling": "clamp_to_edge"
                     },
-                    "argument2": "enderscape:extra_islands/middle_higher/spline"
+                    "right": "enderscape:extra_islands/middle_higher/spline"
                 },
-                "argument2": {
+                "right": {
                     "type": "minecraft:add",
-                    "argument1": {
-                        "type": "minecraft:y_clamped_gradient",
-                        "from_y": 47,
-                        "to_y": 112,
+                    "left": {
+                        "type": "minecraft:gradient",
+                        "from_coordinate": 47,
+                        "to_coordinate": 112,
                         "from_value": 0,
-                        "to_value": -2
+                        "to_value": -2,
+                        "axis": "y",
+                        "tiling": "clamp_to_edge"
                     },
-                    "argument2": "enderscape:extra_islands/middle_higher/spline"
+                    "right": "enderscape:extra_islands/middle_higher/spline"
                 }
             }
         },

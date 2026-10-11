@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:rubble_shield_kurodite"
+        "recipes": "enderscape:rubble_shield_kurodite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

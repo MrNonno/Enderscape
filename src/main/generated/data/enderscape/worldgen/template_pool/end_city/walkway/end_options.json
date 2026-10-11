@@ -110,15 +110,18 @@
     },
     {
       "element": {
+        "allowed_depth": [
+          10,
+          2147483647
+        ],
         "delegate": {
           "element_type": "minecraft:single_pool_element",
           "location": "enderscape:end_city/walkway/ship_archway",
           "processors": "enderscape:end_city/potted_plants",
           "projection": "rigid"
         },
-        "element_type": "lithostitched:limited",
-        "limit": 1,
-        "min_depth": 10
+        "element_type": "lithostitched:delegating",
+        "max_count": 1
       },
       "weight": 8
     },

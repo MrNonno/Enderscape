@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:stripped_veiled_wood"
+        "recipes": "enderscape:stripped_veiled_wood"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

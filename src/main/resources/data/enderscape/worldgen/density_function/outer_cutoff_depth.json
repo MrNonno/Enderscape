@@ -1,10 +1,14 @@
 {
     "type": "interpolated",
-    "argument": {
-        "type": "y_clamped_gradient",
+    "cell_size_xz": 2,
+    "cell_size_y": 1,
+    "input": {
+        "type": "gradient",
         "from_value": 0,
-        "from_y": 320,
+        "from_coordinate": 320,
         "to_value": -1,
-        "to_y": -16
+        "to_coordinate": -16,
+        "axis": "y",
+        "tiling": "clamp_to_edge"
     }
 }

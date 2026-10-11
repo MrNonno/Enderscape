@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.SubmitNodeCollection;
 import net.minecraft.client.renderer.SubmitNodeStorage;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.resources.model.geometry.BakedQuad;
+import net.minecraft.client.resources.model.geometry.ItemQuads;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.penumbra.enderscape.renderer.ItemEntityTint;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,12 +35,12 @@ public class SubmitNodeStorageMixin implements ItemEntityTint {
         return Enderscape$itemTintColor;
     }
 
-    @WrapOperation(method = "submitItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollection;submitItem(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemDisplayContext;III[ILjava/util/List;Lnet/minecraft/client/renderer/item/ItemStackRenderState$FoilType;)V"))
-    private void Enderscape$passItemTint(SubmitNodeCollection collection, PoseStack pose, ItemDisplayContext context, int light, int overlay, int outline, int[] layers, List<BakedQuad> quads, ItemStackRenderState.FoilType foil, Operation<Void> original) {
-        ItemEntityTint target = (ItemEntityTint) collection;
+    @WrapOperation(method = "submitItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SubmitNodeCollection;submitItem(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/world/item/ItemDisplayContext;III[ILnet/minecraft/client/resources/model/geometry/ItemQuads;Lnet/minecraft/client/renderer/item/ItemStackRenderState$FoilType;)V"))
+    private void Enderscape$passItemTint(SubmitNodeCollection instance, PoseStack poseStack, ItemDisplayContext displayContext, int lightCoords, int overlayCoords, int outlineColor, int[] tintLayers, ItemQuads quads, ItemStackRenderState.FoilType foilType, Operation<Void> original) {
+        ItemEntityTint target = (ItemEntityTint) instance;
         target.setColor(Enderscape$itemTintColor);
 
-        original.call(collection, pose, context, light, overlay, outline, layers, quads, foil);
+        original.call(instance, poseStack, displayContext, lightCoords, overlayCoords, outlineColor, tintLayers, quads, foilType);
         target.setColor(ItemEntityTint.NONE);
     }
 }

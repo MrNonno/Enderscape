@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veradite_brick_stairs_from_veradite_bricks_stonecutting"
+        "recipes": "enderscape:veradite_brick_stairs_from_veradite_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

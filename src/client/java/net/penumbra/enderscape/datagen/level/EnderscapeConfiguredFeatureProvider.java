@@ -5,11 +5,11 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.penumbra.enderscape.registry.level.EnderscapeConfiguredFeatures.CONFIGURED_FEATURES;
+import static net.penumbra.enderscape.registry.level.EnderscapeConfiguredFeatures.FEATURES;
 
 public class EnderscapeConfiguredFeatureProvider extends FabricDynamicRegistryProvider {
 
@@ -19,11 +19,11 @@ public class EnderscapeConfiguredFeatureProvider extends FabricDynamicRegistryPr
 
     @Override
     protected void configure(HolderLookup.Provider provider, Entries entries) {
-        CONFIGURED_FEATURES.forEach((key) -> add(provider, entries, key));
+        FEATURES.forEach((key) -> add(provider, entries, key));
     }
 
-    private void add(HolderLookup.Provider provider, Entries entries, ResourceKey<ConfiguredFeature<?, ?>> key) {
-        entries.add(key, provider.lookupOrThrow(Registries.CONFIGURED_FEATURE).getOrThrow(key).value());
+    private void add(HolderLookup.Provider provider, Entries entries, ResourceKey<Feature> key) {
+        entries.add(key, provider.lookupOrThrow(Registries.FEATURE).getOrThrow(key).value());
     }
 
     @Override

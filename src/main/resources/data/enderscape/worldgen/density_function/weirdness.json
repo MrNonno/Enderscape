@@ -1,14 +1,14 @@
 {
     "type": "add",
-    "argument1": {
+    "left": {
         "type": "add",
-        "argument1": {
+        "left": {
             "type": "add",
-            "argument1": {
+            "left": {
                 "type": "add",
-                "argument1": {
+                "left": {
                     "type": "minecraft:mul",
-                    "argument1": {
+                    "left": {
                         "type": "minecraft:old_blended_noise",
                         "smear_scale_multiplier": 8,
                         "xz_factor": 100,
@@ -16,29 +16,33 @@
                         "y_factor": 200,
                         "y_scale": 0.4
                     },
-                    "argument2": {
+                    "right": {
                         "type": "minecraft:add",
-                        "argument1": {
-                            "type": "minecraft:y_clamped_gradient",
-                            "from_y": 72,
-                            "to_y": 71,
+                        "left": {
+                            "type": "minecraft:gradient",
+                            "from_coordinate": 72,
+                            "to_coordinate": 71,
                             "from_value": 0,
-                            "to_value": 1
+                            "to_value": 1,
+                            "axis": "y",
+                            "tiling": "clamp_to_edge"
                         },
-                        "argument2": {
-                            "type": "minecraft:y_clamped_gradient",
-                            "from_y": 53,
-                            "to_y": 54,
+                        "right": {
+                            "type": "minecraft:gradient",
+                            "from_coordinate": 53,
+                            "to_coordinate": 54,
                             "from_value": -1,
-                            "to_value": 0
+                            "to_value": 0,
+                            "axis": "y",
+                            "tiling": "clamp_to_edge"
                         }
                     }
                 },
-                "argument2": "enderscape:extra_islands/middle_higher/island"
+                "right": "enderscape:extra_islands/middle_higher/island"
             },
-            "argument2": "enderscape:extra_islands/middle_lower/island"
+            "right": "enderscape:extra_islands/middle_lower/island"
         },
-        "argument2": "enderscape:extra_islands/low/island"
+        "right": "enderscape:extra_islands/low/island"
     },
-    "argument2": "enderscape:extra_islands/high/island"
+    "right": "enderscape:extra_islands/high/island"
 }

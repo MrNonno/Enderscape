@@ -43,8 +43,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class MagniaRadioBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
-    public static final MapCodec<MagniaRadioBlock> CODEC = simpleCodec(MagniaRadioBlock::new);
-
     private static final BooleanProperty ENABLED = StateProperties.ENABLED;
     private static final BooleanProperty POWERED = StateProperties.POWERED;
     private static final BooleanProperty IS_PLAYING = StateProperties.RADIO_IS_PLAYING;
@@ -65,22 +63,17 @@ public class MagniaRadioBlock extends BaseEntityBlock implements SimpleWaterlogg
     }
 
     public static boolean isAnotherSongPlayingNearby(Level level, BlockPos pos) {
-        return BlockPos.findClosestMatch(pos, 36, 36, pos2 -> {
+        return level.findBlocksInBoxByManhattanDistance(pos, 36, 36).filterPos(pos2 -> {
             if (pos2 == pos) return false;
             boolean radioPlaying = level.getBlockEntity(pos2) instanceof MagniaRadioBlockEntity entity && entity.getSongPlayer().isPlaying();
             boolean jukeboxPlaying = level.getBlockEntity(pos2) instanceof JukeboxBlockEntity entity && entity.getSongPlayer().isPlaying();
             return radioPlaying || jukeboxPlaying;
-        }).isPresent();
+        }).findFirst().isPresent();
     }
 
     public MagniaRadioBlock(BlockBehaviour.Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(ENABLED, false).setValue(POWERED, false).setValue(IS_PLAYING, false).setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public MapCodec<MagniaRadioBlock> codec() {
-        return CODEC;
     }
 
     @Override

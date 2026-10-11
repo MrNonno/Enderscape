@@ -1,6 +1,7 @@
 package net.penumbra.enderscape.manager;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.fabricmc.fabric.api.registry.fluid.EntityFluidExtension;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
@@ -540,7 +541,7 @@ public class VoidManager {
      */
 
     public static boolean inVoidLachryma(Entity entity) {
-        return entity.isInFluid(EnderscapeFluidTags.VOID_LACHRYMA);
+        return ((EntityFluidExtension) entity).isInFluid(EnderscapeFluidTags.VOID_LACHRYMA);
     }
 
     private enum VoidDamageType {

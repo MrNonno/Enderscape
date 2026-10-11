@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:celestial_door"
+        "recipes": "enderscape:celestial_door"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

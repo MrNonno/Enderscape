@@ -12,14 +12,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.penumbra.enderscape.block.properties.DirectionSet;
@@ -37,7 +35,6 @@ public class MurublightChanterelleBlock extends DirectionalVegetationBlock imple
 
     public static final IntegerProperty STAGE = StateProperties.STAGE;
     private static final LinkedHashMap<Direction, VoxelShape> VOXEL_SHAPES = BlockUtil.createRotatedShapes(3, 0, 3, 13, 11, 13);
-    public static final MapCodec<MurublightChanterelleBlock> CODEC = simpleCodec(MurublightChanterelleBlock::new);
 
     private final ConfiguredFeatureFunction<BlockState> featureFunction = state -> DirectionalVegetationBlock.getFacing(state) == Direction.UP ? EnderscapeConfiguredFeatures.UPWARD_LARGE_MURUBLIGHT_CHANTERELLE : EnderscapeConfiguredFeatures.DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE;
 
@@ -46,13 +43,8 @@ public class MurublightChanterelleBlock extends DirectionalVegetationBlock imple
         registerDefaultState(defaultBlockState().setValue(STAGE, 0));
     }
 
-    @Override
-    public MapCodec<MurublightChanterelleBlock> codec() {
-        return CODEC;
-    }
-
-    private Optional<? extends Holder<ConfiguredFeature<?, ?>>> getFeature(LevelReader level, BlockState state) {
-        return level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(featureFunction.get(state));
+    private Optional<? extends Holder<Feature>> getFeature(LevelReader level, BlockState state) {
+        return level.registryAccess().lookupOrThrow(Registries.FEATURE).get(featureFunction.get(state));
     }
 
     @Override
@@ -77,20 +69,20 @@ public class MurublightChanterelleBlock extends DirectionalVegetationBlock imple
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState relative = level.getBlockState(pos.relative(getFacing(state).getOpposite()));
         if (relative.hasProperty(FACING) && getFacing(relative) != getFacing(state)) return false;
         return relative.is(EnderscapeBlockTags.MURUBLIGHT_CHANTERELLE_GROWS_ON) || relative.is(EnderscapeBlockTags.CORRUPTION_PURIFIES_ON);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState relative = level.getBlockState(pos.relative(getFacing(state).getOpposite()));
         return relative.is(EnderscapeBlockTags.CORRUPTION_PURIFIES_ON) || random.nextFloat() < 0.2F;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState relative = level.getBlockState(pos.relative(getFacing(state).getOpposite()));
         if (relative.is(EnderscapeBlockTags.CORRUPTION_PURIFIES_ON)) {
             purify(level, pos);
@@ -113,6 +105,6 @@ public class MurublightChanterelleBlock extends DirectionalVegetationBlock imple
 
     @FunctionalInterface
     public interface ConfiguredFeatureFunction<T> {
-        ResourceKey<ConfiguredFeature<?, ?>> get(T value);
+        ResourceKey<Feature> get(T value);
     }
 }

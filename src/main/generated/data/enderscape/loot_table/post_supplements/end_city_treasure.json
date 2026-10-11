@@ -8,7 +8,7 @@
           "value": "minecraft:chests/end_city_treasure"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     },
     {
       "entries": [
@@ -17,7 +17,7 @@
           "value": "enderscape:supplements/end_city_treasure"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ]
 }

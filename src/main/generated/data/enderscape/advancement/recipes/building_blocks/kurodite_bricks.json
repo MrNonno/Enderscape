@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:kurodite_bricks"
+        "recipes": "enderscape:kurodite_bricks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

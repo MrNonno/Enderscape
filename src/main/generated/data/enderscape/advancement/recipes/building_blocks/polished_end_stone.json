@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_end_stone"
+        "recipes": "enderscape:polished_end_stone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

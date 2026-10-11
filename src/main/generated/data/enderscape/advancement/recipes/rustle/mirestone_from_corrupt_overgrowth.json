@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:mirestone_from_corrupt_overgrowth"
+        "recipes": "enderscape:mirestone_from_corrupt_overgrowth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

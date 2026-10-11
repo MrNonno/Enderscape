@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.penumbra.enderscape.manager.VoidManager;
@@ -39,14 +39,14 @@ public abstract class MobMixin extends LivingEntity {
 
     @Inject(method = "finalizeSpawn", at = @At("TAIL"))
     public void Enderscape$applyOminous(ServerLevelAccessor level, DifficultyInstance instance, EntitySpawnReason reason, SpawnGroupData data, CallbackInfoReturnable<SpawnGroupData> info) {
-        if (reason.equals(EntitySpawnReason.TRIAL_SPAWNER) && BlockPos.findClosestMatch(blockPosition(), 16, 16, pos -> level.getBlockState(pos).is(EnderscapeBlocks.END_TRIAL_SPAWNER)).isPresent()) {
+        if (reason.equals(EntitySpawnReason.TRIAL_SPAWNER) && level.findBlocksInBoxByManhattanDistance(blockPosition(), 16, 16).filterState(state -> state.is(EnderscapeBlocks.END_TRIAL_SPAWNER)).findFirst().isPresent()) {
             setAttached(HAS_END_TRIAL_SPAWNER_EFFECTS, true);
         }
     }
 
     @Inject(method = "doHurtTarget", at = @At(value = "RETURN"))
     public void Enderscape$triggerEndermanAttack(ServerLevel level, Entity target, CallbackInfoReturnable<Boolean> info) {
-        if (entity instanceof EnderMan) {
+        if (entity instanceof Enderman) {
             entity.setAttached(EnderscapeAttachments.ATTACK_ANIMATION_REMAINING_TICKS, 15);
         }
     }

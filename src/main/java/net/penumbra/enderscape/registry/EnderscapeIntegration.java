@@ -6,14 +6,14 @@ import net.fabricmc.fabric.api.entity.event.v1.effect.ServerMobEffectEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistrySetupCallback;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistryView;
+import net.fabricmc.fabric.api.item.v1.BlockTransformerHelper;
 import net.fabricmc.fabric.api.item.v1.DefaultItemComponentEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
-import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.registry.LandPathTypeRegistry;
-import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.fabric.api.registry.fluid.EntityFluidInteractionRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.dispenser.BlockSource;
@@ -25,6 +25,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.Compostable;
 import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import net.minecraft.world.item.consume_effects.ConsumeEffect;
@@ -32,14 +33,13 @@ import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.Enderscape;
 import net.penumbra.enderscape.block.dispenser.LodestoneTeleportationDispenserBehavior;
 import net.penumbra.enderscape.block.fluid.VoidLachrymaBehavior;
@@ -57,6 +57,7 @@ import net.penumbra.enderscape.registry.level.EnderscapeBiomes;
 import net.penumbra.enderscape.registry.server.EnderscapeLootTables;
 import net.penumbra.enderscape.registry.sound.EnderscapeItemSounds;
 import net.penumbra.enderscape.registry.tag.EnderscapeFluidTags;
+import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,6 @@ public class EnderscapeIntegration {
         registerCompostableItems();
         registerDispenserBehavior();
         registerFlammableBlocks();
-        registerFuelValues();
         registerStrippableBlocks();
 
         //noinspection UnstableApiUsage
@@ -115,6 +115,7 @@ public class EnderscapeIntegration {
 
         LootTableEvents.MODIFY.register(Enderscape.id("inject_supplemental_loot_tables"), (key, builder, source, registries) -> {
             addLootTableInjection(
+                    registries,
                     CONFIG.supplementVanillaStrongholdLibraryLoot,
                     BuiltInLootTables.STRONGHOLD_LIBRARY,
                     EnderscapeLootTables.STRONGHOLD_LIBRARY_CHEST_SUPPLEMENTS,
@@ -167,9 +168,9 @@ public class EnderscapeIntegration {
         return new DeathProtection(original);
     }
 
-    private static void addLootTableInjection(boolean allowed, ResourceKey<LootTable> original, ResourceKey<LootTable> injection, ResourceKey<LootTable> key, LootTable.Builder builder) {
+    private static void addLootTableInjection(HolderLookup.Provider provider, boolean allowed, ResourceKey<LootTable> original, ResourceKey<LootTable> injection, ResourceKey<LootTable> key, LootTable.Builder builder) {
         if (allowed && key.equals(original)) {
-            builder.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(NestedLootTable.lootTableReference(injection).setWeight(1)));
+            builder.withPool(LootPool.lootPool().setRolls(ContextIntProviders.exactly(1)).add(NestedLootTable.lootTableReference(provider.getOrThrow(injection)).setWeight(1)));
         }
     }
 
@@ -208,26 +209,9 @@ public class EnderscapeIntegration {
     }
 
     private static void registerCompostableItems() {
-        registerCompostableItems(0.1F, VEILED_LEAF_PILE);
-        registerCompostableItems(0.3F, WISP_SPROUTS);
-        registerCompostableItems(0.3F, CELESTIAL_CAP);
-        registerCompostableItems(0.3F, CELESTIAL_GROWTH);
-        registerCompostableItems(0.3F, CHORUS_FRUIT);
-        registerCompostableItems(0.3F, CORRUPT_GROWTH);
-        registerCompostableItems(0.3F, MURUBLIGHT_CAP);
-        registerCompostableItems(0.3F, VEILED_LEAVES);
-        registerCompostableItems(0.5F, BLINKLIGHT);
-        registerCompostableItems(0.5F, CHORUS_SPROUTS);
-        registerCompostableItems(0.5F, DRY_END_GROWTH);
-        registerCompostableItems(0.5F, WISP_GROWTH);
-        registerCompostableItems(0.5F, PURUBERRY);
-        registerCompostableItems(0.5F, MURUBLIGHT_BRACKET);
-        registerCompostableItems(0.5F, VEILED_SAPLING);
-        registerCompostableItems(0.65F, BULB_FLOWER);
-        registerCompostableItems(0.65F, CELESTIAL_CHANTERELLE);
-        registerCompostableItems(0.65F, MURUBLIGHT_CHANTERELLE);
-        registerCompostableItems(0.65F, RIPE_PURUBERRY_BLOCK);
-        registerCompostableItems(0.65F, WISP_FLOWER);
+        DefaultItemComponentEvents.MODIFY.register(modifyContext -> {
+            modifyContext.modify(CHORUS_FRUIT, ctx -> ctx.set(DataComponents.COMPOSTABLE, new Compostable(ContextIntProviders.COMPOSTABLE_LOW)));
+        });
     }
 
     private static void registerDispenserBehavior() {
@@ -341,22 +325,12 @@ public class EnderscapeIntegration {
         FlammableBlockRegistry.getDefaultInstance().add(VOID_SHALE, 5, 5);
     }
 
-    private static void registerFuelValues() {
-        FuelValueEvents.BUILD.register(Enderscape.id("add_fuels"), (builder, context) -> {
-            builder.add(VOID_SHALE, context.baseSmeltTime());
-        });
-    }
-
     private static void registerStrippableBlocks() {
-        StrippableBlockRegistry.register(VEILED_LOG, STRIPPED_VEILED_LOG);
-        StrippableBlockRegistry.register(VEILED_WOOD, STRIPPED_VEILED_WOOD);
-        StrippableBlockRegistry.register(CELESTIAL_STEM, STRIPPED_CELESTIAL_STEM);
-        StrippableBlockRegistry.register(CELESTIAL_HYPHAE, STRIPPED_CELESTIAL_HYPHAE);
-        StrippableBlockRegistry.register(MURUBLIGHT_STEM, STRIPPED_MURUBLIGHT_STEM);
-        StrippableBlockRegistry.register(MURUBLIGHT_HYPHAE, STRIPPED_MURUBLIGHT_HYPHAE);
-    }
-
-    public static void registerCompostableItems(float chance, ItemLike item) {
-        ComposterBlock.COMPOSTABLES.put(item.asItem(), chance);
+        BlockTransformerHelper.registerStripping(VEILED_LOG, STRIPPED_VEILED_LOG);
+        BlockTransformerHelper.registerStripping(VEILED_WOOD, STRIPPED_VEILED_WOOD);
+        BlockTransformerHelper.registerStripping(CELESTIAL_STEM, STRIPPED_CELESTIAL_STEM);
+        BlockTransformerHelper.registerStripping(CELESTIAL_HYPHAE, STRIPPED_CELESTIAL_HYPHAE);
+        BlockTransformerHelper.registerStripping(MURUBLIGHT_STEM, STRIPPED_MURUBLIGHT_STEM);
+        BlockTransformerHelper.registerStripping(MURUBLIGHT_HYPHAE, STRIPPED_MURUBLIGHT_HYPHAE);
     }
 }

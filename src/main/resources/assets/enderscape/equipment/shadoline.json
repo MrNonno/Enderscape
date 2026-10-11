@@ -10,5 +10,11 @@
         "texture": "enderscape:shadoline"
       }
     ]
-  }
+  },
+  "trim_overrides": [{
+    "palette": "enderscape:trim/shadoline",
+    "when": {
+      "material": "enderscape:trim/shadoline_lighter"
+    }
+  }]
 }

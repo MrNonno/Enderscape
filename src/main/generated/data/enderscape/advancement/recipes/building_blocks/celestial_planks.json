@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:celestial_planks"
+        "recipes": "enderscape:celestial_planks"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

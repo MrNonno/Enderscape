@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,13 +25,6 @@ public class PuruberryVine extends AbstractVineBlock implements BonemealableBloc
         super(settings);
 
         registerDefaultState(defaultBlockState().setValue(ATTACHED, false).setValue(AGE, 0));
-    }
-
-    public static final MapCodec<PuruberryVine> CODEC = simpleCodec(PuruberryVine::new);
-
-    @Override
-    public MapCodec<PuruberryVine> codec() {
-        return CODEC;
     }
 
     @Override
@@ -57,13 +51,13 @@ public class PuruberryVine extends AbstractVineBlock implements BonemealableBloc
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (random.nextInt(12) == 0 && isBonemealSuccess(world, random, pos, state)) {
-            performBonemeal(world, random, pos, state);
+        if (random.nextInt(12) == 0 && isBonemealSuccess(world, random, pos, state, BonemealSource.INTERACTION)) {
+            performBonemeal(world, random, pos, state, BonemealSource.INTERACTION);
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource source) {
         for (pos = isBody(state) ? pos.below() : pos; pos.getY() > world.getMinY(); pos = pos.below()) {
             if (world.getBlockState(pos).is(this) && world.getBlockState(pos.below()).isAir()) {
                 return true;
@@ -73,12 +67,12 @@ public class PuruberryVine extends AbstractVineBlock implements BonemealableBloc
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         for (pos = isBody(state) ? pos.below() : pos; pos.getY() > world.getMinY(); pos = pos.below()) {
             var state2 = world.getBlockState(pos);
             if (state2.is(this)) {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_kurodite_button_from_polished_veradite_button"
+        "recipes": "enderscape:polished_kurodite_button_from_polished_veradite_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

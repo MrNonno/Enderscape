@@ -2,14 +2,15 @@ package net.penumbra.enderscape.criteria;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.penumbra.enderscape.sound.MagniaRadioSong;
 
 import java.util.Optional;
@@ -25,9 +26,9 @@ public class HearMagniaRadioSongCriterion extends SimpleCriterionTrigger<HearMag
         return Conditions.CODEC;
     }
 
-    public record Conditions(Optional<ContextAwarePredicate> player, Optional<LocationPredicate> location, Optional<MagniaRadioSongPredicate> song) implements SimpleInstance {
+    public record Conditions(Optional<Holder<LootItemCondition>> player, Optional<LocationPredicate> location, Optional<MagniaRadioSongPredicate> song) implements SimpleInstance {
         public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+                LootItemCondition.CODEC.optionalFieldOf("player").forGetter(Conditions::player),
                 LocationPredicate.CODEC.optionalFieldOf("location").forGetter(Conditions::location),
                 MagniaRadioSongPredicate.CODEC.optionalFieldOf("song").forGetter(Conditions::song)
         ).apply(instance, Conditions::new));

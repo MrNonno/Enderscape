@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -12,6 +14,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.recipes.*;
 import net.minecraft.data.recipes.packs.VanillaRecipeProvider;
+import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.ItemTags;
@@ -19,6 +22,8 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -43,6 +48,7 @@ import static net.minecraft.data.recipes.RecipeProvider.getItemName;
 import static net.minecraft.world.item.Items.*;
 import static net.penumbra.enderscape.registry.block.EnderscapeBlocks.*;
 import static net.penumbra.enderscape.registry.item.EnderscapeItems.*;
+import static net.penumbra.enderscape.registry.item.EnderscapePotions.*;
 
 public class EnderscapeRecipeProvider extends FabricRecipeProvider {
 
@@ -66,8 +72,8 @@ public class EnderscapeRecipeProvider extends FabricRecipeProvider {
     }
 
     @Override
-    protected RecipeProvider createRecipeProvider(HolderLookup.Provider lookup, RecipeOutput output) {
-        return new RecipeProvider(lookup, output) {
+    protected RecipeProvider createRecipeProvider(HolderLookup.Provider registries, BootstrapContext<Recipe<?>> recipes, BootstrapContext<Advancement> advancements) {
+        return new RecipeProvider(recipes, advancements) {
 
             @Override
             public void buildRecipes() {
@@ -661,6 +667,8 @@ public class EnderscapeRecipeProvider extends FabricRecipeProvider {
                                 .build(),
                         50.0F
                 );
+
+                new EnderscapeBrewingProvider(this.output).buildRecipes();
             }
 
             // Rustle
@@ -790,5 +798,51 @@ public class EnderscapeRecipeProvider extends FabricRecipeProvider {
     @Override
     public String getName() {
         return "Recipes";
+    }
+
+
+    private static class EnderscapeBrewingProvider extends BrewingProvider {
+        protected EnderscapeBrewingProvider(RecipeOutput output) {
+            super(output);
+        }
+
+        @Override
+        protected void addContainers() {
+            this.addContainer(LINGERING_POTION);
+            this.addContainer(POTION);
+            this.addContainer(SPLASH_POTION);
+        }
+
+        @Override
+        protected void addContainerTransformations() {
+
+        }
+
+        @Override
+        protected void buildMixes() {
+            normal(DRIFT_JELLY_BOTTLE, LOW_GRAVITY);
+            extended(LOW_GRAVITY, LONG_LOW_GRAVITY);
+
+            normal(PURUBERRY, VOID_PURIFICATION);
+            extended(VOID_PURIFICATION, LONG_VOID_PURIFICATION);
+            amplified(VOID_PURIFICATION, STRONG_VOID_PURIFICATION);
+
+            extended(VOID_RESISTANCE, LONG_VOID_RESISTANCE);
+
+            extended(VOID_CORRUPTION, LONG_VOID_CORRUPTION);
+            amplified(VOID_CORRUPTION, STRONG_VOID_CORRUPTION);
+        }
+
+        private void normal(Item ingredient, Holder<Potion> potion) {
+            this.buildStartMix(ingredient, potion);
+        }
+
+        private void extended(Holder<Potion> normal, Holder<Potion> extended) {
+            this.buildMix(normal, REDSTONE, extended);
+        }
+
+        private void amplified(Holder<Potion> normal, Holder<Potion> amplified) {
+            this.buildMix(normal, Items.GLOWSTONE_DUST, amplified);
+        }
     }
 }

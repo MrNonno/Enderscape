@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": "enderscape:celestial_chanterelle",
+        "weight": 8
+      },
+      {
+        "data": {
+          "id": "enderscape:bulb_flower",
+          "properties": {
+            "phase": "inactive"
+          }
+        },
+        "weight": 1
+      }
+    ]
+  }
+}

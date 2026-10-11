@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:kurodite_slab"
+        "recipes": "enderscape:kurodite_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

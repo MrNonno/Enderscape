@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_trapdoor_from_celestial_trapdoor"
+        "recipes": "enderscape:murublight_trapdoor_from_celestial_trapdoor"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

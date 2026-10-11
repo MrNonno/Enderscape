@@ -1,29 +1,29 @@
 package net.penumbra.enderscape.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnderscapeIslandFeature extends Feature<NoneFeatureConfiguration> {
-    public EnderscapeIslandFeature(Codec<NoneFeatureConfiguration> codec) {
-        super(codec);
+public class EnderscapeIslandFeature implements Feature {
+    public static final MapCodec<EnderscapeIslandFeature> CODEC = MapCodec.unit(EnderscapeIslandFeature::new);
+
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> featurePlaceContext) {
-        WorldGenLevel level = featurePlaceContext.level();
-        RandomSource random = featurePlaceContext.random();
-        BlockPos origin = featurePlaceContext.origin();
-
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
         float f = (float) random.nextInt(3) + 4.0F;
 
         List<BlockPos> list = new ArrayList<>();

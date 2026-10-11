@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_cap_from_celestial_cap"
+        "recipes": "enderscape:murublight_cap_from_celestial_cap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

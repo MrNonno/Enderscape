@@ -12,16 +12,8 @@ import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 import net.penumbra.enderscape.registry.particle.EnderscapeParticles;
 
 public class VeiledVinesBlock extends AbstractGrowthBlock {
-
-    public static final MapCodec<VeiledVinesBlock> CODEC = simpleCodec(VeiledVinesBlock::new);
-
     public VeiledVinesBlock(Properties settings) {
         super(DirectionSet.create().up(), settings);
-    }
-
-    @Override
-    protected MapCodec<? extends VeiledVinesBlock> codec() {
-        return CODEC;
     }
 
     @Override

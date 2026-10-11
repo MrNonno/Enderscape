@@ -7,7 +7,7 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.penumbra.enderscape.registry.sound.EnderscapeEntitySounds;
 
 @Environment(EnvType.CLIENT)
@@ -39,6 +39,6 @@ public class EndermanStareSoundInstance extends AbstractTickableSoundInstance {
     }
 
     private boolean canPlay() {
-        return client.level != null && client.level.getEntity(entityId) instanceof EnderMan enderman && enderman.isAlive() && enderman.isCreepy();
+        return client.level != null && client.level.getEntity(entityId) instanceof Enderman enderman && enderman.isAlive() && enderman.isCreepy();
     }
 }

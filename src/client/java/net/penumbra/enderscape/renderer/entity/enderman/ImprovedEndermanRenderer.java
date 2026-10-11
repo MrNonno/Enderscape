@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.layers.BlockDecorationLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.EndermanRenderState;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.level.block.state.BlockState;
 import net.penumbra.enderscape.config.EnderscapeConfig;
 import net.penumbra.enderscape.registry.renderer.EnderscapeModelLayers;
@@ -17,7 +17,7 @@ import net.penumbra.enderscape.renderer.entity.LightDependantEnderEyesLayer;
 import net.penumbra.enderscape.renderer.entity.StoresSkylightFactor;
 import org.jspecify.annotations.NonNull;
 
-public class ImprovedEndermanRenderer extends MobRenderer<EnderMan, EndermanRenderState, ImprovedEndermanModel<EndermanRenderState>> {
+public class ImprovedEndermanRenderer extends MobRenderer<Enderman, EndermanRenderState, ImprovedEndermanModel<EndermanRenderState>> {
     public static final BlockDisplayContext BLOCK_DISPLAY_CONTEXT = BlockDisplayContext.create();
     private static final Identifier ENDERMAN_LOCATION = Identifier.withDefaultNamespace("textures/entity/enderman/enderman.png");
     private final BlockModelResolver blockModelResolver;
@@ -49,7 +49,7 @@ public class ImprovedEndermanRenderer extends MobRenderer<EnderMan, EndermanRend
     }
 
     @Override
-    public void extractRenderState(final EnderMan entity, final EndermanRenderState state, final float partialTicks) {
+    public void extractRenderState(final Enderman entity, final EndermanRenderState state, final float partialTicks) {
         super.extractRenderState(entity, state, partialTicks);
 
         HumanoidMobRenderer.extractHumanoidRenderState(entity, state, partialTicks, itemModelResolver);

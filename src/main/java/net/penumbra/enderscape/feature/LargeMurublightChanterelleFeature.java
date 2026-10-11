@@ -1,6 +1,7 @@
 package net.penumbra.enderscape.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,43 +11,48 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.penumbra.enderscape.block.MurublightBracketBlock;
 import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 
 import static net.penumbra.enderscape.util.BlockUtil.replace;
 import static net.penumbra.enderscape.util.BlockUtil.set;
 
-public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightChanterelleFeature.Config> {
-    public LargeMurublightChanterelleFeature(Codec<Config> codec) {
-        super(codec);
+public record LargeMurublightChanterelleFeature(Direction direction, IntProvider height, IntProvider cap_radius, int tries) implements Feature {
+    public static final MapCodec<LargeMurublightChanterelleFeature> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    (Direction.CODEC.fieldOf("direction")).forGetter(config -> config.direction),
+                    (IntProviders.codec(1, 64).fieldOf("height")).forGetter(config -> config.height),
+                    (IntProviders.codec(1, 64).fieldOf("cap_radius")).forGetter(config -> config.cap_radius),
+                    (Codec.intRange(1, 64).fieldOf("tries")).forGetter(config -> config.tries))
+            .apply(instance, LargeMurublightChanterelleFeature::new));
+
+    public static final LargeMurublightChanterelleFeature DEFAULT = LargeMurublightChanterelleFeature.defaultFacing(Direction.DOWN);
+
+    public static LargeMurublightChanterelleFeature defaultFacing(Direction direction) {
+        return new LargeMurublightChanterelleFeature(direction, UniformInt.of(15, 30), UniformInt.of(4, 6), 32);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        LevelAccessor level = context.level();
-        RandomSource random = context.random();
-        BlockPos origin = context.origin();
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 
-        Config config = context.config();
-        Direction direction = config.direction();
+        Direction direction = this.direction();
 
         if (direction.getAxis() != Direction.Axis.Y) {
-            throw new IllegalStateException("Cannot use direction " + direction.getName() + " for " + Config.class);
+            throw new IllegalStateException("Cannot use direction " + direction.getName() + " for " + LargeMurublightChanterelleFeature.class);
         }
 
         BlockPos attached = origin.relative(direction.getOpposite());
 
         if (level.getBlockState(attached).isFaceSturdy(level, attached, direction)) {
-            for (int i = 0; i < config.tries(); i++) {
-                int height = config.height().sample(random);
+            for (int i = 0; i < this.tries(); i++) {
+                int height = this.height().sample(random);
 
                 if (isEnoughAir(level, origin, direction, height)) {
-                    return generate(level, origin, random, config, height);
+                    return generate(level, origin, random, height);
                 }
             }
         }
@@ -54,8 +60,8 @@ public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightCh
         return false;
     }
 
-    protected boolean generate(LevelAccessor level, BlockPos origin, RandomSource random, LargeMurublightChanterelleFeature.Config config, int height) {
-        Direction direction = config.direction();
+    protected boolean generate(LevelAccessor level, BlockPos origin, RandomSource random, int height) {
+        Direction direction = this.direction();
 
         if (level.getBlockState(origin.relative(direction.getOpposite())).is(EnderscapeBlocks.CORRUPT_OVERGROWTH)) {
             set(level, origin.relative(direction.getOpposite()), EnderscapeBlocks.MIRESTONE.defaultBlockState());
@@ -64,11 +70,11 @@ public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightCh
         set(level, origin, Blocks.AIR.defaultBlockState());
         height--;
 
-        generateCap(level, origin.relative(direction, height), direction, config.cap_radius().sample(random), 1);
-        generateMiniCaps(level, origin, random, config, height);
+        generateCap(level, origin.relative(direction, height), direction, this.cap_radius().sample(random), 1);
+        generateMiniCaps(level, origin, random, height);
 
         for (int a = 0; a < height; a++) set(level, origin.relative(direction, a), EnderscapeBlocks.MURUBLIGHT_STEM.defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction.getAxis()));
-        for (int b = 0; b < height; b++) if (b % 4 == 0 && b > 0) generateMurublightShelves(level, origin.relative(direction, b), random, config);
+        for (int b = 0; b < height; b++) if (b % 4 == 0 && b > 0) generateMurublightShelves(level, origin.relative(direction, b), random);
 
         return true;
     }
@@ -91,8 +97,8 @@ public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightCh
         }
     }
 
-    protected void generateMiniCaps(LevelAccessor level, BlockPos pos, RandomSource random, LargeMurublightChanterelleFeature.Config config, int height) {
-        Direction direction = config.direction();
+    protected void generateMiniCaps(LevelAccessor level, BlockPos pos, RandomSource random, int height) {
+        Direction direction = this.direction();
 
         var mutable = pos.mutable().move(direction.getOpposite());
         var lastX = 0;
@@ -117,8 +123,8 @@ public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightCh
         }
     }
 
-    protected void generateMurublightShelves(LevelAccessor level, BlockPos pos, RandomSource random, LargeMurublightChanterelleFeature.Config config) {
-        Direction direction = config.direction();
+    protected void generateMurublightShelves(LevelAccessor level, BlockPos pos, RandomSource random) {
+        Direction direction = this.direction();
 
         for (var dir2 : Direction.values()) {
             if (dir2.getAxis() == direction.getAxis()) continue;
@@ -137,18 +143,8 @@ public class LargeMurublightChanterelleFeature extends Feature<LargeMurublightCh
         return height % 4 == 0;
     }
 
-    public record Config(Direction direction, IntProvider height, IntProvider cap_radius, int tries) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                (Direction.CODEC.fieldOf("direction")).forGetter(config -> config.direction),
-                (IntProviders.codec(1, 64).fieldOf("height")).forGetter(config -> config.height),
-                (IntProviders.codec(1, 64).fieldOf("cap_radius")).forGetter(config -> config.cap_radius),
-                (Codec.intRange(1, 64).fieldOf("tries")).forGetter(config -> config.tries))
-                .apply(instance, Config::new));
-
-        public static final Config DEFAULT = Config.defaultFacing(Direction.DOWN);
-
-        public static Config defaultFacing(Direction direction) {
-            return new Config(direction, UniformInt.of(15, 30), UniformInt.of(4, 6), 32);
-        }
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 }

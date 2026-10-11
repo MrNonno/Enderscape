@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_mirestone_stairs"
+        "recipes": "enderscape:polished_mirestone_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

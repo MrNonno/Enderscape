@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:etched_repulsive_magnia"
+        "recipes": "enderscape:etched_repulsive_magnia"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

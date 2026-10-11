@@ -5,12 +5,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -113,7 +113,7 @@ public abstract class AbstractOvergrowthBlock extends DirectionalBlock implement
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player mob, InteractionHand hand, BlockHitResult result) {
-        if (pathBlock != null && stack.getItem() instanceof ShovelItem && level.getBlockState(pos.relative(state.getValue(FACING))).isAir()) {
+        if (pathBlock != null && stack.is(ItemTags.SHOVELS) && level.getBlockState(pos.relative(state.getValue(FACING))).isAir()) {
             level.playSound(mob, pos, flattenSound, SoundSource.BLOCKS, 1, 1);
 
             if (!level.isClientSide()) {
@@ -127,17 +127,17 @@ public abstract class AbstractOvergrowthBlock extends DirectionalBlock implement
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         return !isPath && level.getBlockState(pos.relative(getDirection(state))).propagatesSkylightDown();
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return !isPath;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         level.setBlock(pos, state, 2);
         BlockUtil.replaceSpherically(level, pos, state, bonemealRadius, state.getValue(FACING), (other) -> other.is(baseBlock));
     }

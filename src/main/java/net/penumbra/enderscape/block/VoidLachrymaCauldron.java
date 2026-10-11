@@ -31,14 +31,8 @@ import net.penumbra.enderscape.registry.item.EnderscapeItems;
 import net.penumbra.enderscape.registry.sound.EnderscapeItemSounds;
 
 public class VoidLachrymaCauldron extends AbstractCauldronBlock {
-    public static final MapCodec<VoidLachrymaCauldron> CODEC = simpleCodec(VoidLachrymaCauldron::new);
     private static final VoxelShape SHAPE_INSIDE = Block.column(12.0, 4.0, 15.0);
     private static final VoxelShape FILLED_SHAPE = Shapes.or(AbstractCauldronBlock.SHAPE, SHAPE_INSIDE);
-
-    @Override
-    public MapCodec<VoidLachrymaCauldron> codec() {
-        return CODEC;
-    }
 
     public VoidLachrymaCauldron(final BlockBehaviour.Properties properties) {
         super(properties, EnderscapeFluids.VOID_LACHRYMA_CAULDRON_INTERACTION);

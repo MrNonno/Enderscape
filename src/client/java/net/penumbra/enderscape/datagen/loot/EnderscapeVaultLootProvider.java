@@ -19,12 +19,12 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.SingleEntryContainerBase;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -52,7 +52,7 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
         consumer.accept(END_CITY_VAULT, endCityVaultRewards());
         consumer.accept(END_CITY_ELYTRA_VAULT, endCityVaultRewards().withPool(
                         LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .add(createItem(ELYTRA, 1))
                 )
         );
@@ -60,13 +60,13 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
 
     public LootTable.Builder endCityVaultRewards() {
         try {
-            LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(UniformGenerator.between(0.4F, 1.0F));
-            EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(20, 40));
+            LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.4F, 1.0F));
+            EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(20, 40));
 
             return LootTable.lootTable()
                     .withPool(
                             LootPool.lootPool()
-                                    .setRolls(UniformGenerator.between(0, 2))
+                                    .setRolls(ContextIntProviders.between(0, 2))
 
                                     .add(createItem(DIAMOND_SWORD, 20).apply(toolEnchantments).apply(toolDamage))
                                     .add(createItem(DIAMOND_SPEAR, 20).apply(toolEnchantments).apply(toolDamage))
@@ -82,7 +82,7 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
                     )
                     .withPool(
                             LootPool.lootPool()
-                                    .setRolls(UniformGenerator.between(2, 3))
+                                    .setRolls(ContextIntProviders.between(2, 3))
 
                                     .add(createItem(IRON_INGOT, 30).apply(countBetween(4, 10)))
                                     .add(createItem(GOLD_INGOT, 30).apply(countBetween(2, 6)))
@@ -93,7 +93,7 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
                     )
                     .withPool(
                             LootPool.lootPool()
-                                    .setRolls(UniformGenerator.between(0, 1))
+                                    .setRolls(ContextIntProviders.between(0, 1))
 
                                     .add(createItem(GOLDEN_CARROT, 40).apply(countBetween(4, 12)))
                                     .add(createItem(GOLDEN_APPLE, 10).apply(countBetween(1, 2)))
@@ -101,7 +101,7 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
                     )
                     .withPool(
                             LootPool.lootPool()
-                                    .setRolls(ConstantValue.exactly(1))
+                                    .setRolls(ContextIntProviders.exactly(1))
 
                                     .add(EmptyLootItem.emptyItem().setWeight(40))
 
@@ -114,7 +114,7 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
                     )
                     .withPool(
                             LootPool.lootPool()
-                                    .setRolls(ConstantValue.exactly(2))
+                                    .setRolls(ContextIntProviders.exactly(2))
                                     .add(EmptyLootItem.emptyItem().setWeight(192))
 
                                     .add(createItem(BOOK, 48).apply(
@@ -171,37 +171,42 @@ public class EnderscapeVaultLootProvider extends SimpleFabricLootTableSubProvide
 
     @NotNull
     private LootItemConditionalFunction.Builder<?> countBetween(int f, int g) {
-        return SetItemCountFunction.setCount(UniformGenerator.between(f, g));
+        return SetItemCountFunction.setCount(ContextIntProviders.between(f, g));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createItem(Item item, int weight) {
+    private SingleEntryContainerBase.Builder<?> createItem(Item item, int weight) {
         return LootItem.lootTableItem(item).setWeight(weight);
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createBiomeExclusiveItem(Item item, ResourceKey<Biome> biome, int weight) throws InterruptedException, ExecutionException {
+    private SingleEntryContainerBase.Builder<?> createBiomeExclusiveItem(Item item, ResourceKey<Biome> biome, int weight) throws InterruptedException, ExecutionException {
         return createItem(item, weight).when(LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(lookup.get().lookupOrThrow(Registries.BIOME).getOrThrow(biome))));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createEnchantedItem(Item item, int minEnchant, int maxEnchant, int weight) throws InterruptedException, ExecutionException {
-        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(minEnchant, maxEnchant)));
+    private SingleEntryContainerBase.Builder<?> createEnchantedItem(Item item, int minEnchant, int maxEnchant, int weight) throws InterruptedException, ExecutionException {
+        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(minEnchant, maxEnchant)));
     }
 
-    private LootPoolSingletonContainer.Builder<?> createEnchantedTrimmed(Item item, int minEnchant, int maxEnchant, ResourceKey<TrimMaterial> material, ResourceKey<TrimPattern> pattern, int weight) throws InterruptedException, ExecutionException {
+    private SingleEntryContainerBase.Builder<?> createEnchantedTrimmed(Item item, int minEnchant, int maxEnchant, ResourceKey<TrimMaterial> material, ResourceKey<TrimPattern> pattern, int weight) throws InterruptedException, ExecutionException {
         Holder.Reference<TrimMaterial> materialReference = lookup.get().lookupOrThrow(Registries.TRIM_MATERIAL).getOrThrow(material);
         Holder.Reference<TrimPattern> patternReference = lookup.get().lookupOrThrow(Registries.TRIM_PATTERN).getOrThrow(pattern);
         return createEnchantedItem(item, minEnchant, maxEnchant, weight).apply(SetComponentsFunction.setComponent(DataComponents.TRIM, new ArmorTrim(materialReference, patternReference)));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createEnchantedBook(ResourceKey<Enchantment> enchantment, int weight) throws InterruptedException, ExecutionException {
-        return createItem(BOOK, weight).apply(new SetEnchantmentsFunction.Builder().withEnchantment(getEnchantmentReference(enchantment), ConstantValue.exactly(1)));
+    private SingleEntryContainerBase.Builder<?> createEnchantedBook(ResourceKey<Enchantment> enchantment, int weight) throws InterruptedException, ExecutionException {
+        return createItem(BOOK, weight).apply(new SetEnchantmentsFunction.Builder().withEnchantment(getEnchantmentReference(enchantment), ContextIntProviders.exactly(1)));
     }
 
     @NotNull
     private Holder.Reference<Enchantment> getEnchantmentReference(ResourceKey<Enchantment> enchantment) throws InterruptedException, ExecutionException {
         return lookup.get().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
+    }
+
+    @Override
+    public void run() {
+
     }
 }

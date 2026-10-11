@@ -26,29 +26,10 @@ public abstract class ServerChunkCacheMixin {
 
     @Shadow
     @Final
-    private DistanceManager distanceManager;
-
-    @Shadow
-    @Final
     private ServerLevel level;
 
-    @ModifyExpressionValue(
-            method = "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;J)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/server/level/ServerLevel;getAllEntities()Ljava/lang/Iterable;"
-            )
-    )
-    private Iterable<Entity> Enderscape$onlyUseTickingEntities(Iterable<Entity> entities) {
-        if (EnderscapeMobCapCalculator.isEnd(level)) {
-            return Iterables.filter(entities, entity -> distanceManager.inEntityTickingRange(entity.chunkPosition().pack()));
-        } else {
-            return entities;
-        }
-    }
-
     @WrapOperation(
-            method = "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;J)V",
+            method = "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;)V",
             at = @At(
                     value = "NEW",
                     target = "(Lnet/minecraft/server/level/ChunkMap;)Lnet/minecraft/world/level/LocalMobCapCalculator;"
@@ -59,7 +40,7 @@ public abstract class ServerChunkCacheMixin {
     }
 
     @WrapOperation(
-            method = "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;J)V",
+            method = "tickChunks(Lnet/minecraft/util/profiling/ProfilerFiller;)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/world/level/NaturalSpawner;getFilteredSpawningCategories(Lnet/minecraft/world/level/NaturalSpawner$SpawnState;ZZ)Ljava/util/List;"

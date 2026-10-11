@@ -5,55 +5,64 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.util.KeyDispatchDataCodec;
+import net.minecraft.util.Interval;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.densityfunction.*;
 import net.penumbra.enderscape.Enderscape;
+import org.jspecify.annotations.NonNull;
 
 public class EnderscapeDensityFunctionTypes {
 
-    static final Codec<Double> NOISE_VALUE_CODEC = Codec.doubleRange(-1000000.0, 1000000.0);
+    static final Codec<Float> NOISE_VALUE_CODEC = Codec.floatRange(-1000000.0f, 1000000.0f);
 
-    record DistanceFromCenterGradient(int minDistance, int maxDistance, double fromValue, double toValue) implements DensityFunction.SimpleFunction {
-        private static final MapCodec<DistanceFromCenterGradient> DATA_CODEC = RecordCodecBuilder.mapCodec(
+    record DistanceFromCenterGradient(int minDistance, int maxDistance, Interval range) implements DensityFunction {
+        public static final MapCodec<DistanceFromCenterGradient> CODEC = RecordCodecBuilder.mapCodec(
                 instance -> instance.group(
                                 Codec.INT.fieldOf("min_distance").forGetter(DistanceFromCenterGradient::minDistance),
                                 Codec.INT.fieldOf("max_distance").forGetter(DistanceFromCenterGradient::maxDistance),
-                                NOISE_VALUE_CODEC.fieldOf("from_value").forGetter(DistanceFromCenterGradient::fromValue),
-                                NOISE_VALUE_CODEC.fieldOf("to_value").forGetter(DistanceFromCenterGradient::toValue)
+                                RecordCodecBuilder.<Interval>mapCodec(instance1 -> instance1.group(
+                                        NOISE_VALUE_CODEC.fieldOf("from_value").forGetter(Interval::min),
+                                        NOISE_VALUE_CODEC.fieldOf("to_value").forGetter(Interval::max)
+                                ).apply(instance1, Interval::of)).forGetter(DistanceFromCenterGradient::range)
                         )
                         .apply(instance, DistanceFromCenterGradient::new)
         );
-        public static final KeyDispatchDataCodec<DistanceFromCenterGradient> CODEC = KeyDispatchDataCodec.of(DATA_CODEC);
 
         @Override
-        public double compute(FunctionContext context) {
-            float f = (float) context.blockX();
-            float h = (float) context.blockZ();
+        public @NonNull DensitySampler compileSampler(CompileContext context) {
+            return new DensitySampler() {
+                @Override
+                public void sampleVolume(SamplerContext context, DensityBuffer outputBuffer, DensityVolume volume) {
+                    DensitySampler.sampleVolumeNaive(context, outputBuffer, volume, this);
+                }
 
-            float distance = Mth.sqrt(f * f + h * h);
+                @Override
+                public float sampleValue(SamplerContext context, int blockX, int blockY, int blockZ) {
+                    float distance = Mth.sqrt(blockX * blockX + blockZ * blockZ);
 
-            return Mth.clampedMap(distance, minDistance, maxDistance, fromValue, toValue);
+                    return Mth.clampedMap(distance, minDistance, maxDistance, range.min(), range.max());
+                }
+            };
         }
 
         @Override
-        public double minValue() {
-            return Math.min(fromValue, toValue);
+        public DensityFunction rewriteChildren(DfRewriteRule rule) {
+            return this;
         }
 
         @Override
-        public double maxValue() {
-            return Math.max(fromValue, toValue);
+        public @Axes int domainAxes() {
+            return ALL_AXES;
         }
 
         @Override
-        public KeyDispatchDataCodec<? extends DensityFunction> codec() {
+        public MapCodec<? extends DensityFunction> codec() {
             return CODEC;
         }
     }
 
-    private static MapCodec<? extends DensityFunction> register(String string, KeyDispatchDataCodec<? extends DensityFunction> dispatch) {
-        return Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Enderscape.id(string), dispatch.codec());
+    private static MapCodec<? extends DensityFunction> register(String string, MapCodec<? extends DensityFunction> dispatch) {
+        return Registry.register(BuiltInRegistries.DENSITY_FUNCTION_TYPE, Enderscape.id(string), dispatch);
     }
 
     static {

@@ -11,15 +11,12 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.penumbra.enderscape.block.state.StateProperties;
@@ -31,27 +28,17 @@ public class VeiledSaplingBlock extends VegetationBlock implements BonemealableB
 
     public static final IntegerProperty STAGE = StateProperties.STAGE;
 
-    public static final MapCodec<VeiledSaplingBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                            ResourceKey.codec(Registries.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.feature),
-                            propertiesCodec()
-                    ).apply(instance, VeiledSaplingBlock::new)
-    );
     public static final VoxelShape VOXEL_SHAPE = Block.box(3, 0, 3, 13, 9, 13);
 
-    private final ResourceKey<ConfiguredFeature<?, ?>> feature;
+    private final ResourceKey<Feature> feature;
 
-    @Override
-    public MapCodec<VeiledSaplingBlock> codec() {
-        return CODEC;
-    }
-
-    public VeiledSaplingBlock(ResourceKey<ConfiguredFeature<?, ?>> feature, BlockBehaviour.Properties properties) {
+    public VeiledSaplingBlock(ResourceKey<Feature> feature, BlockBehaviour.Properties properties) {
         super(properties);
         this.feature = feature;
     }
 
-    private Optional<? extends Holder<ConfiguredFeature<?, ?>>> getFeature(LevelReader level) {
-        return level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature);
+    private Optional<? extends Holder<Feature>> getFeature(LevelReader level) {
+        return level.registryAccess().lookupOrThrow(Registries.FEATURE).get(feature);
     }
 
     @Override
@@ -85,17 +72,17 @@ public class VeiledSaplingBlock extends VegetationBlock implements BonemealableB
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         return level.getBlockState(pos.below()).is(EnderscapeBlockTags.VEILED_SAPLING_GROWS_ON);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return (double) random.nextFloat() < 0.4;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         advanceGrowth(level, pos, state, random);
     }
 }

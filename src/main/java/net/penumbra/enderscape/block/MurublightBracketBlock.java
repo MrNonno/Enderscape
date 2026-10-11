@@ -15,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -30,8 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MurublightBracketBlock extends DirectionalVegetationBlock implements BonemealableBlock {
-
-    public static final MapCodec<MurublightBracketBlock> CODEC = simpleCodec(MurublightBracketBlock::new);
     private static final LinkedHashMap<Direction, VoxelShape> VOXEL_SHAPES = BlockUtil.createRotatedShapes(1, 0, 1, 15, 6, 15);
 
     protected final Vector2i bonemealArea = new Vector2i(1, 1);
@@ -41,11 +40,6 @@ public class MurublightBracketBlock extends DirectionalVegetationBlock implement
     public MurublightBracketBlock(Properties settings) {
         super(DirectionSet.create().horizontal(), settings);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    public MapCodec<MurublightBracketBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -69,18 +63,18 @@ public class MurublightBracketBlock extends DirectionalVegetationBlock implement
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         return !findGenerationPositions(level, pos).isEmpty();
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         float chance = bonemealChance.sample(random);
         return chance >= 1.0F || random.nextFloat() < chance;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state, BonemealSource source) {
         List<BlockPos> positions = findGenerationPositions(level, origin);
         Util.shuffle(positions, random);
 

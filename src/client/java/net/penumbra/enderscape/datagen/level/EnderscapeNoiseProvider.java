@@ -21,7 +21,7 @@ public class EnderscapeNoiseProvider extends FabricDynamicRegistryProvider {
         EnderscapeNoiseParameters.NOISE_PARAMETERS.forEach(noiseParametersResourceKey -> add(provider, entries, noiseParametersResourceKey));
     }
 
-    private void add(HolderLookup.Provider provider, Entries entries, ResourceKey<NormalNoise.NoiseParameters> key) {
+    private void add(HolderLookup.Provider provider, Entries entries, ResourceKey<NormalNoise> key) {
         entries.add(key, provider.lookupOrThrow(Registries.NOISE).getOrThrow(key).value());
     }
 

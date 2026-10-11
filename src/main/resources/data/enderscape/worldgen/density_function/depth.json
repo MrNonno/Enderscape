@@ -1,10 +1,12 @@
 {
-    "type": "cache_once",
-    "argument": {
-        "type": "y_clamped_gradient",
+    "type": "cache",
+    "input": {
+        "type": "gradient",
         "from_value": 1.5,
-        "from_y": 288,
+        "from_coordinate": 288,
         "to_value": -1.5,
-        "to_y": -160
+        "to_coordinate": -160,
+        "axis": "y",
+        "tiling": "clamp_to_edge"
     }
 }

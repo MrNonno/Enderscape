@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:etched_repulsive_magnia_slab_from_etched_repulsive_magnia_stonecutting"
+        "recipes": "enderscape:etched_repulsive_magnia_slab_from_etched_repulsive_magnia_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

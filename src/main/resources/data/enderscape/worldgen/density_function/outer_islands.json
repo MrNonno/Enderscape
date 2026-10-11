@@ -1,45 +1,51 @@
 {
     "type": "add",
-    "argument1": {
+    "left": {
         "type": "minecraft:spline",
         "spline": {
             "coordinate": {
                 "type": "minecraft:squeeze",
-                "argument": {
+                "input": {
                     "type": "minecraft:mul",
-                    "argument1": 0.52,
-                    "argument2": {
+                    "left": 0.52,
+                    "right": {
                         "type": "minecraft:interpolated",
-                        "argument": {
+                        "cell_size_xz": 8,
+                        "cell_size_y": 4,
+                        "input": {
                             "type": "minecraft:blend_density",
-                            "argument": {
+                            "input": {
                                 "type": "minecraft:add",
-                                "argument1": -0.23,
-                                "argument2": {
+                                "left": -0.23,
+                                "right": {
                                     "type": "minecraft:mul",
-                                    "argument1": {
-                                        "type": "minecraft:y_clamped_gradient",
-                                        "from_y": -64,
-                                        "to_y": -16,
+                                    "left": {
+                                        "type": "minecraft:gradient",
+                                        "from_coordinate": -64,
+                                        "to_coordinate": -16,
                                         "from_value": 0,
-                                        "to_value": 0.97
+                                        "to_value": 0.97,
+                                        "axis": "y",
+                                        "tiling": "clamp_to_edge"
                                     },
-                                    "argument2": {
+                                    "right": {
                                         "type": "minecraft:add",
-                                        "argument1": 0.25,
-                                        "argument2": {
+                                        "left": 0.25,
+                                        "right": {
                                             "type": "minecraft:add",
-                                            "argument1": -23.4,
-                                            "argument2": {
+                                            "left": -23.4,
+                                            "right": {
                                                 "type": "minecraft:mul",
-                                                "argument1": {
-                                                    "type": "minecraft:y_clamped_gradient",
-                                                    "from_y": 142,
-                                                    "to_y": 512,
+                                                "left": {
+                                                    "type": "minecraft:gradient",
+                                                    "from_coordinate": 142,
+                                                    "to_coordinate": 512,
                                                     "from_value": 0.98,
-                                                    "to_value": 0
+                                                    "to_value": 0,
+                                                    "axis": "y",
+                                                    "tiling": "clamp_to_edge"
                                                 },
-                                                "argument2": "enderscape:outer_island_noise"
+                                                "right": "enderscape:outer_island_noise"
                                             }
                                         }
                                     }
@@ -68,5 +74,5 @@
             ]
         }
     },
-    "argument2": "enderscape:center_distance"
+    "right": "enderscape:center_distance"
 }

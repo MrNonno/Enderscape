@@ -3,7 +3,7 @@
   "criteria": {
     "obtained": {
       "conditions": {
-        "recipe_id": "enderscape:nebulite_from_shards"
+        "recipes": "enderscape:nebulite_from_shards"
       },
       "trigger": "minecraft:recipe_crafted"
     }

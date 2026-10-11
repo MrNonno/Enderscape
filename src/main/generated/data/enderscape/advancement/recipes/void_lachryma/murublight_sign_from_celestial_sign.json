@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_sign_from_celestial_sign"
+        "recipes": "enderscape:murublight_sign_from_celestial_sign"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:suspicious_stew_from_bulb_flower"
+        "recipes": "enderscape:suspicious_stew_from_bulb_flower"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

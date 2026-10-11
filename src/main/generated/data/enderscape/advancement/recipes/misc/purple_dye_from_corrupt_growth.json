@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:purple_dye_from_corrupt_growth"
+        "recipes": "enderscape:purple_dye_from_corrupt_growth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

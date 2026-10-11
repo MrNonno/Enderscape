@@ -4,9 +4,11 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableSubProvider;
 import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.EmptyTagLookupWrapper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.effect.MobEffects;
@@ -20,14 +22,14 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.entries.SingleEntryContainerBase;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LocationCheck;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.registry.item.EnderscapePotions;
 import net.penumbra.enderscape.registry.level.EnderscapeBiomes;
 import org.jetbrains.annotations.NotNull;
@@ -67,16 +69,16 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
     }
 
     private void registerStrongholdLoot(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) throws InterruptedException, ExecutionException {
-        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(UniformGenerator.between(0.4F, 0.8F));
-        LootItemConditionalFunction.Builder<?> secretDamage = SetItemDamageFunction.setDamage(UniformGenerator.between(0.6F, 0.95F));
-        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(0, 10));
+        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.4F, 0.8F));
+        LootItemConditionalFunction.Builder<?> secretDamage = SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.6F, 0.95F));
+        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(0, 10));
         
         consumer.accept(
                 STRONGHOLD_LIBRARY_CHEST_SUPPLEMENTS,
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 10))
+                                        .setRolls(ContextIntProviders.between(2, 10))
                                         .add(EmptyLootItem.emptyItem().setWeight(56))
                                         .add(createItem(MIRROR, 2))
                                         .add(createItem(BOOK, 2).apply(
@@ -91,12 +93,12 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
 
         consumer.accept(
                 STRONGHOLD_CHEST_ALTAR,
-                LootTable.lootTable().pool(strongholdAltarLootPool(toolEnchantments, toolDamage, UniformGenerator.between(2, 4)))
+                LootTable.lootTable().pool(strongholdAltarLootPool(toolEnchantments, toolDamage, ContextIntProviders.between(2, 4)))
         );
 
         consumer.accept(
                 STRONGHOLD_CHEST_ARMORY,
-                LootTable.lootTable().pool(strongholdValuableLootPool(secretDamage, UniformGenerator.between(1, 3)))
+                LootTable.lootTable().pool(strongholdValuableLootPool(secretDamage, ContextIntProviders.between(1, 3)))
         );
 
         consumer.accept(
@@ -104,7 +106,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 3))
+                                        .setRolls(ContextIntProviders.between(2, 3))
 
                                         .add(createItem(BOOK, 3).apply(countBetween(1, 3)))
                                         .add(createItem(EMERALD, 3).apply(countBetween(2, 4)))
@@ -124,17 +126,17 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
         consumer.accept(
                 STRONGHOLD_CHEST_GARDEN,
                 LootTable.lootTable()
-                        .pool(strongholdValuableLootPool(secretDamage, UniformGenerator.between(2, 3)))
+                        .pool(strongholdValuableLootPool(secretDamage, ContextIntProviders.between(2, 3)))
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 4))
+                                        .setRolls(ContextIntProviders.between(2, 4))
 
                                         .add(createItem(ALLIUM, 3))
                                         .add(createItem(BLUE_ORCHID, 3))
                                         .add(createItem(DANDELION, 3))
                                         .add(createItem(POPPY, 3))
 
-                                        .add(createItem(SUSPICIOUS_STEW, 1).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.REGENERATION, UniformGenerator.between(7.0F, 10.0F))))
+                                        .add(createItem(SUSPICIOUS_STEW, 1).apply(SetStewEffectFunction.stewEffect().withEffect(MobEffects.REGENERATION, ContextIntProviders.between(7, 10))))
                         )
         );
 
@@ -143,8 +145,8 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .pools(
                                 List.of(
-                                        strongholdLibraryLootPool(UniformGenerator.between(2, 10)),
-                                        strongholdLibraryEyeTrimPool(ConstantValue.exactly(1.0F))
+                                        strongholdLibraryLootPool(ContextIntProviders.between(2, 10)),
+                                        strongholdLibraryEyeTrimPool(ContextIntProviders.exactly(1))
                                 )
                         )
         );
@@ -154,8 +156,8 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .pools(
                                 List.of(
-                                        strongholdLibraryLootPool(UniformGenerator.between(2, 6)),
-                                        strongholdLibraryEyeTrimPool(ConstantValue.exactly(1.0F)),
+                                        strongholdLibraryLootPool(ContextIntProviders.between(2, 6)),
+                                        strongholdLibraryEyeTrimPool(ContextIntProviders.exactly(1)),
                                         strongholdMansionUniqueLootPool(toolEnchantments, toolDamage)
                                 )
                         )
@@ -166,13 +168,13 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(3, 8))
+                                        .setRolls(ContextIntProviders.between(3, 8))
 
                                         .add(createItem(BONE, 4).apply(countBetween(1, 3)))
                                         .add(createItem(GRAVEL, 4).apply(countBetween(1, 3)))
                                         .add(createItem(ARROW, 3).apply(countBetween(3, 4)))
                         )
-                        .pool(strongholdValuableLootPool(secretDamage, UniformGenerator.between(1, 2)))
+                        .pool(strongholdValuableLootPool(secretDamage, ContextIntProviders.between(1, 2)))
         );
 
         consumer.accept(
@@ -180,7 +182,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(1, 2))
+                                        .setRolls(ContextIntProviders.between(1, 2))
                                         .add(createItem(SPLASH_POTION, 1).apply(potionEffect(Potions.INFESTED)).apply(countBetween(1, 3)))
                                         .add(createItem(SPLASH_POTION, 1).apply(potionEffect(Potions.LONG_WEAKNESS)).apply(countBetween(1, 3)))
                         )
@@ -191,7 +193,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(1, 3))
+                                        .setRolls(ContextIntProviders.between(1, 3))
                                         .add(createItem(BREAD, 16).apply(countBetween(1, 3)))
                                         .add(createItem(GOLDEN_CARROT, 4).apply(countBetween(2, 4)))
                                         .add(createItem(GOLDEN_APPLE, 1).apply(countBetween(1, 2)))
@@ -199,7 +201,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
         );
     }
 
-    private LootPool strongholdAltarLootPool(EnchantWithLevelsFunction.Builder toolEnchantments, LootItemConditionalFunction.Builder<?> toolDamage, NumberProvider rolls) throws InterruptedException, ExecutionException {
+    private LootPool strongholdAltarLootPool(EnchantWithLevelsFunction.Builder toolEnchantments, LootItemConditionalFunction.Builder<?> toolDamage, Holder<ContextIntProvider> rolls) throws InterruptedException, ExecutionException {
         return LootPool.lootPool()
                 .setRolls(rolls)
 
@@ -227,9 +229,9 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .add(createItem(FLINT_AND_STEEL, 4).apply(toolDamage))
                 .add(createItem(IRON_CHESTPLATE, 4).apply(toolEnchantments).apply(toolDamage))
                 .add(createItem(IRON_SWORD, 4).apply(toolEnchantments).apply(toolDamage))
-                .add(createItem(SHIELD, 4).apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.2F, 0.6F))))
+                .add(createItem(SHIELD, 4).apply(SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.2F, 0.6F))))
 
-                .add(createEnchantedItem(BOOK, ConstantValue.exactly(30.0F), 3))
+                .add(createEnchantedItem(BOOK, ContextIntProviders.exactly(30), 3))
 
                 .add(createItem(IRON_BOOTS, 2).apply(toolEnchantments).apply(toolDamage))
                 .add(createItem(IRON_HELMET, 2).apply(toolEnchantments).apply(toolDamage))
@@ -247,7 +249,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .build();
     }
 
-    private LootPool strongholdValuableLootPool(LootItemConditionalFunction.Builder<?> secretDamage, NumberProvider rolls) throws InterruptedException, ExecutionException {
+    private LootPool strongholdValuableLootPool(LootItemConditionalFunction.Builder<?> secretDamage, Holder<ContextIntProvider> rolls) throws InterruptedException, ExecutionException {
         return LootPool.lootPool()
                 .setRolls(rolls)
 
@@ -258,22 +260,22 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .add(createItem(IRON_BLOCK, 5))
                 .add(createItem(GOLD_BLOCK, 5))
 
-                .add(createEnchantedItem(BOOK, ConstantValue.exactly(30.0F), 5))
+                .add(createEnchantedItem(BOOK, ContextIntProviders.exactly(30), 5))
                 .add(createItem(GOLDEN_APPLE, 5).apply(countBetween(1, 3)))
                 .add(createItem(GOLDEN_CARROT, 5).apply(countBetween(3, 6)))
                 .add(createItem(POTION, 5).apply(potionEffect(Potions.STRONG_HEALING)).apply(countBetween(1, 3)))
                 .add(createItem(POTION, 5).apply(potionEffect(Potions.STRONG_STRENGTH)).apply(countBetween(1, 3)))
 
-                .add(createEnchantedItem(IRON_SWORD, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(IRON_PICKAXE, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(IRON_HELMET, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(IRON_CHESTPLATE, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(IRON_LEGGINGS, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(IRON_BOOTS, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_SWORD, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_PICKAXE, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_HELMET, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_CHESTPLATE, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_LEGGINGS, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(IRON_BOOTS, ContextIntProviders.exactly(30), 3).apply(secretDamage))
 
-                .add(createEnchantedItem(DIAMOND_SWORD, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(DIAMOND_PICKAXE, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
-                .add(createEnchantedItem(DIAMOND_CHESTPLATE, ConstantValue.exactly(30.0F), 3).apply(secretDamage))
+                .add(createEnchantedItem(DIAMOND_SWORD, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(DIAMOND_PICKAXE, ContextIntProviders.exactly(30), 3).apply(secretDamage))
+                .add(createEnchantedItem(DIAMOND_CHESTPLATE, ContextIntProviders.exactly(30), 3).apply(secretDamage))
 
                 .add(createItem(MUSIC_DISC_FAR, 1))
                 .add(createItem(MIRROR, 1))
@@ -281,14 +283,14 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .build();
     }
 
-    private LootPool strongholdLibraryLootPool(NumberProvider rolls) throws InterruptedException, ExecutionException {
+    private LootPool strongholdLibraryLootPool(Holder<ContextIntProvider> rolls) throws InterruptedException, ExecutionException {
         return LootPool.lootPool()
                 .setRolls(rolls)
 
                 .add(createItem(BOOK, 20).apply(countBetween(1, 3)))
                 .add(createItem(PAPER, 20).apply(countBetween(2, 7)))
 
-                .add(createEnchantedItem(BOOK, ConstantValue.exactly(30.0F), 10))
+                .add(createEnchantedItem(BOOK, ContextIntProviders.exactly(30), 10))
 
                 .add(createItem(MAP, 3))
                 .add(createItem(COMPASS, 3))
@@ -305,7 +307,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .build();
     }
 
-    private LootPool strongholdLibraryEyeTrimPool(NumberProvider rolls) {
+    private LootPool strongholdLibraryEyeTrimPool(Holder<ContextIntProvider> rolls) {
         return LootPool.lootPool()
                 .setRolls(rolls)
                 .add(createItem(EYE_ARMOR_TRIM_SMITHING_TEMPLATE, 1))
@@ -314,7 +316,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
 
     private LootPool strongholdMansionUniqueLootPool(EnchantWithLevelsFunction.Builder toolEnchantments, LootItemConditionalFunction.Builder<?> toolDamage) {
         return LootPool.lootPool()
-                .setRolls(UniformGenerator.between(2, 4))
+                .setRolls(ContextIntProviders.between(2, 4))
 
                 .add(EmptyLootItem.emptyItem().setWeight(12))
 
@@ -332,22 +334,27 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 .build();
     }
 
+    private Holder<LootTable> fakeLootTable(HolderGetter.Provider provider, ResourceKey<LootTable> resourceKey) {
+        var loot = provider.lookupOrThrow(Registries.LOOT_TABLE);
+        return Holder.Reference.createStandAlone(loot instanceof EmptyTagLookupWrapper<LootTable> wrapper ? wrapper.parent() : loot, resourceKey);
+    }
+
     private void registerEndCityChestLoot(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) throws InterruptedException, ExecutionException {
-        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(UniformGenerator.between(0.4F, 0.8F));
-        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(20, 30));
+        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.4F, 0.8F));
+        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(20, 30));
 
         consumer.accept(
                 END_CITY_TREASURE_POST_SUPPLEMENTS,
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1))
-                                        .add(NestedLootTable.lootTableReference(END_CITY_TREASURE))
+                                        .setRolls(ContextIntProviders.exactly(1))
+                                        .add(NestedLootTable.lootTableReference(fakeLootTable(this.lookup.get(), END_CITY_TREASURE)))
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1))
-                                        .add(NestedLootTable.lootTableReference(END_CITY_TREASURE_SUPPLEMENTS))
+                                        .setRolls(ContextIntProviders.exactly(1))
+                                        .add(NestedLootTable.lootTableReference(fakeLootTable(this.lookup.get(), END_CITY_TREASURE_SUPPLEMENTS)))
                         )
         );
 
@@ -356,7 +363,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(3, 5))
+                                        .setRolls(ContextIntProviders.between(3, 5))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(36))
 
@@ -373,7 +380,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                                         .add(createItem(GUNPOWDER, 4).apply(countBetween(2, 4)))
                                         .add(createItem(LODESTONE, 4))
 
-                                        .add(createItem(SHIELD, 3).apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.2F, 0.6F))))
+                                        .add(createItem(SHIELD, 3).apply(SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.2F, 0.6F))))
 
                                         .add(createEnchantedItem(BOW, 5, 15, 3).apply(toolDamage))
 
@@ -386,7 +393,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 3))
+                                        .setRolls(ContextIntProviders.between(2, 3))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(100))
 
@@ -395,7 +402,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(0, 1))
+                                        .setRolls(ContextIntProviders.between(0, 1))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(40))
 
@@ -405,7 +412,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1))
+                                        .setRolls(ContextIntProviders.exactly(1))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(40))
 
@@ -423,7 +430,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(3, 5))
+                                        .setRolls(ContextIntProviders.between(3, 5))
 
                                         .add(createItem(CHORUS_FRUIT, 12).apply(countBetween(2, 6)))
                                         .add(addBiomeExclusiveItem(PURUBERRY, EnderscapeBiomes.CELESTIAL_GROVE, 10).apply(countBetween(2, 4)))
@@ -448,7 +455,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                                         .add(createItem(IRON_AXE, 3).apply(toolEnchantments).apply(toolDamage))
                                         .add(createItem(IRON_HOE, 3).apply(toolEnchantments).apply(toolDamage))
 
-                                        .add(createItem(SHIELD, 3).apply(SetItemDamageFunction.setDamage(UniformGenerator.between(0.2F, 0.6F))))
+                                        .add(createItem(SHIELD, 3).apply(SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.2F, 0.6F))))
 
                                         .add(createItem(IRON_HELMET, 3).apply(toolEnchantments).apply(toolDamage))
                                         .add(createItem(IRON_CHESTPLATE, 3).apply(toolEnchantments).apply(toolDamage))
@@ -473,7 +480,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .setRolls(ContextIntProviders.exactly(1))
 
                                         .add(createItem(BREAD, 12).apply(countBetween(2, 8)))
                                         .add(createItem(GOLDEN_CARROT, 4).apply(countBetween(2, 8)))
@@ -481,7 +488,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1.0F))
+                                        .setRolls(ContextIntProviders.exactly(1))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(3))
 
@@ -502,7 +509,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 4))
+                                        .setRolls(ContextIntProviders.between(2, 4))
 
                                         .add(createItem(BONE, 12).apply(countBetween(3, 6)))
                                         .add(createItem(CHORUS_FRUIT, 12).apply(countBetween(2, 6)))
@@ -520,7 +527,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                                         .add(createItem(DYE.black(), 3).apply(countBetween(1, 6)))
                         ).withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1))
+                                        .setRolls(ContextIntProviders.exactly(1))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(8))
 
@@ -531,15 +538,15 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
     }
 
     private void registerEndHavenChestLoot(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) throws InterruptedException, ExecutionException {
-        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(UniformGenerator.between(0.4F, 0.8F));
-        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(20, 30));
+        LootItemConditionalFunction.Builder<?> toolDamage = SetItemDamageFunction.setDamage(ContextFloatProviders.between(0.4F, 0.8F));
+        EnchantWithLevelsFunction.Builder toolEnchantments = EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(20, 30));
 
         consumer.accept(
                 END_HAVEN_CHEST,
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 3))
+                                        .setRolls(ContextIntProviders.between(2, 3))
 
                                         .add(createItem(BREAD, 5).apply(countBetween(3, 6)))
                                         .add(createItem(PURUBERRY, 3).apply(countBetween(1, 2)))
@@ -547,7 +554,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(2, 4))
+                                        .setRolls(ContextIntProviders.between(2, 4))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(16))
 
@@ -560,7 +567,7 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
                         )
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(UniformGenerator.between(1, 2))
+                                        .setRolls(ContextIntProviders.between(1, 2))
 
                                         .add(EmptyLootItem.emptyItem().setWeight(80))
 
@@ -601,36 +608,41 @@ public class EnderscapeChestLootProvider extends SimpleFabricLootTableSubProvide
 
     @NotNull
     private LootItemConditionalFunction.Builder<?> countBetween(int f, int g) {
-        return SetItemCountFunction.setCount(UniformGenerator.between(f, g));
+        return SetItemCountFunction.setCount(ContextIntProviders.between(f, g));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createItem(Item item, int weight) {
+    private SingleEntryContainerBase.Builder<?> createItem(Item item, int weight) {
         return LootItem.lootTableItem(item).setWeight(weight);
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> addBiomeExclusiveItem(Item item, ResourceKey<Biome> biome, int weight) throws InterruptedException, ExecutionException {
+    private SingleEntryContainerBase.Builder<?> addBiomeExclusiveItem(Item item, ResourceKey<Biome> biome, int weight) throws InterruptedException, ExecutionException {
         return createItem(item, weight).when(LocationCheck.checkLocation(LocationPredicate.Builder.inBiome(lookup.get().lookupOrThrow(Registries.BIOME).getOrThrow(biome))));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createEnchantedItem(Item item, int minEnchant, int maxEnchant, int weight) throws InterruptedException, ExecutionException {
-        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), UniformGenerator.between(minEnchant, maxEnchant)));
+    private SingleEntryContainerBase.Builder<?> createEnchantedItem(Item item, int minEnchant, int maxEnchant, int weight) throws InterruptedException, ExecutionException {
+        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextIntProviders.between(minEnchant, maxEnchant)));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createEnchantedItem(Item item, NumberProvider provider, int weight) throws InterruptedException, ExecutionException {
-        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get(), provider));
+    private SingleEntryContainerBase.Builder<?> createEnchantedItem(Item item, Holder<ContextIntProvider> provider, int weight) throws InterruptedException, ExecutionException {
+        return createItem(item, weight).apply(EnchantWithLevelsFunction.enchantWithLevels(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), provider));
     }
 
     @NotNull
-    private LootPoolSingletonContainer.Builder<?> createEnchantedItem(Item item, ResourceKey<Enchantment> enchantment, UniformGenerator uniform, int weight) throws InterruptedException, ExecutionException {
+    private SingleEntryContainerBase.Builder<?> createEnchantedItem(Item item, ResourceKey<Enchantment> enchantment, Holder<ContextIntProvider> uniform, int weight) throws InterruptedException, ExecutionException {
         return createItem(item, weight).apply(new SetEnchantmentsFunction.Builder().withEnchantment(lookup.get().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment), uniform));
     }
 
     @NotNull
     private Holder.Reference<Enchantment> getEnchantmentReference(ResourceKey<Enchantment> enchantment) throws InterruptedException, ExecutionException {
         return lookup.get().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(enchantment);
+    }
+
+    @Override
+    public void run() {
+        
     }
 }

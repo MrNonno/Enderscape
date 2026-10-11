@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:corrupt_growth_from_celestial_growth"
+        "recipes": "enderscape:corrupt_growth_from_celestial_growth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

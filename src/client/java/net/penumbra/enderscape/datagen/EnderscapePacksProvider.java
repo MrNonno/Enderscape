@@ -65,7 +65,8 @@ public class EnderscapePacksProvider {
             ));
 
             metadata.add(ResourceFilterSection.TYPE, new ResourceFilterSection(List.of(
-                    new IdentifierPattern(Optional.of(Pattern.compile("minecraft")), Optional.of(Pattern.compile("recipe/end_stone_bricks\\.json")))
+                    new IdentifierPattern(Optional.of(Pattern.compile("minecraft")), Optional.of(Pattern.compile("recipe/end_stone_bricks\\.json"))),
+                    new IdentifierPattern(Optional.of(Pattern.compile("minecraft")), Optional.of(Pattern.compile("advancement/recipes/building_blocks/end_stone_bricks\\.json")))
             )));
 
             return metadata;

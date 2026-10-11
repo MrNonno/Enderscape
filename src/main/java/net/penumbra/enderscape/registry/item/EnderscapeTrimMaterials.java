@@ -4,9 +4,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Util;
-import net.minecraft.world.item.equipment.trim.MaterialAssetGroup;
 import net.minecraft.world.item.equipment.trim.TrimMaterial;
 import net.penumbra.enderscape.Enderscape;
 
@@ -22,13 +22,13 @@ public class EnderscapeTrimMaterials {
     public static final ResourceKey<TrimMaterial> SHADOLINE = register("shadoline");
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-        register(context, NEBULITE, Style.EMPTY.withColor(0xFF66FF), MaterialAssetGroup.create("nebulite"));
-        register(context, SHADOLINE, Style.EMPTY.withColor(0x315B4D), MaterialAssetGroup.create("shadoline", Map.of(EnderscapeEquipmentAssets.SHADOLINE, "shadoline_lighter")));
+        register(context, NEBULITE, Style.EMPTY.withColor(0xFF66FF), Enderscape.id("nebulite"));
+        register(context, SHADOLINE, Style.EMPTY.withColor(0x315B4D), Enderscape.id("shadoline"));
     }
 
-    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Style style, MaterialAssetGroup group) {
+    private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Style style, Identifier paletteId) {
         Component component = Component.translatable(Util.makeDescriptionId("trim_material", key.identifier())).withStyle(style);
-        context.register(key, new TrimMaterial(group, component));
+        context.register(key, new TrimMaterial(paletteId, component));
     }
 
     private static ResourceKey<TrimMaterial> register(String name) {

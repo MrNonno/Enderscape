@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_slab"
+        "recipes": "enderscape:murublight_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

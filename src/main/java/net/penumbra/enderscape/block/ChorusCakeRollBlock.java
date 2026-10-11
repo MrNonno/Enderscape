@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -37,15 +38,8 @@ import net.penumbra.enderscape.block.state.StateProperties;
 import net.penumbra.enderscape.registry.sound.EnderscapeBlockSounds;
 
 public class ChorusCakeRollBlock extends Block {
-    public static final MapCodec<ChorusCakeRollBlock> CODEC = simpleCodec(ChorusCakeRollBlock::new);
-
     public static final IntegerProperty BITES = StateProperties.BITES;
     public static final EnumProperty<Direction> FACING = StateProperties.HORIZONTAL_FACING;
-
-    @Override
-    public MapCodec<ChorusCakeRollBlock> codec() {
-        return CODEC;
-    }
 
     public ChorusCakeRollBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -126,7 +120,7 @@ public class ChorusCakeRollBlock extends Block {
             if (entity.isPassenger()) entity.stopRiding();
             Vec3 previousPosition = entity.position();
 
-            if (entity.randomTeleport(x, y, z, true)) {
+            if (entity.randomTeleport(x, y, z, true, BlockTags.DANGEROUS_FOR_TELEPORTATION)) {
                 level.gameEvent(GameEvent.TELEPORT, previousPosition, GameEvent.Context.of(entity));
                 level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), SoundEvents.CHORUS_FRUIT_TELEPORT, entity instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL);
                 entity.resetFallDistance();

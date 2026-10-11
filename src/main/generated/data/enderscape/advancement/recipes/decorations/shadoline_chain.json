@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:shadoline_chain"
+        "recipes": "enderscape:shadoline_chain"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

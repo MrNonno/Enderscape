@@ -26,7 +26,7 @@ public abstract class CampfireBlockMixin extends Block {
         return state.getBlock() instanceof VoidCampfireBlock;
     }
 
-    @WrapOperation(method = "dowse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/CampfireBlock;makeParticles(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;ZZ)V"))
+    @WrapOperation(method = "douse", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/CampfireBlock;makeParticles(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;ZZ)V"))
     private static void Enderscape$stopDowseParticles(Level level, BlockPos pos, boolean isSignalFire, boolean smoking, Operation<Void> original) {
         if (!isVoidCampfire(level.getBlockState(pos))) original.call(level, pos, isSignalFire, smoking);
     }

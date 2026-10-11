@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:rubble_shield_veradite"
+        "recipes": "enderscape:rubble_shield_veradite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veradite_stairs"
+        "recipes": "enderscape:veradite_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:cyan_dye_from_bulb_flower"
+        "recipes": "enderscape:cyan_dye_from_bulb_flower"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

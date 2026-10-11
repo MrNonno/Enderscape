@@ -25,14 +25,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Map;
 
 public class VoidWallTorchBlock extends VoidTorchBlock {
-    public static final MapCodec<VoidWallTorchBlock> CODEC = simpleCodec(VoidWallTorchBlock::new);
     public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     private static final Map<Direction, VoxelShape> SHAPES = Shapes.rotateHorizontal(Block.boxZ(5.0, 3.0, 13.0, 11.0, 16.0));
-
-    @Override
-    public MapCodec<VoidWallTorchBlock> codec() {
-        return CODEC;
-    }
 
     public VoidWallTorchBlock(final BlockBehaviour.Properties properties) {
         super(properties);

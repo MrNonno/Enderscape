@@ -3,15 +3,13 @@
   "criteria": {
     "rustle_bucket": {
       "conditions": {
-        "entity": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "minecraft:entity_type": "enderscape:rustle"
-            }
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "enderscape:rustle"
           }
-        ],
+        },
         "item": {
           "items": "minecraft:bucket"
         }

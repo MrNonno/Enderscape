@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,17 +18,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 
 public class ChorusSproutsBlock extends VegetationBlock implements BonemealableBlock {
-
-    public static final MapCodec<ChorusSproutsBlock> CODEC = simpleCodec(ChorusSproutsBlock::new);
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 10, 14);
 
     public ChorusSproutsBlock(Properties settings) {
         super(settings);
-    }
-
-    @Override
-    public MapCodec<ChorusSproutsBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -41,17 +35,17 @@ public class ChorusSproutsBlock extends VegetationBlock implements BonemealableB
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource source) {
         return true;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state, BonemealSource source) {
         int i = 0;
         int max = Mth.nextInt(random, 1, 3);
         var range = Mth.nextInt(random, 4, 8);

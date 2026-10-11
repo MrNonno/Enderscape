@@ -1,0 +1,20 @@
+{
+  "type": "enderscape:ceiling_ore",
+  "targets": [
+    {
+      "state": "enderscape:nebulite_ore",
+      "target": {
+        "block": "minecraft:end_stone",
+        "predicate_type": "minecraft:block_match"
+      }
+    },
+    {
+      "state": "enderscape:mirestone_nebulite_ore",
+      "target": {
+        "block": "enderscape:mirestone",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ],
+  "terrain_depth": 8
+}

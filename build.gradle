@@ -110,7 +110,6 @@ dependencies {
 	implementation "dev.isxander:yet-another-config-lib:${project.yacl_version}"
 
 	implementation "maven.modrinth:lithostitched:${project.lithostitched_version}"
-	implementation "maven.modrinth:trim-patcher:${project.trim_patcher_version}"
 
 	compileOnly("mezz.jei:jei-26.2-common-api:${jei_version}") {
 		transitive = false
@@ -173,6 +172,7 @@ publishMods {
 	type = project.mod_version.contains("-") ? BETA : STABLE
 	file = jar.archiveFile
 	modLoaders.add("fabric")
+	version = "${mod_version}+mc${minecraft_version}"
 
 	if (System.getenv("CURSEFORGE")) {
 		curseforge {
@@ -191,7 +191,6 @@ publishMods {
 			requires("fabric-api")
 			requires("yacl")
 			requires("lithostitched")
-			requires("trim-patcher")
 		}
 	}
 
@@ -210,7 +209,6 @@ publishMods {
 			requires("fabric-api")
 			requires("yacl")
 			requires("lithostitched")
-			requires("trim-patcher")
 		}
 	}
 }

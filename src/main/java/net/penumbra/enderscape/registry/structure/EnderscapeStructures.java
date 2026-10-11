@@ -6,6 +6,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.random.WeightedList;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.MobCategory;
@@ -52,12 +54,12 @@ public class EnderscapeStructures {
     public static final Map<MobCategory, StructureSpawnOverride> ALL_BLANK_SPAWN_OVERRIDES = Arrays.stream(MobCategory.values()).collect(Collectors.toMap(category -> category, _ -> BLANK_SPAWN_OVERRIDE));
 
     public static final StructureSpawnOverride STRONGHOLD_MONSTER_SPAWN_OVERRIDE = new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedList.<MobSpawnSettings.SpawnerData>builder()
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, 4, 6), 120)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, 4, 4), 100)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE_VILLAGER, 1, 1), 25)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, 4, 4), 100)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, 1, 4), 40)
-            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SILVERFISH, 4, 6), 80)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SPIDER, UniformInt.of(4, 6)), 120)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE, ConstantInt.of(4)), 100)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ZOMBIE_VILLAGER, ConstantInt.of(1)), 25)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SKELETON, ConstantInt.of(4)), 100)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.ENDERMAN, UniformInt.of(1, 4)), 40)
+            .add(new MobSpawnSettings.SpawnerData(EntityTypes.SILVERFISH, UniformInt.of(4, 6)), 80)
             .build());
 
     public static void bootstrap(BootstrapContext<Structure> context) {

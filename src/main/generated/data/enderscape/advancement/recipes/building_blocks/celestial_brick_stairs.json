@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:celestial_brick_stairs"
+        "recipes": "enderscape:celestial_brick_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

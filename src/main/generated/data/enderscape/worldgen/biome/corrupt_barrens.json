@@ -28,6 +28,35 @@
         "sound": "enderscape:music.enderscape.biome.corrupt_barrens"
       }
     },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {
+          "enderscape:rubblemite": {
+            "charge": 1.0,
+            "energy_budget": 1.0
+          },
+          "minecraft:endermite": {
+            "charge": 1.0,
+            "energy_budget": 2.0
+          }
+        },
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "minecraft:endermite",
+              "count": 1,
+              "weight": 4
+            },
+            {
+              "type": "enderscape:rubblemite",
+              "count": 1,
+              "weight": 2
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
     "minecraft:visual/ambient_light_color": {
       "argument": "#b28cbf",
       "modifier": "multiply"
@@ -98,38 +127,5 @@
     ]
   ],
   "has_precipitation": false,
-  "spawn_costs": {
-    "enderscape:rubblemite": {
-      "charge": 1.0,
-      "energy_budget": 1.0
-    },
-    "minecraft:endermite": {
-      "charge": 1.0,
-      "energy_budget": 2.0
-    }
-  },
-  "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [],
-    "misc": [],
-    "monster": [
-      {
-        "type": "minecraft:endermite",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 4
-      },
-      {
-        "type": "enderscape:rubblemite",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 2
-      }
-    ],
-    "underground_water_creature": [],
-    "water_ambient": [],
-    "water_creature": []
-  },
   "temperature": 0.5
 }

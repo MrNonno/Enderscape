@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:nebulite_from_smelting_mirestone_nebulite_ore"
+        "recipes": "enderscape:nebulite_from_smelting_mirestone_nebulite_ore"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

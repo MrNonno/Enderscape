@@ -2,12 +2,15 @@ package net.penumbra.enderscape.registry.level;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.ARGB;
 import net.minecraft.world.attribute.AttributeRange;
 import net.minecraft.world.attribute.AttributeType;
 import net.minecraft.world.attribute.AttributeTypes;
 import net.minecraft.world.attribute.EnvironmentAttribute;
 import net.minecraft.world.entity.MobCategory;
 import net.penumbra.enderscape.Enderscape;
+import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 import java.util.function.Function;
 
@@ -49,9 +52,9 @@ public class EnderscapeEnvironmentAttributes {
 
     public static final EnvironmentAttribute<Boolean> PURIFIES_VOIDED_HEALTH = gameplay("purifies_voided_health", AttributeTypes.BOOLEAN, false);
 
-    public static final EnvironmentAttribute<Integer> NEBULA_COLOR = interpolatedVisual("nebula_color", AttributeTypes.RGB_COLOR, DEFAULT_NEBULA_COLOR);
+    public static final EnvironmentAttribute<Vector3fc> NEBULA_COLOR = interpolatedVisual("nebula_color", AttributeTypes.RGB_COLOR, ARGB.vector3fFromRGB24(DEFAULT_NEBULA_COLOR));
     public static final EnvironmentAttribute<Float> NEBULA_BRIGHTNESS = interpolatedVisual("nebula_brightness", AttributeTypes.FLOAT, DEFAULT_NEBULA_ALPHA);
-    public static final EnvironmentAttribute<Integer> STAR_COLOR = interpolatedVisual("star_color", AttributeTypes.RGB_COLOR, DEFAULT_STAR_COLOR);
+    public static final EnvironmentAttribute<Vector3fc> STAR_COLOR = interpolatedVisual("star_color", AttributeTypes.RGB_COLOR, ARGB.vector3fFromRGB24(DEFAULT_STAR_COLOR));
     public static final EnvironmentAttribute<Float> FOG_END_DENSITY = interpolatedVisual("fog_end_density", AttributeTypes.FLOAT, 1.0F);
 
     @SafeVarargs

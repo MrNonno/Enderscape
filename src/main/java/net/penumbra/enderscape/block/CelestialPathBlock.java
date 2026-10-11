@@ -7,14 +7,8 @@ import net.penumbra.enderscape.block.properties.DirectionSet;
 
 public class CelestialPathBlock extends AbstractOvergrowthBlock {
 
-    public static final MapCodec<CelestialPathBlock> CODEC = simpleCodec(CelestialPathBlock::new);
-
     public CelestialPathBlock(BlockBehaviour.Properties settings) {
         super(true, Blocks.END_STONE, DirectionSet.create().up(), settings);
     }
 
-    @Override
-    public MapCodec<CelestialPathBlock> codec() {
-        return CODEC;
-    }
 }

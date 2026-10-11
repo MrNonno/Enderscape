@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_shelf"
+        "recipes": "enderscape:murublight_shelf"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

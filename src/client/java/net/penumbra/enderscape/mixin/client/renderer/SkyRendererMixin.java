@@ -1,9 +1,10 @@
 package net.penumbra.enderscape.mixin.client.renderer;
 
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.pipeline.RenderTarget;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -18,6 +19,7 @@ import net.penumbra.enderscape.config.EnderscapeConfig;
 import net.penumbra.enderscape.renderer.level.EnderscapeSkybox;
 import net.penumbra.enderscape.renderer.value.EndFlashParameters;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -49,11 +51,11 @@ public abstract class SkyRendererMixin {
     }
 
     @Inject(method = "renderEndSky", at = @At("HEAD"), cancellable = true)
-    public void Enderscape$renderEndSky(CallbackInfo info) {
+    public void Enderscape$renderEndSky(RenderPass renderPass, CallbackInfo info) {
         Minecraft minecraft = Minecraft.getInstance();
 
         if (EnderscapeConfig.getInstance().skyboxUpdateEnabled && minecraft.level != null)  {
-            enderscape$skybox.render(new PoseStack(), minecraft.level, minecraft.gameRenderer.mainCamera(), minecraft.getDeltaTracker());
+            enderscape$skybox.render(renderPass, new PoseStack(), minecraft.level, minecraft.gameRenderer.mainCamera(), minecraft.getDeltaTracker());
             info.cancel();
         }
     }
@@ -62,17 +64,17 @@ public abstract class SkyRendererMixin {
     private void Enderscape$changeColor(Args args) {
         if (EndFlashParameters.improved())  {
             float intensity = args.get(3);
-            Vector3f color = EndFlashParameters.getSkyLightColor();
+            Vector3fc color = EndFlashParameters.getSkyLightColor();
 
-            args.set(0, color.x * intensity);
-            args.set(1, color.y * intensity);
-            args.set(2, color.z * intensity);
+            args.set(0, color.x() * intensity);
+            args.set(1, color.y() * intensity);
+            args.set(2, color.z() * intensity);
         }
     }
 
-    @ModifyArg(method = "renderEndFlash", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setVertexBuffer(ILcom/mojang/blaze3d/buffers/GpuBufferSlice;)V"), index = 1)
-    private @Nullable GpuBufferSlice Enderscape$changeEndFlashBuffer(@Nullable GpuBufferSlice original) {
-        return EndFlashParameters.improved() ? enderscape$flashBuffer.slice() : original;
+    @ModifyArg(method = "renderEndFlash", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/SkyRenderer;drawCelestialBody(Ljava/util/function/Supplier;Lcom/mojang/renderpearl/api/commands/RenderPass;Lcom/mojang/renderpearl/api/buffers/GpuBufferSlice;Lcom/mojang/renderpearl/api/buffers/GpuBuffer;Lcom/mojang/renderpearl/api/buffers/GpuBuffer;I)V"), index = 4)
+    private @Nullable GpuBuffer Enderscape$changeEndFlashBuffer(@Nullable GpuBuffer original) {
+        return EndFlashParameters.improved() ? enderscape$flashBuffer : original;
     }
 
     @Inject(method = "close", at = @At("TAIL"))

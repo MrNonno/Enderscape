@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:nebulite_block"
+        "recipes": "enderscape:nebulite_block"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

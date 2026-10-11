@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:kurodite_brick_slab_from_veradite_brick_slab"
+        "recipes": "enderscape:kurodite_brick_slab_from_veradite_brick_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

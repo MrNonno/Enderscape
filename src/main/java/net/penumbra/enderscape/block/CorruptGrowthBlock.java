@@ -14,8 +14,6 @@ import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 
 public class CorruptGrowthBlock extends AbstractGrowthBlock {
 
-    public static final MapCodec<CorruptGrowthBlock> CODEC = simpleCodec(CorruptGrowthBlock::new);
-
     public CorruptGrowthBlock(Properties settings) {
         super(DirectionSet.create().all(), settings);
     }
@@ -44,10 +42,5 @@ public class CorruptGrowthBlock extends AbstractGrowthBlock {
         }
 
         return false;
-    }
-
-    @Override
-    protected MapCodec<CorruptGrowthBlock> codec() {
-        return CODEC;
     }
 }

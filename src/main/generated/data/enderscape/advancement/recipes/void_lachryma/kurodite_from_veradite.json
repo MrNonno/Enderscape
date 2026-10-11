@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:kurodite_from_veradite"
+        "recipes": "enderscape:kurodite_from_veradite"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

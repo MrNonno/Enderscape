@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:rustle_silk_from_corrupt_growth"
+        "recipes": "enderscape:rustle_silk_from_corrupt_growth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

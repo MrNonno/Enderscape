@@ -23,7 +23,7 @@ public class EnderscapeWorldgenModifierProvider extends FabricDynamicRegistryPro
     }
 
     private void add(HolderLookup.Provider provider, Entries entries, ResourceKey<WorldgenModifier> key) {
-        entries.add(key, provider.lookupOrThrow(LithostitchedRegistries.WORLDGEN_MODIFIER).getOrThrow(key).value());
+        entries.add(provider.lookupOrThrow(LithostitchedRegistries.WORLDGEN_MODIFIER).getOrThrow(key));
     }
 
     @Override

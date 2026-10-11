@@ -34,6 +34,7 @@ import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.*;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.Enderscape;
 import net.penumbra.enderscape.item.HealingItem;
 import net.penumbra.enderscape.item.RustleBucketItem;
@@ -110,11 +111,11 @@ public class EnderscapeItems {
     public static final Item VOID_LACHRYMA_BUCKET = registerItem(EnderscapeItemIds.VOID_LACHRYMA_BUCKET, properties -> new BucketItem(EnderscapeFluids.VOID_LACHRYMA, properties), new Item.Properties().craftRemainder(BUCKET).stacksTo(1));
 
     public static final Item VEILED_HANGING_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.VEILED_HANGING_SIGN, properties -> new HangingSignItem(EnderscapeBlocks.VEILED_HANGING_SIGN, EnderscapeBlocks.VEILED_WALL_HANGING_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
-    public static final Item VEILED_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.VEILED_SIGN, properties -> new SignItem(EnderscapeBlocks.VEILED_SIGN, EnderscapeBlocks.VEILED_WALL_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
+    public static final Item VEILED_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.VEILED_SIGN, properties -> new StandingAndWallBlockItem(EnderscapeBlocks.VEILED_SIGN, EnderscapeBlocks.VEILED_WALL_SIGN, Direction.DOWN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
     public static final Item CELESTIAL_HANGING_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.CELESTIAL_HANGING_SIGN, properties -> new HangingSignItem(EnderscapeBlocks.CELESTIAL_HANGING_SIGN, EnderscapeBlocks.CELESTIAL_WALL_HANGING_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
-    public static final Item CELESTIAL_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.CELESTIAL_SIGN, properties -> new SignItem(EnderscapeBlocks.CELESTIAL_SIGN, EnderscapeBlocks.CELESTIAL_WALL_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
+    public static final Item CELESTIAL_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.CELESTIAL_SIGN, properties -> new StandingAndWallBlockItem(EnderscapeBlocks.CELESTIAL_SIGN, EnderscapeBlocks.CELESTIAL_WALL_SIGN, Direction.DOWN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
     public static final Item MURUBLIGHT_HANGING_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.MURUBLIGHT_HANGING_SIGN, properties -> new HangingSignItem(EnderscapeBlocks.MURUBLIGHT_HANGING_SIGN, EnderscapeBlocks.MURUBLIGHT_WALL_HANGING_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
-    public static final Item MURUBLIGHT_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.MURUBLIGHT_SIGN, properties -> new SignItem(EnderscapeBlocks.MURUBLIGHT_SIGN, EnderscapeBlocks.MURUBLIGHT_WALL_SIGN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
+    public static final Item MURUBLIGHT_SIGN_ITEM = registerItem(EnderscapeBlockItemIds.MURUBLIGHT_SIGN, properties -> new StandingAndWallBlockItem(EnderscapeBlocks.MURUBLIGHT_SIGN, EnderscapeBlocks.MURUBLIGHT_WALL_SIGN, Direction.DOWN, properties), new Properties().stacksTo(16).useBlockDescriptionPrefix());
 
     public static final Item VEILED_SHELF_ITEM = registerBlock(EnderscapeBlockItemIds.VEILED_SHELF, EnderscapeBlocks.VEILED_SHELF, new Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
     public static final Item CELESTIAL_SHELF_ITEM = registerBlock(EnderscapeBlockItemIds.CELESTIAL_SHELF, EnderscapeBlocks.CELESTIAL_SHELF, new Properties().component(DataComponents.CONTAINER, ItemContainerContents.EMPTY));
@@ -122,7 +123,7 @@ public class EnderscapeItems {
 
     public static final Item CHORUS_CAKE_ROLL_ITEM = registerItem(EnderscapeItemIds.CHORUS_CAKE_ROLL, properties -> new BlockItem(EnderscapeBlocks.CHORUS_CAKE_ROLL, properties), new Properties().stacksTo(1).useBlockDescriptionPrefix());
 
-    public static final Item BLINKLIGHT = registerItem(EnderscapeItemIds.BLINKLIGHT, properties -> new BlockItem(EnderscapeBlocks.BLINKLIGHT_VINES_HEAD, properties), new Properties().useItemDescriptionPrefix());
+    public static final Item BLINKLIGHT = registerItem(EnderscapeItemIds.BLINKLIGHT, properties -> new BlockItem(EnderscapeBlocks.BLINKLIGHT_VINES_HEAD, properties), new Properties().useItemDescriptionPrefix().compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM));
 
     public static final Item DRIFT_JELLY_BOTTLE = registerItem(
             EnderscapeItemIds.DRIFT_JELLY_BOTTLE,
@@ -155,6 +156,7 @@ public class EnderscapeItems {
             new Properties()
                     .useCooldown(3.0F)
                     .useItemDescriptionPrefix()
+                    .compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
                     .food(
                             new FoodProperties.Builder()
                                     .nutrition(6)
@@ -170,7 +172,7 @@ public class EnderscapeItems {
                                                     )
                                             )
                                     ).build()
-                )
+                    )
     );
 
     public static final Item MURUBLIGHT_BRACKET_ITEM = registerItem(
@@ -178,6 +180,7 @@ public class EnderscapeItems {
             properties -> new BlockItem(EnderscapeBlocks.MURUBLIGHT_BRACKET, properties),
             new Properties()
                     .useBlockDescriptionPrefix()
+                    .compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
                     .food(
                             new FoodProperties.Builder()
                                     .alwaysEdible()

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:end_stone_slab"
+        "recipes": "enderscape:end_stone_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

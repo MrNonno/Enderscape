@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.data.worldgen.placement.EndPlacements;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
@@ -88,8 +89,7 @@ public class EnderscapeBiomeModifications {
                             MobCategory.MONSTER,
                             new MobSpawnSettings.SpawnerData(
                                     EnderscapeEntities.RUBBLEMITE,
-                                    2,
-                                    3
+                                    UniformInt.of(2, 3)
                             ),
                             EnderscapeBiomes.RUBBLEMITE_DEFAULT_WEIGHT
                     );

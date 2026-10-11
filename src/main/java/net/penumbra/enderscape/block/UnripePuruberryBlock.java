@@ -12,10 +12,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -24,17 +21,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 
 public class UnripePuruberryBlock extends Block implements BonemealableBlock {
-
-    public static final MapCodec<UnripePuruberryBlock> CODEC = simpleCodec(UnripePuruberryBlock::new);
     public static final VoxelShape VOXEL_SHAPE = box(2, 4, 2, 14, 16, 14);
     
     public UnripePuruberryBlock(Properties settings) {
         super(settings);
-    }
-
-    @Override
-    public MapCodec<UnripePuruberryBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -69,23 +59,23 @@ public class UnripePuruberryBlock extends Block implements BonemealableBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
-        if (isBonemealSuccess(world, random, pos, state)) {
-            performBonemeal(world, random, pos, state);
+        if (isBonemealSuccess(world, random, pos, state, BonemealSource.INTERACTION)) {
+            performBonemeal(world, random, pos, state, BonemealSource.INTERACTION);
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource source) {
         return attachedToVine(world, pos);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return attachedToVine(world, pos) && random.nextFloat() > 0.8F;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState ripe = EnderscapeBlocks.RIPE_PURUBERRY_BLOCK.defaultBlockState();
         world.setBlock(pos, ripe, UPDATE_ALL);
         SoundType group = ripe.getSoundType();

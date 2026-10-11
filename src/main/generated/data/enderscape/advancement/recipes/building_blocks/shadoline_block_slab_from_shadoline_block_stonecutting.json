@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:shadoline_block_slab_from_shadoline_block_stonecutting"
+        "recipes": "enderscape:shadoline_block_slab_from_shadoline_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

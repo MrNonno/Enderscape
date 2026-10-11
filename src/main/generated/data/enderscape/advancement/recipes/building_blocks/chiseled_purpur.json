@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:chiseled_purpur"
+        "recipes": "enderscape:chiseled_purpur"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

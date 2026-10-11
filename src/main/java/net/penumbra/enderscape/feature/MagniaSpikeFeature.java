@@ -2,6 +2,7 @@ package net.penumbra.enderscape.feature;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,10 +14,9 @@ import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.SpeleothemUtils;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.penumbra.enderscape.block.BlisteredMagniaBlock;
 import net.penumbra.enderscape.block.MagniaBlock;
 import net.penumbra.enderscape.block.MagniaSproutBlock;
@@ -26,25 +26,22 @@ import net.penumbra.enderscape.util.BlockUtil;
 
 import java.util.List;
 
-public class MagniaSpikeFeature extends Feature<MagniaSpikeFeature.Config> {
+public record MagniaSpikeFeature(IntProvider height, FloatProvider repulsive_magnia_sprout_placement_chance, int minimum_terrain_depth) implements Feature {
 
-    public MagniaSpikeFeature(Codec<Config> codec) {
-        super(codec);
-    }
+    public static final MapCodec<MagniaSpikeFeature> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    IntProviders.codec(1, 64).fieldOf("height").forGetter(config -> config.height),
+                    FloatProviders.codec(0, 1).fieldOf("repulsive_magnia_sprout_placement_chance").forGetter(config -> config.repulsive_magnia_sprout_placement_chance),
+                    Codec.INT.fieldOf("minimum_terrain_depth").forGetter(config -> config.minimum_terrain_depth))
+            .apply(instance, MagniaSpikeFeature::new));
+
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
-        RandomSource random = context.random();
-
-        if (level.getBlockState(origin).isAir() && hasSolidCeiling(level, origin, 1) && BlockUtil.hasTerrainDepth(level, origin, config.minimum_terrain_depth(), Direction.UP)) {
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
+        if (level.getBlockState(origin).isAir() && hasSolidCeiling(level, origin, 1) && BlockUtil.hasTerrainDepth(level, origin, this.minimum_terrain_depth(), Direction.UP)) {
             List<BlockPos> placedBlocks = Lists.newArrayList();
 
-            generateTower(level, origin, random, placedBlocks, config);
-            generateSprouts(level, random, placedBlocks, config);
+            generateTower(level, origin, random, placedBlocks);
+            generateSprouts(level, random, placedBlocks);
 
             return true;
         }
@@ -53,13 +50,13 @@ public class MagniaSpikeFeature extends Feature<MagniaSpikeFeature.Config> {
     }
 
 
-    private void generateTower(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks, Config config) {
+    private void generateTower(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks) {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 boolean atEdgeX = x == -1 || x == 1;
                 boolean atEdgeZ = z == -1 || z == 1;
 
-                int height = getPillarHeight(random, x, z, atEdgeX, atEdgeZ, config);
+                int height = getPillarHeight(random, x, z, atEdgeX, atEdgeZ);
 
                 for (int y = 0; y < height; y++) {
                     BlockPos currentPos = origin.offset(x, -y, z);
@@ -73,13 +70,13 @@ public class MagniaSpikeFeature extends Feature<MagniaSpikeFeature.Config> {
         }
     }
 
-    private void generateSprouts(WorldGenLevel level, RandomSource random, List<BlockPos> placedBlocks, Config config) {
+    private void generateSprouts(WorldGenLevel level, RandomSource random, List<BlockPos> placedBlocks) {
         for (BlockPos pos : placedBlocks) {
             for (Direction direction : Direction.values()) {
                 BlockState floor = level.getBlockState(pos);
 
                 if (floor.getBlock() instanceof MagniaBlock) {
-                    float chance = config.repulsive_magnia_sprout_placement_chance().sample(random);
+                    float chance = this.repulsive_magnia_sprout_placement_chance().sample(random);
 
                     if (random.nextFloat() <= chance) {
                         BlockPos relative = pos.relative(direction);
@@ -109,10 +106,10 @@ public class MagniaSpikeFeature extends Feature<MagniaSpikeFeature.Config> {
         return true;
     }
 
-    private int getPillarHeight(RandomSource random, int x, int z, boolean corner, boolean edge, Config config) {
-        int height = config.height().sample(random);
+    private int getPillarHeight(RandomSource random, int x, int z, boolean corner, boolean edge) {
+        int height = this.height().sample(random);
 
-        if (height <= config.height().maxInclusive() - 2 && random.nextInt(10) == 0) height *= 2;
+        if (height <= this.height().maxInclusive() - 2 && random.nextInt(10) == 0) height *= 2;
 
         if (corner && edge) {
             height /= Mth.nextInt(random, 4, 6);
@@ -125,11 +122,8 @@ public class MagniaSpikeFeature extends Feature<MagniaSpikeFeature.Config> {
         return height;
     }
 
-    public record Config(IntProvider height, FloatProvider repulsive_magnia_sprout_placement_chance, int minimum_terrain_depth) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                        IntProviders.codec(1, 64).fieldOf("height").forGetter(config -> config.height),
-                        FloatProviders.codec(0, 1).fieldOf("repulsive_magnia_sprout_placement_chance").forGetter(config -> config.repulsive_magnia_sprout_placement_chance),
-                        Codec.INT.fieldOf("minimum_terrain_depth").forGetter(config -> config.minimum_terrain_depth))
-                        .apply(instance, Config::new));
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 }

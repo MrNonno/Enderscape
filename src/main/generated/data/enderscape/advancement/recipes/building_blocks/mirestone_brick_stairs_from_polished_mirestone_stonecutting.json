@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:mirestone_brick_stairs_from_polished_mirestone_stonecutting"
+        "recipes": "enderscape:mirestone_brick_stairs_from_polished_mirestone_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

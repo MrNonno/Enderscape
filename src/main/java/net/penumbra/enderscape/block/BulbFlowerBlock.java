@@ -29,8 +29,6 @@ import java.util.List;
 import static net.penumbra.enderscape.block.state.PurifyingPhase.POWERLESS;
 
 public class BulbFlowerBlock extends VegetationBlock implements SuspiciousEffectHolder, RandomlyPurifiesEntities {
-
-    private static final MapCodec<BulbFlowerBlock> CODEC = simpleCodec(BulbFlowerBlock::new);
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 15, 14);
 
     public BulbFlowerBlock(Properties settings) {
@@ -52,11 +50,6 @@ public class BulbFlowerBlock extends VegetationBlock implements SuspiciousEffect
 
     private PurifyingPhase pickDormantPhase(LevelReader level, BlockPos pos) {
         return hasPower(level, pos) ? PurifyingPhase.INACTIVE : POWERLESS;
-    }
-
-    @Override
-    public MapCodec<BulbFlowerBlock> codec() {
-        return CODEC;
     }
 
     @Override

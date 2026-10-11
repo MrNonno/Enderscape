@@ -2,7 +2,7 @@ package net.penumbra.enderscape.registry.structure.stronghold;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import dev.worldgen.lithostitched.worldgen.poolelement.legacy.GuaranteedPoolElement;
+import dev.worldgen.lithostitched.impl.worldgen.poolelement.DelegatingPoolElement;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -223,12 +223,13 @@ public class StrongholdTemplatePools extends EnderscapeTemplatePools {
 
         return ImmutableList.of(
                 Pair.of(
-                        (projection) -> new GuaranteedPoolElement(
+                        (projection) -> new DelegatingPoolElement(
                                 StructurePoolElement.single(
                                         "enderscape:stronghold/end_portal",
                                         processors.getOrThrow(StrongholdProcessorLists.PORTAL_ROOM_DEGRADATION)).apply(projection),
                                 Optional.empty(),
-                                1
+                                Optional.of(1),
+                                Optional.empty()
                         ), 1
                 ),
 

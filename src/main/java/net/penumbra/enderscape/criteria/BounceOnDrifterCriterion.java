@@ -2,11 +2,12 @@ package net.penumbra.enderscape.criteria;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.penumbra.enderscape.entity.drifter.Drifter;
 
 import java.util.Optional;
@@ -22,14 +23,14 @@ public class BounceOnDrifterCriterion extends SimpleCriterionTrigger<BounceOnDri
         return Conditions.CODEC;
     }
 
-    public record Conditions(Optional<ContextAwarePredicate> player, Optional<ContextAwarePredicate> drifter) implements SimpleCriterionTrigger.SimpleInstance {
+    public record Conditions(Optional<Holder<LootItemCondition>> player, Optional<Holder<LootItemCondition>> drifter) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(Conditions::player),
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("drifter").forGetter(Conditions::drifter)
+                LootItemCondition.CODEC.optionalFieldOf("player").forGetter(Conditions::player),
+                LootItemCondition.CODEC.optionalFieldOf("drifter").forGetter(Conditions::drifter)
         ).apply(instance, Conditions::new));
 
         public boolean matches(LootContext context) {
-            return drifter.isEmpty() || drifter.get().matches(context);
+            return drifter.isEmpty() || drifter.get().value().test(context);
         }
     }
 }

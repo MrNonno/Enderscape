@@ -2,148 +2,146 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "condition": "minecraft:entity_properties",
-          "entity": "this",
-          "predicate": {}
-        }
-      ],
+      "condition": {
+        "type": "minecraft:entity_properties",
+        "entity": "this",
+        "predicate": {}
+      },
       "entries": [
         {
           "type": "minecraft:alternatives",
           "children": [
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "1"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "1"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 1.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 1
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "2"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "2"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 2.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 2
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "3"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "3"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 3.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 3
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "4"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "4"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 4.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 4
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "5"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "5"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 5.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 5
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "6"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "6"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 6.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 6
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
               "type": "minecraft:item",
-              "conditions": [
-                {
-                  "block": "enderscape:veiled_leaf_pile",
-                  "condition": "minecraft:block_state_property",
-                  "properties": {
-                    "layers": "7"
+              "condition": {
+                "type": "minecraft:location_check",
+                "predicate": {
+                  "block": {
+                    "blocks": "enderscape:veiled_leaf_pile",
+                    "state": {
+                      "layers": "7"
+                    }
                   }
                 }
-              ],
-              "functions": [
-                {
-                  "count": 7.0,
-                  "function": "minecraft:set_count"
-                }
-              ],
+              },
+              "modifier": {
+                "type": "minecraft:set_count",
+                "count": 7
+              },
               "name": "enderscape:veiled_leaf_pile"
             },
             {
@@ -153,7 +151,7 @@
           ]
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ]
 }

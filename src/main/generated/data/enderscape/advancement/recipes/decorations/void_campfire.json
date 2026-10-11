@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:void_campfire"
+        "recipes": "enderscape:void_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

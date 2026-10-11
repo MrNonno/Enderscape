@@ -26,19 +26,12 @@ import java.util.OptionalInt;
 
 public class VeiledLeavesBlock extends Block implements SimpleWaterloggedBlock {
 
-    public static final MapCodec<VeiledLeavesBlock> CODEC = simpleCodec(VeiledLeavesBlock::new);
-
     private static final int DECAY_DISTANCE = StateProperties.MAX_VEILED_LEAVES_DISTANCE;
     private static final int TICK_DELAY = 1;
 
     public static final IntegerProperty DISTANCE = StateProperties.VEILED_LEAVES_DISTANCE;
     public static final BooleanProperty PERSISTENT = StateProperties.PERSISTENT;
     public static final BooleanProperty WATERLOGGED = StateProperties.WATERLOGGED;
-
-    @Override
-    public MapCodec<? extends VeiledLeavesBlock> codec() {
-        return CODEC;
-    }
 
     public VeiledLeavesBlock(Properties properties) {
         super(properties);

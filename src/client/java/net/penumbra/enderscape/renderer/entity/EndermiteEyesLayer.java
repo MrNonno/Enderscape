@@ -23,6 +23,6 @@ public class EndermiteEyesLayer extends RenderLayer<LivingEntityRenderState, End
 
     @Override
     public void submit(PoseStack pose, SubmitNodeCollector collector, int i, LivingEntityRenderState state, float f, float g) {
-        collector.submitModel(getParentModel(), state, pose, ENDERMITE_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+        collector.submitModel(getParentModel(), state, pose, ENDERMITE_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
     }
 }

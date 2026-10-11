@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polarized_magnia"
+        "recipes": "enderscape:polarized_magnia"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,16 +13,13 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.VegetationBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,29 +35,18 @@ public class CelestialChanterelleBlock extends VegetationBlock implements Boneme
 
     public static final IntegerProperty STAGE = StateProperties.STAGE;
     private static final VoxelShape SHAPE = box(3, 0, 3, 13, 11, 13);
+    
+    private final ResourceKey<Feature> feature;
 
-    private final ResourceKey<ConfiguredFeature<?, ?>> feature;
-
-    public CelestialChanterelleBlock(ResourceKey<ConfiguredFeature<?, ?>> feature, BlockBehaviour.Properties properties) {
+    public CelestialChanterelleBlock(ResourceKey<Feature> feature, BlockBehaviour.Properties properties) {
         super(properties);
         this.feature = feature;
 
         registerDefaultState(defaultBlockState().setValue(STAGE, 0));
     }
 
-    public static final MapCodec<CelestialChanterelleBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                    ResourceKey.codec(Registries.CONFIGURED_FEATURE).fieldOf("feature").forGetter(block -> block.feature),
-                    propertiesCodec()
-            ).apply(instance, CelestialChanterelleBlock::new)
-    );
-
-    @Override
-    public MapCodec<CelestialChanterelleBlock> codec() {
-        return CODEC;
-    }
-
-    private Optional<? extends Holder<ConfiguredFeature<?, ?>>> getFeature(LevelReader level) {
-        return level.registryAccess().lookupOrThrow(Registries.CONFIGURED_FEATURE).get(feature);
+    private Optional<? extends Holder<Feature>> getFeature(LevelReader level) {
+        return level.registryAccess().lookupOrThrow(Registries.FEATURE).get(feature);
     }
 
     @Override
@@ -91,20 +77,20 @@ public class CelestialChanterelleBlock extends VegetationBlock implements Boneme
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState floor = level.getBlockState(pos.below());
         if (floor.hasProperty(StateProperties.FACING) && !floor.getValue(StateProperties.FACING).equals(Direction.UP)) return false;
         return floor.is(EnderscapeBlockTags.CELESTIAL_CHANTERELLE_GROWS_ON) || floor.is(EnderscapeBlockTags.CELESTIAL_CORRUPTS_ON);
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState floor = level.getBlockState(pos.below());
         return floor.is(EnderscapeBlockTags.CELESTIAL_CORRUPTS_ON) || random.nextFloat() < 0.2F;
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         BlockState floor = level.getBlockState(pos.below());
         if (floor.is(EnderscapeBlockTags.CELESTIAL_CORRUPTS_ON)) {
             corrupt(level, pos);

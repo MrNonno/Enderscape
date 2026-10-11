@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:chiseled_dusk_purpur_from_dusk_purpur_block_stonecutting"
+        "recipes": "enderscape:chiseled_dusk_purpur_from_dusk_purpur_block_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

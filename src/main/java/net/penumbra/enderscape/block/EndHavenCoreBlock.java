@@ -44,8 +44,6 @@ import org.jspecify.annotations.NonNull;
 import java.util.Optional;
 
 public class EndHavenCoreBlock extends BaseEntityBlock {
-
-    public static final MapCodec<EndHavenCoreBlock> CODEC = simpleCodec(EndHavenCoreBlock::new);
     public static final Property<EndHavenCoreState> STATE = StateProperties.END_HAVEN_CORE_STATE;
 
     public EndHavenCoreBlock(final BlockBehaviour.Properties properties) {
@@ -63,11 +61,6 @@ public class EndHavenCoreBlock extends BaseEntityBlock {
 
     public static int lightLevel(BlockState state) {
         return isActive(state) ? 8 : 0;
-    }
-
-    @Override
-    public MapCodec<EndHavenCoreBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_stem_from_celestial_stem"
+        "recipes": "enderscape:murublight_stem_from_celestial_stem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

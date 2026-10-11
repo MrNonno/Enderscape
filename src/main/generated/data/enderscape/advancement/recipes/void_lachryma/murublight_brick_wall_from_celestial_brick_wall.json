@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_brick_wall_from_celestial_brick_wall"
+        "recipes": "enderscape:murublight_brick_wall_from_celestial_brick_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

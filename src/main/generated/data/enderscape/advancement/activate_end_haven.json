@@ -3,23 +3,26 @@
   "criteria": {
     "activate_end_haven": {
       "conditions": {
-        "location": [
-          {
-            "condition": "minecraft:location_check",
-            "predicate": {
-              "block": {
-                "blocks": "enderscape:end_haven_core",
-                "state": {
-                  "state": "active"
+        "location": {
+          "type": "minecraft:all_of",
+          "terms": [
+            {
+              "type": "minecraft:location_check",
+              "predicate": {
+                "block": {
+                  "blocks": "enderscape:end_haven_core",
+                  "state": {
+                    "state": "active"
+                  }
                 }
               }
+            },
+            {
+              "type": "minecraft:match_tool",
+              "predicate": {}
             }
-          },
-          {
-            "condition": "minecraft:match_tool",
-            "predicate": {}
-          }
-        ]
+          ]
+        }
       },
       "trigger": "minecraft:item_used_on_block"
     }

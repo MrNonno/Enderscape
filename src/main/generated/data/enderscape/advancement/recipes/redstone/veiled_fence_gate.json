@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veiled_fence_gate"
+        "recipes": "enderscape:veiled_fence_gate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

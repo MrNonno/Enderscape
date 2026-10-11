@@ -29,14 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 public class VeiledLeafPileBlock extends Block {
-
-    public static final MapCodec<VeiledLeafPileBlock> CODEC = simpleCodec(VeiledLeafPileBlock::new);
     public static final IntegerProperty LAYERS = BlockStateProperties.LAYERS;
-
-    @Override
-    public MapCodec<VeiledLeafPileBlock> codec() {
-        return CODEC;
-    }
 
     public VeiledLeafPileBlock(BlockBehaviour.Properties properties) {
         super(properties);

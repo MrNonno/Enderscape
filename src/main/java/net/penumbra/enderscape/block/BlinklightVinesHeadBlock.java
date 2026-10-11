@@ -30,16 +30,9 @@ import net.penumbra.enderscape.registry.sound.EnderscapeBlockSounds;
 import net.penumbra.enderscape.util.BlockUtil;
 
 public class BlinklightVinesHeadBlock extends GrowingPlantHeadBlock implements BlinklightVines {
-    public static final MapCodec<BlinklightVinesHeadBlock> CODEC = simpleCodec(BlinklightVinesHeadBlock::new);
-
     public BlinklightVinesHeadBlock(Properties settings) {
         super(settings, Direction.DOWN, SHAPE, false, 0.14);
         registerDefaultState(defaultBlockState().setValue(AGE, 0).setValue(getStageProperty(), 0));
-    }
-
-    @Override
-    public MapCodec<BlinklightVinesHeadBlock> codec() {
-        return CODEC;
     }
 
     @Override

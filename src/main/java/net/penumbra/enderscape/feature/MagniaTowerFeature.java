@@ -2,6 +2,7 @@ package net.penumbra.enderscape.feature;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,10 +15,9 @@ import net.minecraft.util.valueproviders.IntProviders;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.SpeleothemUtils;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.penumbra.enderscape.block.BlisteredMagniaBlock;
 import net.penumbra.enderscape.block.HasMagniaPolarity;
 import net.penumbra.enderscape.block.MagniaBlock;
@@ -30,26 +30,24 @@ import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 import java.util.List;
 import java.util.Optional;
 
-public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
-
-    public MagniaTowerFeature(Codec<Config> codec) {
-        super(codec);
-    }
+public record MagniaTowerFeature(FloatProvider floor_replacement_radius, IntProvider pillar_height, IntProvider sphere_radius, IntProvider ring_radius, FloatProvider alluring_magnia_sprout_placement_chance, FloatProvider repulsive_magnia_sprout_placement_chance) implements Feature {
+    public static final MapCodec<MagniaTowerFeature> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    FloatProviders.codec(1, 64).fieldOf("floor_replacement_radius").forGetter(config -> config.floor_replacement_radius),
+                    IntProviders.codec(1, 64).fieldOf("height").forGetter(config -> config.pillar_height),
+                    IntProviders.codec(0, 64).fieldOf("sphere_radius").forGetter(config -> config.sphere_radius),
+                    IntProviders.codec(0, 64).fieldOf("ring_radius").forGetter(config -> config.ring_radius),
+                    FloatProviders.codec(0, 1).fieldOf("alluring_magnia_sprout_placement_chance").forGetter(config -> config.alluring_magnia_sprout_placement_chance),
+                    FloatProviders.codec(0, 1).fieldOf("repulsive_magnia_sprout_placement_chance").forGetter(config -> config.repulsive_magnia_sprout_placement_chance))
+            .apply(instance, MagniaTowerFeature::new));
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) {
-        Config config = context.config();
-
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
-        RandomSource random = context.random();
-
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
         if (level.getBlockState(origin).isAir() && hasSolidBase(level, origin, 3)) {
             List<BlockPos> placedBlocks = Lists.newArrayList();
 
-            replaceFloor(level, origin, random, placedBlocks, config);
-            generateTower(level, origin, random, placedBlocks, config);
-            generateSprouts(level, origin, random, placedBlocks, config);
+            replaceFloor(level, origin, random, placedBlocks);
+            generateTower(level, origin, random, placedBlocks);
+            generateSprouts(level, origin, random, placedBlocks);
 
             return true;
         }
@@ -57,8 +55,8 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
         return false;
     }
 
-    private void replaceFloor(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks, Config config) {
-        float radius = config.floor_replacement_radius().sample(random);
+    private void replaceFloor(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks) {
+        float radius = this.floor_replacement_radius().sample(random);
 
         for (float y = -radius; y <= radius; y++) {
             for (float x = -radius; x <= radius; x++) {
@@ -75,13 +73,13 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
         }
     }
 
-    private void generateTower(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks, Config config) {
+    private void generateTower(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks) {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 boolean atEdgeX = x == -1 || x == 1;
                 boolean atEdgeZ = z == -1 || z == 1;
 
-                int height = getPillarHeight(random, x, z, atEdgeX, atEdgeZ, config);
+                int height = getPillarHeight(random, x, z, atEdgeX, atEdgeZ);
 
                 for (int y = 0; y < height; y++) {
                     BlockPos currentPos = origin.offset(x, y, z);
@@ -91,14 +89,14 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
                         placedBlocks.add(currentPos);
                     }
 
-                    if (x == 0 && z == 0) generateSphere(level, origin.above(height), placedBlocks, random, config);
+                    if (x == 0 && z == 0) generateSphere(level, origin.above(height), placedBlocks, random);
                 }
             }
         }
     }
 
-    private void generateSphere(WorldGenLevel level, BlockPos origin, List<BlockPos> placedBlocks, RandomSource random, Config config) {
-        int radius = config.sphere_radius().sample(random);
+    private void generateSphere(WorldGenLevel level, BlockPos origin, List<BlockPos> placedBlocks, RandomSource random) {
+        int radius = this.sphere_radius().sample(random);
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
@@ -112,7 +110,7 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
                         placedBlocks.add(spherePos);
 
                         if (y == 0) {
-                            int ringRadius = config.ring_radius().sample(random);
+                            int ringRadius = this.ring_radius().sample(random);
 
                             generateRing(level, origin, placedBlocks, ringRadius, 1.5);
                             generateRing(level, origin, placedBlocks, (int) (ringRadius * 0.65F), 1.7);
@@ -138,7 +136,7 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
         }
     }
 
-    private void generateSprouts(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks, Config config) {
+    private void generateSprouts(WorldGenLevel level, BlockPos origin, RandomSource random, List<BlockPos> placedBlocks) {
         for (BlockPos pos : placedBlocks) {
             for (Direction direction : Direction.values()) {
                 BlockState floor = level.getBlockState(pos);
@@ -147,7 +145,7 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
                     Optional<MagniaPolarity> type = HasMagniaPolarity.optional(floor);
                     if (type.isEmpty()) continue;
 
-                    float chance = type.get() == MagniaPolarity.ALLURING ? config.alluring_magnia_sprout_placement_chance().sample(random) : config.repulsive_magnia_sprout_placement_chance().sample(random);
+                    float chance = type.get() == MagniaPolarity.ALLURING ? this.alluring_magnia_sprout_placement_chance().sample(random) : this.repulsive_magnia_sprout_placement_chance().sample(random);
 
                     if (random.nextFloat() <= chance) {
                         BlockPos relative = pos.relative(direction);
@@ -188,10 +186,10 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
         return hasSolidGround;
     }
 
-    private int getPillarHeight(RandomSource random, int x, int z, boolean corner, boolean edge, Config config) {
-        int height = config.pillar_height().sample(random);
+    private int getPillarHeight(RandomSource random, int x, int z, boolean corner, boolean edge) {
+        int height = this.pillar_height().sample(random);
 
-        if (height <= config.pillar_height().maxInclusive() - 2 && random.nextInt(10) == 0) height *= 2;
+        if (height <= this.pillar_height().maxInclusive() - 2 && random.nextInt(10) == 0) height *= 2;
 
         if (corner && edge) {
             height /= Mth.nextInt(random, 4, 6);
@@ -204,14 +202,8 @@ public class MagniaTowerFeature extends Feature<MagniaTowerFeature.Config> {
         return height;
     }
 
-    public record Config(FloatProvider floor_replacement_radius, IntProvider pillar_height, IntProvider sphere_radius, IntProvider ring_radius, FloatProvider alluring_magnia_sprout_placement_chance, FloatProvider repulsive_magnia_sprout_placement_chance) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                        FloatProviders.codec(1, 64).fieldOf("floor_replacement_radius").forGetter(config -> config.floor_replacement_radius),
-                        IntProviders.codec(1, 64).fieldOf("height").forGetter(config -> config.pillar_height),
-                        IntProviders.codec(0, 64).fieldOf("sphere_radius").forGetter(config -> config.sphere_radius),
-                        IntProviders.codec(0, 64).fieldOf("ring_radius").forGetter(config -> config.ring_radius),
-                        FloatProviders.codec(0, 1).fieldOf("alluring_magnia_sprout_placement_chance").forGetter(config -> config.alluring_magnia_sprout_placement_chance),
-                        FloatProviders.codec(0, 1).fieldOf("repulsive_magnia_sprout_placement_chance").forGetter(config -> config.repulsive_magnia_sprout_placement_chance))
-                        .apply(instance, Config::new));
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 }

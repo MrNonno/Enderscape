@@ -23,13 +23,6 @@ public class RipePuruberryBlock extends Block {
         super(settings);
     }
 
-    public static final MapCodec<RipePuruberryBlock> CODEC = simpleCodec(RipePuruberryBlock::new);
-
-    @Override
-    public MapCodec<RipePuruberryBlock> codec() {
-        return CODEC;
-    }
-
     protected int getFallDelay() {
         return 2;
     }

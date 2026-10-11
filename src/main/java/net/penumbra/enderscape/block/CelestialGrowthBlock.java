@@ -14,8 +14,6 @@ import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 
 public class CelestialGrowthBlock extends AbstractGrowthBlock {
 
-    public static final MapCodec<CelestialGrowthBlock> CODEC = simpleCodec(CelestialGrowthBlock::new);
-
     public CelestialGrowthBlock(Properties settings) {
         super(DirectionSet.create().up(), settings);
     }
@@ -44,10 +42,5 @@ public class CelestialGrowthBlock extends AbstractGrowthBlock {
         }
 
         return false;
-    }
-
-    @Override
-    protected MapCodec<CelestialGrowthBlock> codec() {
-        return CODEC;
     }
 }

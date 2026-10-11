@@ -7,7 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.penumbra.enderscape.config.EnderscapeConfig;
@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.penumbra.enderscape.registry.entity.EnderscapeAttachments.ATTACK_ANIMATION_REMAINING_TICKS;
 
-@Mixin(EnderMan.class)
+@Mixin(Enderman.class)
 public abstract class EnderManMixin extends Monster implements ImprovedEnderman {
 
     protected EnderManMixin(EntityType<? extends Monster> entityType, Level level) {
@@ -33,7 +33,7 @@ public abstract class EnderManMixin extends Monster implements ImprovedEnderman 
     }
 
     @Unique
-    private final EnderMan enderman = (EnderMan) (Object) this;
+    private final Enderman enderman = (Enderman) (Object) this;
 
     @Unique
     private final AnimationState attackAnimationState = new AnimationState();

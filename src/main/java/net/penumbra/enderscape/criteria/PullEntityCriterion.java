@@ -2,12 +2,13 @@ package net.penumbra.enderscape.criteria;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.predicates.ContextAwarePredicate;
 import net.minecraft.advancements.predicates.DistancePredicate;
 import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.advancements.triggers.SimpleCriterionTrigger;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 
 import java.util.Optional;
 
@@ -22,9 +23,9 @@ public class PullEntityCriterion extends SimpleCriterionTrigger<PullEntityCriter
         return Conditions.CODEC;
     }
 
-    public record Conditions(Optional<ContextAwarePredicate> player, Optional<EntityPredicate> pulledEntity, Optional<DistancePredicate> distance) implements SimpleCriterionTrigger.SimpleInstance {
+    public record Conditions(Optional<Holder<LootItemCondition>> player, Optional<EntityPredicate> pulledEntity, Optional<DistancePredicate> distance) implements SimpleCriterionTrigger.SimpleInstance {
         public static final Codec<Conditions> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                EntityPredicate.ADVANCEMENT_CODEC.optionalFieldOf("player").forGetter(PullEntityCriterion.Conditions::player),
+                LootItemCondition.CODEC.optionalFieldOf("player").forGetter(PullEntityCriterion.Conditions::player),
                 EntityPredicate.CODEC.optionalFieldOf("pulled_entity").forGetter(PullEntityCriterion.Conditions::pulledEntity),
                 DistancePredicate.CODEC.optionalFieldOf("distance").forGetter(PullEntityCriterion.Conditions::distance)
         ).apply(instance, Conditions::new));

@@ -59,14 +59,6 @@ public class MagniaSproutBlock extends DirectionalVegetationBlock implements Has
         this.polarity = polarity;
     }
 
-    @Override
-    protected MapCodec<MagniaSproutBlock> codec() {
-        return RecordCodecBuilder.mapCodec(instance -> instance.group(
-                MagniaPolarity.CODEC.fieldOf("magnia_polarity").forGetter(sprout -> sprout.polarity),
-                propertiesCodec()
-        ).apply(instance, MagniaSproutBlock::new));
-    }
-
     @Nullable
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new MagniaSproutBlockEntity(pos, state);

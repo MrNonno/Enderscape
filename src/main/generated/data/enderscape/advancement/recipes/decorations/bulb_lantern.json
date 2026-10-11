@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:bulb_lantern"
+        "recipes": "enderscape:bulb_lantern"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

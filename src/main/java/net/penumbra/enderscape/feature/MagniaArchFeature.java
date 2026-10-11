@@ -1,5 +1,6 @@
 package net.penumbra.enderscape.feature;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -7,9 +8,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.penumbra.enderscape.block.BlisteredMagniaBlock;
 import net.penumbra.enderscape.block.MagniaSproutBlock;
 import net.penumbra.enderscape.block.state.StateProperties;
@@ -20,20 +20,13 @@ import net.penumbra.enderscape.util.BlockUtil;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MagniaArchFeature extends Feature<NoneFeatureConfiguration> {
-
-    public MagniaArchFeature() {
-        super(NoneFeatureConfiguration.CODEC);
-    }
+public class MagniaArchFeature implements Feature {
+    public static final MapCodec<MagniaArchFeature> CODEC = MapCodec.unit(MagniaArchFeature::new);
 
     private static final int RADIUS = 2;
 
     @Override
-    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        RandomSource random = context.random();
-        WorldGenLevel level = context.level();
-        BlockPos origin = context.origin();
-
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
         Set<BlockPos> mains = new HashSet<>();
         Set<BlockPos> decorations = new HashSet<>();
 
@@ -117,5 +110,10 @@ public class MagniaArchFeature extends Feature<NoneFeatureConfiguration> {
                 }
             }
         }
+    }
+
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 }

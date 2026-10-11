@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:etched_repulsive_magnia_stairs"
+        "recipes": "enderscape:etched_repulsive_magnia_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

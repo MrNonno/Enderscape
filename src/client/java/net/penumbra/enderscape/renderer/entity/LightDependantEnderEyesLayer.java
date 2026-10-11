@@ -45,7 +45,7 @@ public class LightDependantEnderEyesLayer<S extends EntityRenderState, M extends
         int bright = ARGB.white(brightness);
         int dark = ARGB.white(1.0F - brightness);
 
-        collector.order(1).submitModel(getParentModel(), state, pose, darkEyesType, lightCoords, OverlayTexture.NO_OVERLAY, dark, null, state.outlineColor, null);
-        collector.order(2).submitModel(getParentModel(), state, pose, brightEyesType, lightCoords, OverlayTexture.NO_OVERLAY, bright, null, state.outlineColor, null);
+        collector.order(1).submitModel(getParentModel(), state, pose, darkEyesType, lightCoords, OverlayTexture.NO_OVERLAY, dark, null, state.outlineColor);
+        collector.order(2).submitModel(getParentModel(), state, pose, brightEyesType, lightCoords, OverlayTexture.NO_OVERLAY, bright, null, state.outlineColor);
     }
 }

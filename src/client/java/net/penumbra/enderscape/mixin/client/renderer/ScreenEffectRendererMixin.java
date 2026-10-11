@@ -2,47 +2,38 @@ package net.penumbra.enderscape.mixin.client.renderer;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
+import net.minecraft.client.renderer.state.level.PlayerRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.penumbra.enderscape.EnderscapeClient;
 import net.penumbra.enderscape.manager.ClientsideVariables;
 import net.penumbra.enderscape.network.ServerboundSpawnTotemParticlesPayload;
-import org.joml.Quaternionfc;
 import org.joml.Vector3f;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Environment(EnvType.CLIENT)
 @Mixin(ScreenEffectRenderer.class)
 public abstract class ScreenEffectRendererMixin {
-
-    @Shadow
-    private int itemActivationTicks;
-
-    @Shadow
-    @Final
-    private Minecraft minecraft;
-
     @Unique
     private Vector3f previousTranslation;
 
     @Unique
-    private Quaternionfc previousQuatYP;
+    private float previousAngleY;
 
     @Unique
-    private Quaternionfc previousQuatXP;
+    private float previousAngleX;
 
     @Unique
-    private Quaternionfc previousQuatZP;
+    private float previousAngleZ;
 
     @Unique
     private static final int TOTEM_GLITCH_TIMESTAMP = 20;
@@ -56,9 +47,16 @@ public abstract class ScreenEffectRendererMixin {
     @Unique
     private float glitchTime;
 
+    @Unique
+    private final RandomSource random = RandomSource.create();
+
     @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(FFF)V", ordinal = 0))
-    public void Enderscape$changeTotemTranslation(PoseStack pose, float x, float y, float z, Operation<Void> original) {
-        glitchTime += minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(true);
+    public void Enderscape$changeTotemTranslation(PoseStack pose, float x, float y, float z, Operation<Void> original,
+                                                  @Local(argsOnly = true, name = "playerRenderState") PlayerRenderState playerRenderState,
+                                                  @Local(argsOnly = true, name = "partialTicks") float partialTicks) {
+        var itemActivationTicks = playerRenderState.itemActivation != null ? playerRenderState.itemActivation.ticks : 0;
+
+        glitchTime += partialTicks;
 
         if (variables.displayVoidedTotemEffect) {
             if (itemActivationTicks <= TOTEM_SHATTER_TIMESTAMP) {
@@ -72,7 +70,6 @@ public abstract class ScreenEffectRendererMixin {
                 if (glitchTime > 0.1F) {
                     glitchTime = 0.0F;
 
-                    RandomSource random = minecraft.level.getRandom();
                     float rx = previousTranslation.x + range(random, 0.05F);
                     float ry = previousTranslation.y + (range(random, 0.025F));
                     original.call(pose, rx, ry, previousTranslation.z);
@@ -89,25 +86,28 @@ public abstract class ScreenEffectRendererMixin {
         previousTranslation = new Vector3f(x, y, z);
     }
 
-    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V", ordinal = 0))
-    public void Enderscape$changeTotemRotationYP(PoseStack pose, Quaternionfc quat, Operation<Void> original) {
-        boolean voided = variables.displayVoidedTotemEffect && itemActivationTicks <= TOTEM_GLITCH_TIMESTAMP;
-        if (!voided) previousQuatYP = quat;
-        original.call(pose, voided ? previousQuatYP : quat);
+    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V", ordinal = 0))
+    public void Enderscape$changeTotemRotationYP(PoseStack pose, Axis axis, float angle, Operation<Void> original,
+                                                 @Local(argsOnly = true, name = "playerRenderState") PlayerRenderState playerRenderState) {
+        boolean voided = variables.displayVoidedTotemEffect && playerRenderState.itemActivation != null && playerRenderState.itemActivation.ticks <= TOTEM_GLITCH_TIMESTAMP;
+        if (!voided) previousAngleY = angle;
+        original.call(pose, axis, voided ? previousAngleY : angle);
     }
 
-    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V", ordinal = 1))
-    public void Enderscape$changeTotemRotationXP(PoseStack pose, Quaternionfc quat, Operation<Void> original) {
-        boolean voided = variables.displayVoidedTotemEffect && itemActivationTicks <= TOTEM_GLITCH_TIMESTAMP;
-        if (!voided) previousQuatXP = quat;
-        original.call(pose, voided ? previousQuatXP : quat);
+    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V", ordinal = 1))
+    public void Enderscape$changeTotemRotationXP(PoseStack pose, Axis axis, float angle, Operation<Void> original,
+                                                 @Local(argsOnly = true, name = "playerRenderState") PlayerRenderState playerRenderState) {
+        boolean voided = variables.displayVoidedTotemEffect && playerRenderState.itemActivation != null && playerRenderState.itemActivation.ticks  <= TOTEM_GLITCH_TIMESTAMP;
+        if (!voided) previousAngleX = angle;
+        original.call(pose, axis, voided ? previousAngleX : angle);
     }
 
-    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionfc;)V", ordinal = 2))
-    public void Enderscape$changeTotemRotationZP(PoseStack pose, Quaternionfc quat, Operation<Void> original) {
-        boolean voided = variables.displayVoidedTotemEffect && itemActivationTicks <= TOTEM_GLITCH_TIMESTAMP;
-        if (!voided) previousQuatZP = quat;
-        original.call(pose, voided ? previousQuatZP : quat);
+    @WrapOperation(method = "renderItemActivationAnimation", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V", ordinal = 2))
+    public void Enderscape$changeTotemRotationZP(PoseStack pose, Axis axis, float angle, Operation<Void> original,
+                                                 @Local(argsOnly = true, name = "playerRenderState") PlayerRenderState playerRenderState) {
+        boolean voided = variables.displayVoidedTotemEffect && playerRenderState.itemActivation != null && playerRenderState.itemActivation.ticks  <= TOTEM_GLITCH_TIMESTAMP;
+        if (!voided) previousAngleZ = angle;
+        original.call(pose, axis, voided ? previousAngleZ : angle);
     }
 
     @Unique

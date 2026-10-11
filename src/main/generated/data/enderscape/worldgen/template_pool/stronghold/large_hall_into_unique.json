@@ -2,14 +2,14 @@
   "elements": [
     {
       "element": {
-        "count": 1,
         "delegate": {
           "element_type": "minecraft:single_pool_element",
           "location": "enderscape:stronghold/end_portal",
           "processors": "enderscape:stronghold/portal_room_degradation",
           "projection": "rigid"
         },
-        "element_type": "lithostitched:guaranteed"
+        "element_type": "lithostitched:delegating",
+        "forced_count": 1
       },
       "weight": 1
     },

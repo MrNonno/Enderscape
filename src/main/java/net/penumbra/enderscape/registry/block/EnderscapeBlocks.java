@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProvider;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.Enderscape;
 import net.penumbra.enderscape.block.*;
 import net.penumbra.enderscape.block.properties.MagniaPolarity;
@@ -116,7 +119,7 @@ public class EnderscapeBlocks {
             .sound(EnderscapeSoundTypes.END_HAVEN_CORE)
             .lightLevel(EndHavenCoreBlock::lightLevel)
             .strength(50.0F)
-            .isViewBlocking(Blocks::never)
+            .isViewBlocking((_, _, _, _) -> false)
     );
 
     public static final Block END_STONE_STAIRS = registerStair(EnderscapeBlockItemIds.END_STONE_STAIRS, END_STONE);
@@ -136,7 +139,7 @@ public class EnderscapeBlocks {
             .requiresCorrectToolForDrops()
             .noCollision()
             .strength(0.5F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
     public static final Block CRACKED_END_STONE_BRICKS = registerWithItem(EnderscapeBlockItemIds.CRACKED_END_STONE_BRICKS, Block::new, Properties.ofLegacyCopy(END_STONE_BRICKS).sound(SoundType.STONE));
     public static final Block OVERGROWN_END_STONE_BRICKS = registerWithItem(EnderscapeBlockItemIds.OVERGROWN_END_STONE_BRICKS, Block::new, Properties.ofLegacyCopy(END_STONE_BRICKS).sound(SoundType.STONE));
@@ -171,7 +174,7 @@ public class EnderscapeBlocks {
             .requiresCorrectToolForDrops()
             .noCollision()
             .strength(0.5F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block MIRESTONE_BRICKS = registerWithItem(EnderscapeBlockItemIds.MIRESTONE_BRICKS, Block::new, Properties.ofLegacyCopy(POLISHED_MIRESTONE).sound(EnderscapeSoundTypes.MIRESTONE_BRICKS));
@@ -212,7 +215,7 @@ public class EnderscapeBlocks {
             .requiresCorrectToolForDrops()
             .noCollision()
             .strength(0.5F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VERADITE_BRICKS = registerWithItem(EnderscapeBlockItemIds.VERADITE_BRICKS, Block::new, Properties.ofLegacyCopy(POLISHED_VERADITE).sound(EnderscapeSoundTypes.VERADITE_BRICKS));
@@ -247,7 +250,7 @@ public class EnderscapeBlocks {
             .requiresCorrectToolForDrops()
             .noCollision()
             .strength(0.5F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block KURODITE_BRICKS = registerWithItem(EnderscapeBlockItemIds.KURODITE_BRICKS, Block::new, Properties.ofLegacyCopy(POLISHED_KURODITE).sound(EnderscapeSoundTypes.KURODITE_BRICKS));
@@ -380,7 +383,7 @@ public class EnderscapeBlocks {
             .noCollision()
             .lightLevel((state) -> 8)
             .strength(100.0F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
             .noLootTable()
             .liquid()
             .emissiveRendering(EnderscapeBlocks::always)
@@ -393,7 +396,8 @@ public class EnderscapeBlocks {
             .mapColor(MapColor.COLOR_BLACK)
             .strength(0.5F)
             .instrument(NoteBlockInstrument.BASEDRUM)
-            .sound(EnderscapeSoundTypes.VOID_SHALE)
+            .sound(EnderscapeSoundTypes.VOID_SHALE),
+            new Item.Properties().cookingFuel(ContextIntProviders.COOKING_TIME_WOOD_ITEMS_LARGE)
     );
 
     public static final Block VOID_FIRE = register(EnderscapeBlockIds.VOID_FIRE, VoidFireBlock::new, Properties.of()
@@ -404,7 +408,7 @@ public class EnderscapeBlocks {
             .emissiveRendering(EnderscapeBlocks::always)
             .lightLevel(state -> 8)
             .sound(SoundType.WOOL)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VOID_TORCH = register(EnderscapeBlockIds.VOID_TORCH, VoidTorchBlock::new, Properties.of()
@@ -412,7 +416,7 @@ public class EnderscapeBlocks {
             .instabreak()
             .lightLevel(state -> 8)
             .sound(SoundType.WOOD)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VOID_WALL_TORCH = register(EnderscapeBlockIds.VOID_WALL_TORCH, VoidWallTorchBlock::new, wallVariant(VOID_TORCH, true)
@@ -420,7 +424,7 @@ public class EnderscapeBlocks {
             .instabreak()
             .lightLevel(state -> 8)
             .sound(SoundType.WOOD)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VOID_LANTERN = registerWithItem(EnderscapeBlockItemIds.VOID_LANTERN, LanternBlock::new, Properties.of()
@@ -430,7 +434,7 @@ public class EnderscapeBlocks {
             .sound(SoundType.LANTERN)
             .lightLevel(state -> 12)
             .noOcclusion()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VOID_CAMPFIRE = registerWithItem(EnderscapeBlockItemIds.VOID_CAMPFIRE, VoidCampfireBlock::new, Properties.of()
@@ -462,7 +466,8 @@ public class EnderscapeBlocks {
             .noOcclusion()
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .replaceable()
-            .sound(EnderscapeSoundTypes.DRY_END_GROWTH)
+            .sound(EnderscapeSoundTypes.DRY_END_GROWTH),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
     );
 
     public static final Block CHORUS_SPROUTS = registerWithItem(EnderscapeBlockItemIds.CHORUS_SPROUTS, ChorusSproutsBlock::new, Properties.of()
@@ -472,7 +477,8 @@ public class EnderscapeBlocks {
             .instrument(NoteBlockInstrument.BASEDRUM)
             .sound(EnderscapeSoundTypes.CHORUS_SPROUTS)
             .noOcclusion()
-            .offsetType(BlockBehaviour.OffsetType.XZ)
+            .offsetType(BlockBehaviour.OffsetType.XZ),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
     );
 
     public static final Block PURPUR_WALL = registerWithItem(EnderscapeBlockItemIds.PURPUR_WALL, WallBlock::new, Properties.ofLegacyCopy(PURPUR_BLOCK));
@@ -489,7 +495,7 @@ public class EnderscapeBlocks {
     public static final Block PURPUR_TILE_STAIRS = registerStair(EnderscapeBlockItemIds.PURPUR_TILE_STAIRS, PURPUR_TILES);
     public static final Block PURPUR_TILE_SLAB = registerWithItem(EnderscapeBlockItemIds.PURPUR_TILE_SLAB, SlabBlock::new, Properties.ofFullCopy(PURPUR_SLAB));
 
-    public static final Block CHORUS_CAKE_ROLL = register(EnderscapeBlockIds.CHORUS_CAKE_ROLL, ChorusCakeRollBlock::new, Properties.of().forceSolidOn().strength(0.5F).sound(EnderscapeSoundTypes.CHORUS_CAKE_ROLL).pushReaction(PushReaction.DESTROY));
+    public static final Block CHORUS_CAKE_ROLL = register(EnderscapeBlockIds.CHORUS_CAKE_ROLL, ChorusCakeRollBlock::new, Properties.of().forceSolidOn().strength(0.5F).sound(EnderscapeSoundTypes.CHORUS_CAKE_ROLL).pushReaction(PushReaction.POPPED));
 
     public static final Block END_LAMP = registerWithItem(EnderscapeBlockItemIds.END_LAMP, Block::new, Properties.of()
             .instrument(NoteBlockInstrument.PLING)
@@ -517,7 +523,8 @@ public class EnderscapeBlocks {
             .noOcclusion()
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .replaceable()
-            .sound(EnderscapeSoundTypes.WISP_GROWTH)
+            .sound(EnderscapeSoundTypes.WISP_GROWTH),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block WISP_GROWTH = registerWithItem(EnderscapeBlockItemIds.WISP_GROWTH, WispGrowthBlock::new, Properties.of()
@@ -528,7 +535,8 @@ public class EnderscapeBlocks {
             .noOcclusion()
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .replaceable()
-            .sound(EnderscapeSoundTypes.WISP_GROWTH)
+            .sound(EnderscapeSoundTypes.WISP_GROWTH),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
     );
 
     public static final Block WISP_FLOWER = registerWithItem(EnderscapeBlockItemIds.WISP_FLOWER, WispFlowerBlock::new, Properties.of()
@@ -539,7 +547,8 @@ public class EnderscapeBlocks {
             .offsetType(BlockBehaviour.OffsetType.XZ)
             .ignitedByLava()
             .lightLevel(state -> 7)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)
     );
 
     public static final Block STRIPPED_VEILED_LOG = registerWithItem(EnderscapeBlockItemIds.STRIPPED_VEILED_LOG, RotatedPillarBlock::new, Properties.of()
@@ -552,7 +561,8 @@ public class EnderscapeBlocks {
     public static final Block STRIPPED_VEILED_WOOD = registerWithItem(EnderscapeBlockItemIds.STRIPPED_VEILED_WOOD, RotatedPillarBlock::new, Properties.ofFullCopy(STRIPPED_VEILED_LOG));
     public static final Block VEILED_WOOD = registerWithItem(EnderscapeBlockItemIds.VEILED_WOOD, RotatedPillarBlock::new, Properties.ofFullCopy(STRIPPED_VEILED_WOOD).mapColor(MapColor.TERRACOTTA_LIGHT_BLUE));
 
-    public static final Block VEILED_LEAVES = registerWithItem(EnderscapeBlockItemIds.VEILED_LEAVES, VeiledLeavesBlock::new, Blocks.leavesProperties(EnderscapeSoundTypes.VEILED_LEAVES).mapColor(MapColor.CLAY));
+    public static final Block VEILED_LEAVES = registerWithItem(EnderscapeBlockItemIds.VEILED_LEAVES, VeiledLeavesBlock::new, Blocks.leavesProperties(EnderscapeSoundTypes.VEILED_LEAVES).mapColor(MapColor.CLAY),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW));
 
     public static final Block VEILED_LEAF_PILE = registerWithItem(EnderscapeBlockItemIds.VEILED_LEAF_PILE,
             VeiledLeafPileBlock::new,
@@ -562,28 +572,30 @@ public class EnderscapeBlocks {
                     .isRedstoneConductor(Blocks::never)
                     .isSuffocating(Blocks::never)
                     .isValidSpawn(Blocks::ocelotOrParrot)
-                    .isViewBlocking(Blocks::never)
+                    .isViewBlocking((_, _, _, _) -> false)
                     .mapColor(MapColor.CLAY)
                     .noOcclusion()
-                    .pushReaction(PushReaction.DESTROY)
+                    .pushReaction(PushReaction.POPPED)
                     .randomTicks()
                     .replaceable()
                     .sound(EnderscapeSoundTypes.VEILED_LEAVES)
-                    .strength(0.1F)
+                    .strength(0.1F),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block VEILED_VINES = registerWithItem(EnderscapeBlockItemIds.VEILED_VINES, VeiledVinesBlock::new, Properties.of()
             .mapColor(MapColor.CLAY)
             .noCollision()
             .noOcclusion()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
             .sound(EnderscapeSoundTypes.VEILED_LEAVES)
             .strength(0.2F)
     );
 
     public static final Block VEILED_SAPLING = registerWithItem(EnderscapeBlockItemIds.VEILED_SAPLING, properties -> new VeiledSaplingBlock(EnderscapeConfiguredFeatures.VEILED_TREE_FROM_SAPLING, properties), Properties.ofFullCopy(OAK_SAPLING)
             .mapColor(MapColor.CLAY)
-            .sound(EnderscapeSoundTypes.CHORUS_SPROUTS)
+            .sound(EnderscapeSoundTypes.CHORUS_SPROUTS),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW_MEDIUM)
     );
 
     public static final Block VEILED_PLANKS = registerWithItem(EnderscapeBlockItemIds.VEILED_PLANKS, Block::new, Properties.of()
@@ -601,7 +613,7 @@ public class EnderscapeBlocks {
             .noCollision()
             .strength(0.5F)
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VEILED_FENCE = registerWithItem(EnderscapeBlockItemIds.VEILED_FENCE, FenceBlock::new, Properties.ofLegacyCopy(VEILED_PLANKS));
@@ -611,7 +623,7 @@ public class EnderscapeBlocks {
             .strength(3)
             .noOcclusion()
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block VEILED_TRAPDOOR = registerWithItem(EnderscapeBlockItemIds.VEILED_TRAPDOOR, properties -> new TrapDoorBlock(VEILED_BLOCK_SET, properties), Properties.of()
@@ -660,7 +672,7 @@ public class EnderscapeBlocks {
             .requiresCorrectToolForDrops()
             .strength(3, 9)
             .sound(EnderscapeSoundTypes.CELESTIAL_OVERGROWTH)
-            .isViewBlocking(EnderscapeBlocks::always)
+            .isViewBlocking((_, _, _, _) -> true)
             .isSuffocating(EnderscapeBlocks::always)
     );
 
@@ -678,7 +690,8 @@ public class EnderscapeBlocks {
             .noCollision()
             .instabreak()
             .sound(EnderscapeSoundTypes.CELESTIAL_GROWTH)
-            .noOcclusion()
+            .noOcclusion(),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block BULB_FLOWER = registerWithItem(EnderscapeBlockItemIds.BULB_FLOWER, BulbFlowerBlock::new, Properties.of()
@@ -688,7 +701,8 @@ public class EnderscapeBlocks {
             .sound(EnderscapeSoundTypes.BULB_FLOWER)
             .noOcclusion()
             .lightLevel(BulbFlowerBlock::lightLevel)
-            .randomTicks()
+            .randomTicks(),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)
     );
 
     public static final Block BULB_LANTERN = registerWithItem(EnderscapeBlockItemIds.BULB_LANTERN, BulbLanternBlock::new, Properties.ofLegacyCopy(LANTERN)
@@ -708,7 +722,7 @@ public class EnderscapeBlocks {
             .mapColor(MapColor.WARPED_WART_BLOCK)
             .randomTicks()
             .strength(0.3F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
             .noCollision()
             .sound(EnderscapeSoundTypes.PURUBERRY_FLOWER)
             .noOcclusion()
@@ -718,7 +732,7 @@ public class EnderscapeBlocks {
             .mapColor(MapColor.WARPED_WART_BLOCK)
             .randomTicks()
             .strength(0.3F)
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
             .sound(EnderscapeSoundTypes.PURUBERRY_BLOCK)
             .noOcclusion()
     );
@@ -726,8 +740,9 @@ public class EnderscapeBlocks {
     public static final Block RIPE_PURUBERRY_BLOCK = registerWithItem(EnderscapeBlockItemIds.RIPE_PURUBERRY_BLOCK, RipePuruberryBlock::new, Properties.of()
             .mapColor(MapColor.WARPED_WART_BLOCK)
             .strength(0.3F)
-            .pushReaction(PushReaction.DESTROY)
-            .sound(EnderscapeSoundTypes.PURUBERRY_BLOCK)
+            .pushReaction(PushReaction.POPPED)
+            .sound(EnderscapeSoundTypes.PURUBERRY_BLOCK),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)
     );
 
     public static final Block CELESTIAL_CHANTERELLE = registerWithItem(EnderscapeBlockItemIds.CELESTIAL_CHANTERELLE, properties -> new CelestialChanterelleBlock(EnderscapeConfiguredFeatures.LARGE_CELESTIAL_CHANTERELLE, properties), Properties.of()
@@ -735,7 +750,8 @@ public class EnderscapeBlocks {
             .noCollision()
             .instabreak()
             .randomTicks()
-            .sound(EnderscapeSoundTypes.CELESTIAL_CHANTERELLE)
+            .sound(EnderscapeSoundTypes.CELESTIAL_CHANTERELLE),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)
     );
 
     public static final Block STRIPPED_CELESTIAL_STEM = registerWithItem(EnderscapeBlockItemIds.STRIPPED_CELESTIAL_STEM, RotatedPillarBlock::new, Properties.of()
@@ -754,7 +770,8 @@ public class EnderscapeBlocks {
             .mapColor(MapColor.TERRACOTTA_YELLOW)
             .strength(1)
             .sound(EnderscapeSoundTypes.CELESTIAL_CAP)
-            .isValidSpawn(Blocks::never)
+            .isValidSpawn(Blocks::never),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block CELESTIAL_BRICKS = registerWithItem(EnderscapeBlockItemIds.CELESTIAL_BRICKS, Block::new, Properties.of()
@@ -782,7 +799,7 @@ public class EnderscapeBlocks {
             .noCollision()
             .strength(0.5F)
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block CELESTIAL_FENCE = registerWithItem(EnderscapeBlockItemIds.CELESTIAL_FENCE, FenceBlock::new, Properties.ofLegacyCopy(CELESTIAL_PLANKS));
@@ -792,7 +809,7 @@ public class EnderscapeBlocks {
             .strength(3)
             .noOcclusion()
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block CELESTIAL_TRAPDOOR = registerWithItem(EnderscapeBlockItemIds.CELESTIAL_TRAPDOOR, properties -> new TrapDoorBlock(CELESTIAL_BLOCK_SET, properties), Properties.of()
@@ -856,7 +873,8 @@ public class EnderscapeBlocks {
             .noCollision()
             .instabreak()
             .sound(EnderscapeSoundTypes.CORRUPT_GROWTH)
-            .noOcclusion()
+            .noOcclusion(),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block BLINKLIGHT_VINES_BODY = register(EnderscapeBlockIds.BLINKLIGHT_VINES_BODY, BlinklightVinesBodyBlock::new, Properties.of()
@@ -898,7 +916,8 @@ public class EnderscapeBlocks {
             .noCollision()
             .instabreak()
             .randomTicks()
-            .sound(EnderscapeSoundTypes.CELESTIAL_CHANTERELLE)
+            .sound(EnderscapeSoundTypes.CELESTIAL_CHANTERELLE),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_MEDIUM)
     );
 
     public static final Block STRIPPED_MURUBLIGHT_STEM = registerWithItem(EnderscapeBlockItemIds.STRIPPED_MURUBLIGHT_STEM, RotatedPillarBlock::new, Properties.of()
@@ -915,7 +934,8 @@ public class EnderscapeBlocks {
             .mapColor(MapColor.TERRACOTTA_BLUE)
             .strength(1)
             .sound(EnderscapeSoundTypes.MURUBLIGHT_CAP)
-            .isValidSpawn(Blocks::never)
+            .isValidSpawn(Blocks::never),
+            new Item.Properties().compostable(ContextIntProviders.COMPOSTABLE_LOW)
     );
 
     public static final Block MURUBLIGHT_BRICKS = registerWithItem(EnderscapeBlockItemIds.MURUBLIGHT_BRICKS, Block::new, Properties.of()
@@ -945,7 +965,7 @@ public class EnderscapeBlocks {
             .noCollision()
             .strength(0.5F)
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block MURUBLIGHT_FENCE = registerWithItem(EnderscapeBlockItemIds.MURUBLIGHT_FENCE, FenceBlock::new, Properties.ofLegacyCopy(MURUBLIGHT_PLANKS));
@@ -956,7 +976,7 @@ public class EnderscapeBlocks {
             .strength(3)
             .noOcclusion()
             .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
+            .pushReaction(PushReaction.POPPED)
     );
 
     public static final Block MURUBLIGHT_TRAPDOOR = registerWithItem(EnderscapeBlockItemIds.MURUBLIGHT_TRAPDOOR, properties -> new TrapDoorBlock(MURUBLIGHT_BLOCK_SET, properties), Properties.of()
@@ -1024,12 +1044,16 @@ public class EnderscapeBlocks {
     }
 
     private static Block registerWithItem(BlockItemId id, Function<Properties, Block> function, Properties properties) {
+        return registerWithItem(id, function, properties, new Item.Properties());
+    }
+
+    private static Block registerWithItem(BlockItemId id, Function<Properties, Block> function, Properties properties, Item.Properties itemProperties) {
         ResourceKey<Block> key = id.block();
         Block block = function.apply(properties.setId(key));
 
         Registry.register(BuiltInRegistries.BLOCK, key, block);
 
-        EnderscapeItems.registerBlock(id.item(), block);
+        EnderscapeItems.registerBlock(id.item(), block, itemProperties);
 
         return block;
     }

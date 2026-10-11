@@ -10,10 +10,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.GrowingPlantBodyBlock;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -25,8 +22,6 @@ import net.penumbra.enderscape.util.BlockUtil;
 import java.util.Optional;
 
 public class BlinklightVinesBodyBlock extends GrowingPlantBodyBlock implements BlinklightVines {
-    public static final MapCodec<BlinklightVinesBodyBlock> CODEC = simpleCodec(BlinklightVinesBodyBlock::new);
-
     public BlinklightVinesBodyBlock(Properties settings) {
         super(settings, Direction.DOWN, SHAPE, false);
         registerDefaultState(defaultBlockState().setValue(getStageProperty(), 0));
@@ -47,7 +42,7 @@ public class BlinklightVinesBodyBlock extends GrowingPlantBodyBlock implements B
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos pos, BlockState state, BonemealSource source) {
         Optional<BlockPos> head = BlockUtil.getTopConnectedBlock(world, pos, state.getBlock(), growthDirection, getHeadBlock());
         if (head.isPresent()) {
             BlockPos headPos = head.get();
@@ -74,11 +69,6 @@ public class BlinklightVinesBodyBlock extends GrowingPlantBodyBlock implements B
         world.setBlock(pos, state, 3);
         playBlinkEffects(state, world, pos, random);
         if (getStage(state) > 0) world.scheduleTick(pos, this, getStageDuration(state));
-    }
-
-    @Override
-    protected MapCodec<? extends GrowingPlantBodyBlock> codec() {
-        return CODEC;
     }
 
     @Override

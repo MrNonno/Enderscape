@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:white_dye_from_wisp_flower"
+        "recipes": "enderscape:white_dye_from_wisp_flower"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

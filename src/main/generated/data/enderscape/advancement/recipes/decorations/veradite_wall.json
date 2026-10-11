@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veradite_wall"
+        "recipes": "enderscape:veradite_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

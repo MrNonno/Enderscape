@@ -3,17 +3,15 @@
   "criteria": {
     "in_stronghold": {
       "conditions": {
-        "player": [
-          {
-            "condition": "minecraft:entity_properties",
-            "entity": "this",
-            "predicate": {
-              "location": {
-                "structures": "enderscape:stronghold"
-              }
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "location": {
+              "structures": "enderscape:stronghold"
             }
           }
-        ]
+        }
       },
       "trigger": "minecraft:location"
     }

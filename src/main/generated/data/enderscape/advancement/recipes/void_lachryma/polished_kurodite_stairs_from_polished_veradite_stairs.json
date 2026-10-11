@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_kurodite_stairs_from_polished_veradite_stairs"
+        "recipes": "enderscape:polished_kurodite_stairs_from_polished_veradite_stairs"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

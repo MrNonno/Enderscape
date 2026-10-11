@@ -1,0 +1,13 @@
+{
+  "type": "enderscape:void_shale",
+  "targets": [
+    {
+      "state": "enderscape:void_shale",
+      "target": {
+        "block": "enderscape:mirestone",
+        "predicate_type": "minecraft:block_match"
+      }
+    }
+  ],
+  "terrain_depth": 5
+}

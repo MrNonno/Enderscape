@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_veradite_wall_from_veradite_stonecutting"
+        "recipes": "enderscape:polished_veradite_wall_from_veradite_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

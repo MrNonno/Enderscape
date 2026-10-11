@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veradite_slab"
+        "recipes": "enderscape:veradite_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

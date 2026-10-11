@@ -11,9 +11,10 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.penumbra.enderscape.Enderscape;
@@ -84,6 +85,8 @@ public class EnderscapePlacedFeatures {
     public static final ResourceKey<PlacedFeature> VOID_SHALE = register("void_shale");
     public static final ResourceKey<PlacedFeature> VOID_SHALE_BLOBS = register("void_shale_blobs");
     public static final ResourceKey<PlacedFeature> WISP_FLOWERS = register("wisp_flowers");
+    
+    private static final List<Block> AIR_LIST = List.of(AIR);
 
     public static void bootstrap(BootstrapContext<PlacedFeature> context) {
         registerVeiledWoodlands(context);
@@ -96,12 +99,12 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(UniformInt.of(2, 4)),
                 BlockPredicateFilter.forPredicate(
                         allOf(
-                                matchesBlocks(new Vec3i(0, 0, 1), AIR),
-                                matchesBlocks(new Vec3i(0, 0, -1), AIR),
-                                matchesBlocks(new Vec3i(1, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(-1, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 3, 1), AIR),
-                                matchesBlocks(new Vec3i(0, 4, 1), AIR)
+                                matchesBlocks(new Vec3i(0, 0, 1), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 0, -1), AIR_LIST),
+                                matchesBlocks(new Vec3i(1, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(-1, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 3, 1), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 4, 1), AIR_LIST)
                         )
                 ),
                 BiomeFilter.biome()
@@ -113,12 +116,12 @@ public class EnderscapePlacedFeatures {
                 RarityFilter.onAverageOnceEvery(4),
                 BlockPredicateFilter.forPredicate(
                         allOf(
-                                matchesBlocks(new Vec3i(0, 0, 1), AIR),
-                                matchesBlocks(new Vec3i(0, 0, -1), AIR),
-                                matchesBlocks(new Vec3i(1, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(-1, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 3, 1), AIR),
-                                matchesBlocks(new Vec3i(0, 4, 1), AIR)
+                                matchesBlocks(new Vec3i(0, 0, 1), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 0, -1), AIR_LIST),
+                                matchesBlocks(new Vec3i(1, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(-1, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 3, 1), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 4, 1), AIR_LIST)
                         )
                 ),
                 BiomeFilter.biome()
@@ -128,7 +131,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(UniformInt.of(1, 3)),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -136,7 +139,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(UniformInt.of(3, 20)),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -144,7 +147,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(UniformInt.of(1, 3)),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -152,7 +155,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(UniformInt.of(4, 8)),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -161,7 +164,7 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(UniformInt.of(1, 3)),
                 RarityFilter.onAverageOnceEvery(3),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -184,7 +187,7 @@ public class EnderscapePlacedFeatures {
                 CountPlacement.of(4),
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -193,7 +196,7 @@ public class EnderscapePlacedFeatures {
                 CountPlacement.of(9),
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -222,7 +225,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(10),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(EnderscapeBlocks.KURODITE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -230,7 +233,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(10),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(EnderscapeBlocks.VOID_SHALE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -238,7 +241,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(40),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(EnderscapeBlocks.VOID_SHALE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -311,7 +314,7 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 CountOnEveryLayerPlacement.of(UniformInt.of(96, 128)),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(VEILED_END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -319,9 +322,9 @@ public class EnderscapePlacedFeatures {
                 FULL_RANGE,
                 BiomeFilter.biome(),
                 CountOnEveryLayerPlacement.of(4),
-                RandomOffsetPlacement.ofTriangle(7, 3),
+                OffsetPlacement.ofTriangle(7, 3),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(VEILED_END_STONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, VEILED_TREES, get(context, EnderscapeConfiguredFeatures.VEILED_TREE),
@@ -330,7 +333,7 @@ public class EnderscapePlacedFeatures {
                 RarityFilter.onAverageOnceEvery(1),
                 BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
                         BlockPredicate.not(LithostitchedBlockPredicates.inStructure(4)),
-                        matchesBlocks(new Vec3i(0, 0, 0), AIR))
+                        matchesBlocks(new Vec3i(0, 0, 0), AIR_LIST))
                 ),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(VEILED_END_STONE), ONLY_IN_AIR_PREDICATE, 12),
                 BiomeFilter.biome()
@@ -343,13 +346,13 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(12),
                 BlockPredicateFilter.forPredicate(
                         allOf(
-                                matchesBlocks(new Vec3i(0, -1, 0), ALLURING_MAGNIA),
-                                matchesBlocks(new Vec3i(0, 1, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 0, 1), AIR),
-                                matchesBlocks(new Vec3i(0, 0, -1), AIR),
-                                matchesBlocks(new Vec3i(1, 0, 0), AIR),
-                                matchesBlocks(new Vec3i(-1, 0, 0), AIR)
+                                matchesBlocks(new Vec3i(0, -1, 0), List.of(ALLURING_MAGNIA)),
+                                matchesBlocks(new Vec3i(0, 1, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 0, 1), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 0, -1), AIR_LIST),
+                                matchesBlocks(new Vec3i(1, 0, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(-1, 0, 0), AIR_LIST)
                         )
                 ),
                 BiomeFilter.biome()
@@ -359,7 +362,7 @@ public class EnderscapePlacedFeatures {
                 ABOVE_DEPTHS_RANGE,
                 CountOnEveryLayerPlacement.of(18),
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(REPULSIVE_MAGNIA)), ONLY_IN_AIR_PREDICATE, 32),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -370,43 +373,43 @@ public class EnderscapePlacedFeatures {
                 BlockPredicateFilter.forPredicate(
                         allOf(
                                 BlockPredicate.not(LithostitchedBlockPredicates.inStructure(8, 22)),
-                                matchesBlocks(new Vec3i(0, 3, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(0, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(0, 5, -5), AIR),
-                                matchesBlocks(new Vec3i(3, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(3, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(3, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(5, 5, -5), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(-5, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(-5, 5, -5), AIR),
+                                matchesBlocks(new Vec3i(0, 3, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, -5), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, -5), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(-5, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(-5, 5, -5), AIR_LIST),
                                 not(anyOf(
-                                        matchesBlocks(new Vec3i(0, -3, 0), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, -5), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, -5), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(-5, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(-5, -5, -5), AIR)
+                                        matchesBlocks(new Vec3i(0, -3, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, -5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, -5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-5, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-5, -5, -5), AIR_LIST)
                                 ))
                         )
                 ),
@@ -419,7 +422,7 @@ public class EnderscapePlacedFeatures {
                         ONLY_IN_AIR_PREDICATE,
                         12
                 ),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
 
@@ -428,7 +431,7 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(REPULSIVE_MAGNIA)), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -437,7 +440,7 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(REPULSIVE_MAGNIA)), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -449,43 +452,43 @@ public class EnderscapePlacedFeatures {
                 BlockPredicateFilter.forPredicate(
                         allOf(
                                 BlockPredicate.not(LithostitchedBlockPredicates.inStructure(24)),
-                                matchesBlocks(new Vec3i(0, 3, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(0, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(0, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(0, 5, -5), AIR),
-                                matchesBlocks(new Vec3i(3, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(3, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(3, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(5, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(5, 5, -5), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, 0), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, 3), AIR),
-                                matchesBlocks(new Vec3i(-3, 5, -3), AIR),
-                                matchesBlocks(new Vec3i(-5, 5, 5), AIR),
-                                matchesBlocks(new Vec3i(-5, 5, -5), AIR),
+                                matchesBlocks(new Vec3i(0, 3, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(0, 5, -5), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(3, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(5, 5, -5), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, 0), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, 3), AIR_LIST),
+                                matchesBlocks(new Vec3i(-3, 5, -3), AIR_LIST),
+                                matchesBlocks(new Vec3i(-5, 5, 5), AIR_LIST),
+                                matchesBlocks(new Vec3i(-5, 5, -5), AIR_LIST),
                                 not(anyOf(
-                                        matchesBlocks(new Vec3i(0, -3, 0), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(0, -5, -5), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(3, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(5, -5, -5), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, 0), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, 3), AIR),
-                                        matchesBlocks(new Vec3i(-3, -5, -3), AIR),
-                                        matchesBlocks(new Vec3i(-5, -5, 5), AIR),
-                                        matchesBlocks(new Vec3i(-5, -5, -5), AIR)
+                                        matchesBlocks(new Vec3i(0, -3, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(0, -5, -5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(3, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(5, -5, -5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, 0), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, 3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-3, -5, -3), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-5, -5, 5), AIR_LIST),
+                                        matchesBlocks(new Vec3i(-5, -5, -5), AIR_LIST)
                                 ))
                         )
                 ),
@@ -498,7 +501,7 @@ public class EnderscapePlacedFeatures {
                         ONLY_IN_AIR_PREDICATE,
                         12
                 ),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                OffsetPlacement.vertical(ConstantInt.of(1)),
                 BiomeFilter.biome()
         );
     }
@@ -510,7 +513,7 @@ public class EnderscapePlacedFeatures {
                 BiomeFilter.biome(),
                 InSquarePlacement.spread(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(CELESTIAL_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, CELESTIAL_GROVE_VEGETATION, get(context, EnderscapeConfiguredFeatures.CELESTIAL_GROVE_VEGETATION),
@@ -518,7 +521,7 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(12),
                 BiomeFilter.biome(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(CELESTIAL_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, CELESTIAL_GROWTH, get(context, EnderscapeConfiguredFeatures.CELESTIAL_GROWTH),
@@ -526,7 +529,7 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(60),
                 BiomeFilter.biome(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(CELESTIAL_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, LARGE_CELESTIAL_CHANTERELLES, get(context, EnderscapeConfiguredFeatures.LARGE_CELESTIAL_CHANTERELLE),
@@ -536,10 +539,10 @@ public class EnderscapePlacedFeatures {
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(CELESTIAL_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
                 BlockPredicateFilter.forPredicate(BlockPredicate.allOf(
                         BlockPredicate.not(LithostitchedBlockPredicates.inStructure(8, 36)),
-                        matchesBlocks(new Vec3i(0, 1, 0), AIR)
+                        matchesBlocks(new Vec3i(0, 1, 0), AIR_LIST)
                 )),
-                BlockPredicateFilter.forPredicate(matchesBlocks(new Vec3i(0, 1, 0), AIR)),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                BlockPredicateFilter.forPredicate(matchesBlocks(new Vec3i(0, 1, 0), AIR_LIST)),
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, UNCOMMON_MURUBLIGHT_BRACKET, get(context, EnderscapeConfiguredFeatures.MURUBLIGHT_BRACKET),
@@ -557,7 +560,7 @@ public class EnderscapePlacedFeatures {
                 BiomeFilter.biome(),
                 BlockPredicateFilter.forPredicate(BlockPredicate.not(LithostitchedBlockPredicates.inStructure(4))),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(MIRESTONE), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, KURODITE, get(context, EnderscapeConfiguredFeatures.KURODITE),
@@ -574,7 +577,7 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH)), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -583,7 +586,7 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(6),
                 BiomeFilter.biome(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, DOWNWARD_CORRUPT_GROWTH, get(context, EnderscapeConfiguredFeatures.DOWNWARD_CORRUPT_GROWTH),
@@ -592,7 +595,7 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH)), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -603,7 +606,7 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH)), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
 
@@ -612,7 +615,7 @@ public class EnderscapePlacedFeatures {
                 CountOnEveryLayerPlacement.of(70),
                 BiomeFilter.biome(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, UPWARD_TALL_CORRUPT_GROWTH, get(context, EnderscapeConfiguredFeatures.UPWARD_TALL_CORRUPT_GROWTH),
@@ -621,7 +624,7 @@ public class EnderscapePlacedFeatures {
                 NoiseBasedCountPlacement.of(16, 4, -0.36),
                 BiomeFilter.biome(),
                 EnvironmentScanPlacement.scanningFor(Direction.DOWN, matchesBlocks(MIRESTONE, CORRUPT_OVERGROWTH), ONLY_IN_AIR_PREDICATE, 12),
-                RandomOffsetPlacement.vertical(ConstantInt.of(1))
+                OffsetPlacement.vertical(ConstantInt.of(1))
         );
 
         PlacementUtils.register(context, LARGE_MURUBLIGHT_CHANTERELLES, get(context, EnderscapeConfiguredFeatures.DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE),
@@ -630,14 +633,14 @@ public class EnderscapePlacedFeatures {
                 InSquarePlacement.spread(),
                 PlacementUtils.RANGE_BOTTOM_TO_MAX_TERRAIN_HEIGHT,
                 EnvironmentScanPlacement.scanningFor(Direction.UP, allOf(hasSturdyFace(Direction.DOWN), matchesBlocks(CORRUPT_OVERGROWTH)), ONLY_IN_AIR_PREDICATE, 12),
-                BlockPredicateFilter.forPredicate(matchesBlocks(new Vec3i(0, -1, 0), AIR)),
-                RandomOffsetPlacement.vertical(ConstantInt.of(-1)),
+                BlockPredicateFilter.forPredicate(matchesBlocks(new Vec3i(0, -1, 0), AIR_LIST)),
+                OffsetPlacement.vertical(ConstantInt.of(-1)),
                 BiomeFilter.biome()
         );
     }
 
-    private static Holder.Reference<ConfiguredFeature<?, ?>> get(BootstrapContext<PlacedFeature> context, ResourceKey<ConfiguredFeature<?, ?>> key) {
-        return context.lookup(Registries.CONFIGURED_FEATURE).getOrThrow(key);
+    private static Holder.Reference<Feature> get(BootstrapContext<PlacedFeature> context, ResourceKey<Feature> key) {
+        return context.lookup(Registries.FEATURE).getOrThrow(key);
     }
 
     private static ResourceKey<PlacedFeature> register(String name) {

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:chorus_cake_roll"
+        "recipes": "enderscape:chorus_cake_roll"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

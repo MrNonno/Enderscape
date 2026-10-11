@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:rustle_silk_from_murublight_cap"
+        "recipes": "enderscape:rustle_silk_from_murublight_cap"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

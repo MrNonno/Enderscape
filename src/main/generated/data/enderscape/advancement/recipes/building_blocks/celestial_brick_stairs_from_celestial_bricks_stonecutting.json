@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:celestial_brick_stairs_from_celestial_bricks_stonecutting"
+        "recipes": "enderscape:celestial_brick_stairs_from_celestial_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

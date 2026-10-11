@@ -2,8 +2,7 @@ package net.penumbra.enderscape.registry.structure.endcity;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
-import dev.worldgen.lithostitched.worldgen.poolelement.legacy.GuaranteedPoolElement;
-import dev.worldgen.lithostitched.worldgen.poolelement.legacy.LimitedPoolElement;
+import dev.worldgen.lithostitched.impl.worldgen.poolelement.DelegatingPoolElement;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
@@ -68,10 +67,11 @@ public class EndCityTemplatePools extends EnderscapeTemplatePools {
                 new StructureTemplatePool(
                         emptyFallback,
                         ImmutableList.of(Pair.of(
-                                (projection) -> new GuaranteedPoolElement(
+                                (projection) -> new DelegatingPoolElement(
                                         StructurePoolElement.single("enderscape:end_city/ship", pottedPlants).apply(projection),
                                         Optional.empty(),
-                                        1
+                                        Optional.of(1),
+                                        Optional.empty()
                                 ), 1)
                         ),
                         StructureTemplatePool.Projection.RIGID
@@ -132,9 +132,9 @@ public class EndCityTemplatePools extends EnderscapeTemplatePools {
                                 Pair.of(StructurePoolElement.single("enderscape:end_city/house/two_floor_vault_and_spawner", pottedPlants), 2),
                                 Pair.of(StructurePoolElement.single("enderscape:end_city/house/two_floor_vault_into_tower", pottedPlants), 4),
                                 Pair.of(
-                                        (projection) -> new LimitedPoolElement(
+                                        (projection) -> new DelegatingPoolElement(
                                                 StructurePoolElement.single("enderscape:end_city/walkway/ship_archway", pottedPlants).apply(projection),
-                                                Optional.of(10), 1
+                                                Optional.of(10), Optional.empty(), Optional.of(1)
                                         ), 8
                                 ),
                                 Pair.of(StructurePoolElement.single("enderscape:end_city/walkway/unique/arena_corrupt_garden_end", pottedPlants), 3)

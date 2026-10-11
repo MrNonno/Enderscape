@@ -11,15 +11,8 @@ import net.minecraft.world.phys.Vec3;
 import net.penumbra.enderscape.registry.particle.EnderscapeParticles;
 
 public class VoidTorchBlock extends BaseTorchBlock implements HasMagniaPowerSignal {
-    public static final MapCodec<VoidTorchBlock> CODEC = simpleCodec(VoidTorchBlock::new);
-
     public VoidTorchBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<? extends VoidTorchBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -4,6 +4,10 @@
       {
         "namespace": "minecraft",
         "path": "recipe/end_stone_bricks\\.json"
+      },
+      {
+        "namespace": "minecraft",
+        "path": "advancement/recipes/building_blocks/end_stone_bricks\\.json"
       }
     ]
   },
@@ -11,10 +15,7 @@
     "description": {
       "translate": "pack.enderscape.fix_vanilla_recipes.description"
     },
-    "max_format": 107,
-    "min_format": [
-      107,
-      1
-    ]
+    "max_format": 121,
+    "min_format": 121
   }
 }

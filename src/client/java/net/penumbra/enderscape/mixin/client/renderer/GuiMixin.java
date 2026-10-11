@@ -59,7 +59,7 @@ public abstract class GuiMixin {
         }
     }
 
-    @ModifyArgs(method = "extractVehicleHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 0))
+    @ModifyArgs(method = "extractVehicleHealth", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;blitSprite(Lcom/mojang/renderpearl/api/pipeline/RenderPipeline;Lnet/minecraft/resources/Identifier;IIII)V", ordinal = 0))
     private void Enderscape$copyVehicleHeartPoints(Args args) {
         if (args.get(1).equals(HEART_VEHICLE_CONTAINER_SPRITE)) {
             variables.vehicleHearts.add(

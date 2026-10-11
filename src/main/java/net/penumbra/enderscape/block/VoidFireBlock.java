@@ -26,12 +26,6 @@ import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 import static net.penumbra.enderscape.manager.VoidManager.*;
 
 public class VoidFireBlock extends BaseFireBlock {
-    public static final MapCodec<VoidFireBlock> CODEC = simpleCodec(VoidFireBlock::new);
-
-    @Override
-    public MapCodec<VoidFireBlock> codec() {
-        return CODEC;
-    }
 
     public VoidFireBlock(final BlockBehaviour.Properties properties) {
         super(properties, 1.0F);

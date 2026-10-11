@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_hyphae"
+        "recipes": "enderscape:murublight_hyphae"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

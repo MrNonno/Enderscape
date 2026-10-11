@@ -1,13 +1,7 @@
 package net.penumbra.enderscape.registry.renderer;
 
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
-import com.mojang.blaze3d.pipeline.DepthStencilState;
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.platform.BlendFactor;
-import com.mojang.blaze3d.platform.CompareOp;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.renderpearl.api.pipeline.*;
 import net.minecraft.client.renderer.BindGroupLayouts;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.penumbra.enderscape.Enderscape;
@@ -23,6 +17,7 @@ public class EnderscapeRenderPipelines {
                     .withFragmentShader(Enderscape.id("enderscape/improved_lightmap"))
                     .withBindGroupLayout(BindGroupLayouts.LIGHTMAP_INFO)
                     .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
+                    .withColorTargetState(ColorTargetState.DEFAULT)
                     .build()
     );
 
@@ -33,6 +28,7 @@ public class EnderscapeRenderPipelines {
                     .withFragmentShader(Enderscape.id("enderscape/midnight_lightmap"))
                     .withBindGroupLayout(BindGroupLayouts.LIGHTMAP_INFO)
                     .withPrimitiveTopology(PrimitiveTopology.TRIANGLES)
+                    .withColorTargetState(ColorTargetState.DEFAULT)
                     .build()
     );
 
@@ -49,7 +45,8 @@ public class EnderscapeRenderPipelines {
                     .withFragmentShader("core/position_tex")
                     .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
                     .withDepthStencilState(new DepthStencilState(CompareOp.ALWAYS_PASS, false))
-                    .withBindGroupLayout(BindGroupLayouts.MATRICES_PROJECTION)
+                    .withBindGroupLayout(BindGroupLayouts.PROJECTION)
+                    .withBindGroupLayout(BindGroupLayouts.DYNAMIC_TRANSFORMS)
                     .withBindGroupLayout(BindGroupLayouts.SAMPLER0)
                     .withVertexBinding(0, DefaultVertexFormat.POSITION_TEX)
                     .withPrimitiveTopology(PrimitiveTopology.QUADS)

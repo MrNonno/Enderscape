@@ -1,9 +1,10 @@
 package net.penumbra.enderscape.feature;
 
 import com.google.common.base.Predicate;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -11,35 +12,56 @@ import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
+public record VoidLakeFeature(
+        Holder<BlockStateProvider> fluid,
+        Holder<BlockStateProvider> barrier,
+        IntProvider size,
+        IntProvider barrierRadius,
+        IntProvider barrierPillarHeight,
+        FloatProvider barrierPlacementChance
+) implements Feature {
+    public static final MapCodec<VoidLakeFeature> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    BlockStateProvider.CODEC.fieldOf("fluid").forGetter(VoidLakeFeature::fluid),
+                    BlockStateProvider.CODEC.fieldOf("barrier").forGetter(VoidLakeFeature::barrier),
+                    IntProviders.CODEC.fieldOf("size").forGetter(VoidLakeFeature::size),
+                    IntProviders.CODEC.fieldOf("barrier_radius").forGetter(VoidLakeFeature::barrierRadius),
+                    IntProviders.CODEC.fieldOf("barrier_pillar_height").forGetter(VoidLakeFeature::barrierPillarHeight),
+                    FloatProviders.CODEC.fieldOf("barrier_placement_chance").forGetter(VoidLakeFeature::barrierPlacementChance)
+            ).apply(instance, VoidLakeFeature::new)
+    );
+
+    public static final VoidLakeFeature DEFAULT = new VoidLakeFeature(
+            BlockStateProvider.holderOf(EnderscapeBlocks.VOID_LACHRYMA.defaultBlockState()),
+            BlockStateProvider.holderOf(EnderscapeBlocks.VOID_SHALE.defaultBlockState()),
+            UniformInt.of(5, 9),
+            ConstantInt.of(4),
+            TrapezoidInt.of(0, 4, 0),
+            UniformFloat.of(0.25F, 0.5F)
+    );
+
     private static final BlockState AIR = Blocks.CAVE_AIR.defaultBlockState();
 
-    public VoidLakeFeature(final Codec<Config> codec) {
-        super(codec);
-    }
-
     @Override
-    public boolean place(final FeaturePlaceContext<Config> context) {
-        BlockPos origin = context.origin();
+    public boolean place(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
 
-        if (origin.getY() <= context.level().getMinY() + 4) {
+        if (origin.getY() <= level.getMinY() + 4) {
             return false;
         } else {
-            origin = origin.offset(-8, -4, -8);
-            boolean[] grid = makeGrid(context);
+            var newOrigin = origin.offset(-8, -4, -8);
+            boolean[] grid = makeGrid(level, chunkGenerator, random, origin);
 
-            if (canPlace(origin, context, grid)) {
-                placeFluidOrAir(origin, context, grid);
-                placeBarrier(origin, context, grid);
+            if (canPlace(origin, level, chunkGenerator, random, origin, grid)) {
+                placeFluidOrAir(newOrigin, level, chunkGenerator, random, origin, grid);
+                placeBarrier(newOrigin, level, chunkGenerator, random, origin, grid);
 
                 return true;
             } else {
@@ -48,12 +70,9 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
         }
     }
 
-    private boolean [] makeGrid(FeaturePlaceContext<Config> context) {
-        RandomSource random = context.random();
-        Config config = context.config();
-
+    private boolean [] makeGrid(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin) {
         boolean[] grid = new boolean[2048];
-        int size = config.size().sample(random);
+        int size = this.size().sample(random);
 
         for (int i = 0; i < size; i++) {
             double xr = random.nextDouble() * 6.0 + 3.0;
@@ -82,12 +101,8 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
         return grid;
     }
 
-    private boolean canPlace(BlockPos origin, FeaturePlaceContext<Config> context, boolean[] grid) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        Config config = context.config();
-
-        BlockState fluid = config.fluid().getState(level, random, origin);
+    private boolean canPlace(BlockPos origin, WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos featureOrigin, boolean[] grid) {
+        BlockState fluid = this.fluid().value().getState(level, random, origin);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -116,12 +131,8 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
         return true;
     }
 
-    private void placeFluidOrAir(BlockPos origin, FeaturePlaceContext<Config> context, boolean[] grid) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        Config config = context.config();
-
-        BlockState fluid = config.fluid().getState(level, random, origin);
+    private void placeFluidOrAir(BlockPos origin, WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos baseOrigin, boolean[] grid) {
+        BlockState fluid = this.fluid().value().getState(level, random, origin);
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -144,11 +155,7 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
         }
     }
 
-    private void placeBarrier(BlockPos origin, FeaturePlaceContext<Config> context, boolean[] grid) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        Config config = context.config();
-
+    private void placeBarrier(BlockPos origin, WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos baseOrigin, boolean[] grid) {
         List<BarrierPart> parts = new ArrayList<>();
 
         for (int x = 0; x < 16; x++) {
@@ -164,14 +171,14 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
                                     || y > 0 && grid[(x * 16 + z) * 8 + (y - 1)]
                     );
                     if (check && (y < 4 || random.nextInt(2) != 0)) {
-                        int radius = config.barrierRadius().sample(random);
+                        int radius = this.barrierRadius().sample(random);
 
                         for (int xr = -radius; xr <= radius; xr++) {
                             for (int zr = -radius; zr <= radius; zr++) {
                                 BlockPos offset = origin.offset(x + xr, y, z + zr);
                                 float distance = Mth.sqrt(xr * xr + zr * zr);
 
-                                if (distance <= radius && random.nextFloat() <= config.barrierPlacementChance().sample(random) && placeBarrierBlock(level, offset, config.barrier().getState(level, random, origin), (state) -> state.isSolid())) {
+                                if (distance <= radius && random.nextFloat() <= this.barrierPlacementChance().sample(random) && placeBarrierBlock(level, offset, this.barrier().value().getState(level, random, origin), (state) -> state.isSolid())) {
                                     parts.add(new BarrierPart(offset, radius, distance));
                                 }
                             }
@@ -181,14 +188,10 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
             }
         }
 
-        placeBarrierPillars(context, parts);
+        placeBarrierPillars(level, chunkGenerator, random, baseOrigin, parts);
     }
 
-    private void placeBarrierPillars(FeaturePlaceContext<Config> context, List<BarrierPart> parts) {
-        WorldGenLevel level = context.level();
-        RandomSource random = context.random();
-        Config config = context.config();
-
+    private void placeBarrierPillars(WorldGenLevel level, ChunkGenerator chunkGenerator, RandomSource random, BlockPos origin, List<BarrierPart> parts) {
         parts.forEach((part) -> {
             BlockPos position = part.position();
 
@@ -198,12 +201,12 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
             double normalized = distance / (radius * Mth.sqrt(2));
             double multiplier = Mth.cos(normalized * Mth.HALF_PI);
 
-            int rimHeight = (int) (config.barrierPillarHeight().sample(random) * multiplier);
+            int rimHeight = (int) (this.barrierPillarHeight().sample(random) * multiplier);
 
             for (int i = 1; i < rimHeight; i++) {
                 BlockPos above = position.above(i);
 
-                if (!placeBarrierBlock(level, above, config.barrier().getState(level, random, above), (state) -> !state.isSolid())) {
+                if (!placeBarrierBlock(level, above, this.barrier().value().getState(level, random, above), (state) -> !state.isSolid())) {
                     break;
                 }
             }
@@ -226,35 +229,11 @@ public class VoidLakeFeature extends Feature<VoidLakeFeature.Config> {
         return !state.is(BlockTags.FEATURES_CANNOT_REPLACE);
     }
 
-    private record BarrierPart(BlockPos position, int radius, float distance) {
+    @Override
+    public MapCodec<? extends Feature> codec() {
+        return CODEC;
     }
 
-    public record Config(
-            BlockStateProvider fluid,
-            BlockStateProvider barrier,
-            IntProvider size,
-            IntProvider barrierRadius,
-            IntProvider barrierPillarHeight,
-            FloatProvider barrierPlacementChance
-    ) implements FeatureConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(
-                instance -> instance.group(
-                        BlockStateProvider.CODEC.fieldOf("fluid").forGetter(Config::fluid),
-                        BlockStateProvider.CODEC.fieldOf("barrier").forGetter(Config::barrier),
-                        IntProviders.CODEC.fieldOf("size").forGetter(Config::size),
-                        IntProviders.CODEC.fieldOf("barrier_radius").forGetter(Config::barrierRadius),
-                        IntProviders.CODEC.fieldOf("barrier_pillar_height").forGetter(Config::barrierPillarHeight),
-                        FloatProviders.CODEC.fieldOf("barrier_placement_chance").forGetter(Config::barrierPlacementChance)
-                ).apply(instance, Config::new)
-        );
-
-        public static final Config DEFAULT = new Config(
-                BlockStateProvider.simple(EnderscapeBlocks.VOID_LACHRYMA.defaultBlockState()),
-                BlockStateProvider.simple(EnderscapeBlocks.VOID_SHALE.defaultBlockState()),
-                UniformInt.of(5, 9),
-                ConstantInt.of(4),
-                TrapezoidInt.of(0, 4, 0),
-                UniformFloat.of(0.25F, 0.5F)
-        );
+    private record BarrierPart(BlockPos position, int radius, float distance) {
     }
 }

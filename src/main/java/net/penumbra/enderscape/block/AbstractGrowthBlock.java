@@ -8,6 +8,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -77,7 +78,7 @@ public abstract class AbstractGrowthBlock extends DirectionalVegetationBlock imp
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader world, BlockPos origin, BlockState state) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos origin, BlockState state, BonemealSource source) {
         return isTopOrSinglePart(state) && world.getBlockState(origin.relative(getFacing(state))).isAir();
     }
 
@@ -86,12 +87,12 @@ public abstract class AbstractGrowthBlock extends DirectionalVegetationBlock imp
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state, BonemealSource source) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos origin, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos origin, BlockState state, BonemealSource source) {
         world.setBlockAndUpdate(origin.relative(getFacing(state)), state);
     }
 
@@ -103,13 +104,13 @@ public abstract class AbstractGrowthBlock extends DirectionalVegetationBlock imp
             BlockPos offset = pos.relative(direction);
 
             if (!world.getBlockState(pos).is(state.getBlock()) && world.isEmptyBlock(offset) && state.canSurvive(world, offset)) {
-                generate(world, offset, random, new GrowthFeature.Config(state, ConstantInt.of(1), UniformInt.of(1, 2), 0.5F));
+                generate(world, offset, random, new GrowthFeature(state, ConstantInt.of(1), UniformInt.of(1, 2), 0.5F));
                 i++;
             }
         }
     }
 
-    public static boolean generate(LevelAccessor world, BlockPos origin, RandomSource random, GrowthFeature.Config config) {
+    public static boolean generate(LevelAccessor world, BlockPos origin, RandomSource random, GrowthFeature config) {
         BlockState state = config.state();
         Direction direction = state.getValue(AbstractGrowthBlock.FACING);
 

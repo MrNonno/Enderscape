@@ -9,11 +9,14 @@ import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.triggers.*;
 import net.minecraft.advancements.predicates.*;
 import net.minecraft.advancements.predicates.entity.*;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.EmptyTagLookupWrapper;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -23,6 +26,7 @@ import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -82,17 +86,16 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
         Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
                 .display(
-                        CELESTIAL_CAP,
+                        CELESTIAL_CAP.asItem(),
                         Component.translatable("advancement.enderscape.fall_onto_chanterelle_cap"),
                         Component.translatable("advancement.enderscape.fall_onto_chanterelle_cap.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
                 .addCriterion(
                         "fall_onto_cap",
                         FALL_FROM_HEIGHT.createCriterion(new DistanceTrigger.TriggerInstance(
-                                Optional.of(ContextAwarePredicate.create(
+                                Optional.of(Holder.direct(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder
@@ -105,7 +108,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 Optional.of(DistancePredicate.vertical(MinMaxBounds.Doubles.atLeast(50))))
                         )
                 )
-                .save(consumer, Enderscape.id("fall_onto_chanterelle_cap").toString());
+                .save(consumer, Enderscape.id("fall_onto_chanterelle_cap"));
 
         AdvancementHolder rubbleShieldDash = Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
@@ -113,7 +116,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         RUBBLE_SHIELD,
                         Component.translatable("advancement.enderscape.rubble_shield_dash"),
                         Component.translatable("advancement.enderscape.rubble_shield_dash.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -125,7 +127,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 Optional.empty()
                         ))
                 )
-                .save(consumer, Enderscape.id("rubble_shield_dash").toString());
+                .save(consumer, Enderscape.id("rubble_shield_dash"));
 
         AdvancementHolder rustleBucket = Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
@@ -133,7 +135,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         RUSTLE_BUCKET,
                         Component.translatable("advancement.enderscape.rustle_bucket"),
                         Component.translatable("advancement.enderscape.rustle_bucket.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -145,7 +146,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 Optional.of(EntityPredicate.wrap(EntityPredicate.Builder.entity().of(entities, EnderscapeEntities.RUSTLE)))
                         )
                 )
-                .save(consumer, Enderscape.id("rustle_bucket").toString());
+                .save(consumer, Enderscape.id("rustle_bucket"));
 
         AdvancementHolder bliss = Advancement.Builder.advancement()
                 .parent(rustleBucket)
@@ -153,12 +154,11 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         MUSIC_DISC_BLISS,
                         Component.translatable("advancement.enderscape.music_disc_bliss"),
                         Component.translatable("advancement.enderscape.music_disc_bliss.description"),
-                        null,
                         AdvancementType.GOAL,
                         true, true, false
                 )
                 .addCriterion("obtained", InventoryChangeTrigger.TriggerInstance.hasItems(MUSIC_DISC_BLISS))
-                .save(consumer, Enderscape.id("music_disc_bliss").toString());
+                .save(consumer, Enderscape.id("music_disc_bliss"));
 
         AdvancementHolder unlockEndVault = Advancement.Builder.advancement()
                 .parent(findEndCityKey.identifier())
@@ -166,7 +166,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         END_CITY_KEY,
                         Component.translatable("advancement.enderscape.unlock_end_vault"),
                         Component.translatable("advancement.enderscape.unlock_end_vault.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, true
                 )
@@ -177,14 +176,13 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 ItemPredicate.Builder.item().of(items, END_CITY_KEY)
                         )
                 )
-                .save(consumer, Enderscape.id("unlock_end_vault").toString());
+                .save(consumer, Enderscape.id("unlock_end_vault"));
 
         Advancement.Builder exploreEnd = Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
                 .display(SHADOLINE_BOOTS,
                         Component.translatable("advancement.enderscape.explore_end"),
                         Component.translatable("advancement.enderscape.explore_end.description"),
-                        null,
                         AdvancementType.CHALLENGE,
                         true, true, false)
                 .rewards(AdvancementRewards.Builder.experience(1000));
@@ -196,7 +194,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                 )
         );
 
-        exploreEnd.save(consumer, Enderscape.id("explore_end").toString());
+        exploreEnd.save(consumer, Enderscape.id("explore_end"));
 
         AdvancementHolder obtainNebulite = Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
@@ -204,12 +202,13 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         NEBULITE,
                         Component.translatable("advancement.enderscape.obtain_nebulite"),
                         Component.translatable("advancement.enderscape.obtain_nebulite.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
-                .addCriterion("obtained", RecipeCraftedTrigger.TriggerInstance.craftedItem(ResourceKey.create(Registries.RECIPE, Enderscape.id("nebulite_from_shards"))))
-                .save(consumer, Enderscape.id("craft_nebulite").toString());
+                .addCriterion("obtained", RecipeCraftedTrigger.TriggerInstance.craftedItem(
+                        HolderSet.direct(fakeRecipe(provider, ResourceKey.create(Registries.RECIPE, Enderscape.id("nebulite_from_shards")))))
+                )
+                .save(consumer, Enderscape.id("craft_nebulite"));
 
         AdvancementHolder bottleDriftJelly = Advancement.Builder.advancement()
                 .parent(endGatewayKey.identifier())
@@ -217,12 +216,11 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         DRIFT_JELLY_BOTTLE,
                         Component.translatable("advancement.enderscape.bottle_drift_jelly"),
                         Component.translatable("advancement.enderscape.bottle_drift_jelly.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
                 .addCriterion("obtained", InventoryChangeTrigger.TriggerInstance.hasItems(DRIFT_JELLY_BOTTLE))
-                .save(consumer, Enderscape.id("bottle_drift_jelly").toString());
+                .save(consumer, Enderscape.id("bottle_drift_jelly"));
 
         AdvancementHolder driftLeggings = Advancement.Builder.advancement()
                 .parent(bottleDriftJelly)
@@ -230,12 +228,11 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         DRIFT_LEGGINGS,
                         Component.translatable("advancement.enderscape.drift_leggings"),
                         Component.translatable("advancement.enderscape.drift_leggings.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
                 .addCriterion("obtained", InventoryChangeTrigger.TriggerInstance.hasItems(DRIFT_LEGGINGS))
-                .save(consumer, Enderscape.id("drift_leggings").toString());
+                .save(consumer, Enderscape.id("drift_leggings"));
 
         AdvancementHolder glideOntoDrifter = Advancement.Builder.advancement()
                 .parent(driftLeggings)
@@ -243,7 +240,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         new ItemStackTemplate(FIREWORK_ROCKET),
                         Component.translatable("advancement.enderscape.glide_onto_drifter"),
                         Component.translatable("advancement.enderscape.glide_onto_drifter.description"),
-                        null,
                         AdvancementType.CHALLENGE,
                         true,
                         true,
@@ -252,7 +248,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                 .rewards(AdvancementRewards.Builder.experience(100))
                 .addCriterion("bounced", BOUNCE_ON_DRIFTER.createCriterion(new BounceOnDrifterCriterion.Conditions(
                         Optional.of(
-                                ContextAwarePredicate.create(
+                                Holder.direct(
                                         LootItemEntityPropertyCondition.hasProperties(
                                                 LootContext.EntityTarget.THIS,
                                                 EntityPredicate.Builder
@@ -264,7 +260,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         ),
                         Optional.empty()
                 )))
-                .save(consumer, Enderscape.id("glide_onto_drifter").toString());
+                .save(consumer, Enderscape.id("glide_onto_drifter"));
 
         Optional<ItemPredicate> mirrorItemPredicate = Optional.of(ItemPredicate.Builder.item().of(items, MIRROR).build());
 
@@ -274,7 +270,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         mirrorTemplate(null),
                         Component.translatable("advancement.enderscape.mirror_teleport"),
                         Component.translatable("advancement.enderscape.mirror_teleport.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -286,7 +281,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         Optional.empty(),
                         Optional.empty()
                 )))
-                .save(consumer, Enderscape.id("mirror_teleport").toString());
+                .save(consumer, Enderscape.id("mirror_teleport"));
 
         AdvancementHolder longDistance = Advancement.Builder.advancement()
                 .parent(mirrorTeleport)
@@ -294,7 +289,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         mirrorTemplate(DyeColor.MAGENTA),
                         Component.translatable("advancement.enderscape.long_distance"),
                         Component.translatable("advancement.enderscape.long_distance.description"),
-                        null,
                         AdvancementType.CHALLENGE,
                         true, true, false
                 )
@@ -309,7 +303,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         ),
                         Optional.of(false)
                 )))
-                .save(consumer, Enderscape.id("long_distance").toString());
+                .save(consumer, Enderscape.id("long_distance"));
 
         Advancement.Builder.advancement()
                 .parent(longDistance)
@@ -317,7 +311,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         mirrorTemplate(DyeColor.PINK),
                         Component.translatable("advancement.enderscape.transdimensional"),
                         Component.translatable("advancement.enderscape.transdimensional.description"),
-                        null,
                         AdvancementType.CHALLENGE,
                         true, true, false
                 )
@@ -330,7 +323,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         Optional.empty(),
                         Optional.of(true)
                 )))
-                .save(consumer, Enderscape.id("transdimensional").toString());
+                .save(consumer, Enderscape.id("transdimensional"));
 
         AdvancementHolder pullItemWithAttractor = Advancement.Builder.advancement()
                 .parent(obtainNebulite)
@@ -338,7 +331,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         magniaAttractorTemplate(),
                         Component.translatable("advancement.enderscape.pull_item_with_attractor"),
                         Component.translatable("advancement.enderscape.pull_item_with_attractor.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -347,7 +339,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         Optional.of(EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(entities, EntityTypes.ITEM)).build()),
                         Optional.empty()
                 )))
-                .save(consumer, Enderscape.id("pull_item_with_attractor").toString());
+                .save(consumer, Enderscape.id("pull_item_with_attractor"));
 
         AdvancementHolder stunAttack = Advancement.Builder.advancement()
                 .parent(obtainNebulite)
@@ -355,7 +347,6 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                         daggerTemplate(),
                         Component.translatable("advancement.enderscape.stun_attack"),
                         Component.translatable("advancement.enderscape.stun_attack.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -369,15 +360,14 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 ))
                         ))
                 )
-                .save(consumer, Enderscape.id("stun_attack").toString());
+                .save(consumer, Enderscape.id("stun_attack"));
 
         AdvancementHolder activateEndHaven = Advancement.Builder.advancement()
                 .parent(obtainNebulite)
                 .display(
-                        DUSK_PURPUR_BLOCK,
+                        DUSK_PURPUR_BLOCK.asItem(),
                         Component.translatable("advancement.enderscape.activate_end_haven"),
                         Component.translatable("advancement.enderscape.activate_end_haven.description"),
-                        null,
                         AdvancementType.TASK,
                         true, true, false
                 )
@@ -392,7 +382,7 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
                                 ItemPredicate.Builder.item()
                         )
                 )
-                .save(consumer, Enderscape.id("activate_end_haven").toString());
+                .save(consumer, Enderscape.id("activate_end_haven"));
 
 //        Advancement.Builder hearMagniaRadioSongs = Advancement.Builder.advancement()
 //                .parent(endGatewayKey.identifier())
@@ -411,7 +401,12 @@ public class EnderscapeAdvancementProvider extends FabricAdvancementProvider {
 //                )
 //        );
 //
-//        hearMagniaRadioSongs.save(consumer, Enderscape.id("hear_magnia_radio_songs").toString());
+//        hearMagniaRadioSongs.save(consumer, Enderscape.id("hear_magnia_radio_songs"));
+    }
+
+    private Holder<Recipe<?>> fakeRecipe(HolderGetter.Provider provider, ResourceKey<Recipe<?>> recipeResourceKey) {
+        var recipe = provider.lookupOrThrow(Registries.RECIPE);
+        return Holder.Reference.createStandAlone(recipe instanceof EmptyTagLookupWrapper<Recipe<?>> wrapper ? wrapper.parent() : recipe, recipeResourceKey);
     }
 
     private static ItemStackTemplate mirrorTemplate(DyeColor color) {

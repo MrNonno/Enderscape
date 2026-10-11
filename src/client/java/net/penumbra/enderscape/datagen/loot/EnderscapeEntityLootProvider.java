@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.SimpleFabricLootTableSubProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
@@ -17,8 +18,8 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.entity.rubblemite.RubblemiteVariant;
 import net.penumbra.enderscape.registry.EnderscapeRegistries;
 import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
@@ -56,11 +57,11 @@ public class EnderscapeEntityLootProvider extends SimpleFabricLootTableSubProvid
                     LootTable.lootTable()
                             .withPool(
                                     LootPool.lootPool()
-                                            .setRolls(ConstantValue.exactly(1))
+                                            .setRolls(ContextIntProviders.exactly(1))
                                             .add(
                                                     LootItem.lootTableItem(RUBBLE_CHITIN)
-                                                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-                                                            .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookup.get(), UniformGenerator.between(0, 1)))
+                                                            .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1)))
+                                                            .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextFloatProviders.between(0, 1)))
                                                             .when(LootItemRandomChanceCondition.randomChance(0.65F))
                                             )
                                             .when(LootItemKilledByPlayerCondition.killedByPlayer())
@@ -82,8 +83,8 @@ public class EnderscapeEntityLootProvider extends SimpleFabricLootTableSubProvid
                     LootTable.lootTable()
                             .withPool(
                                     LootPool.lootPool()
-                                            .setRolls(ConstantValue.exactly(1))
-                                            .add(LootItem.lootTableItem(Items.STRING).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                                            .setRolls(ContextIntProviders.exactly(1))
+                                            .add(LootItem.lootTableItem(Items.STRING).apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 3))))
                             )
             );
 
@@ -98,11 +99,11 @@ public class EnderscapeEntityLootProvider extends SimpleFabricLootTableSubProvid
                 LootTable.lootTable()
                         .withPool(
                                 LootPool.lootPool()
-                                        .setRolls(ConstantValue.exactly(1))
+                                        .setRolls(ContextIntProviders.exactly(1))
                                         .add(
                                                 LootItem.lootTableItem(item)
-                                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
-                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookup.get(), UniformGenerator.between(0, 1)))
+                                                        .apply(SetItemCountFunction.setCount(ContextIntProviders.between(0, 1)))
+                                                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookup.get().lookupOrThrow(Registries.ENCHANTMENT), ContextFloatProviders.between(0, 1)))
                                         )
                                         .when(LootItemKilledByPlayerCondition.killedByPlayer())
                         )
@@ -111,5 +112,10 @@ public class EnderscapeEntityLootProvider extends SimpleFabricLootTableSubProvid
 
     private ResourceKey<LootTable> getLootTable(EntityType<?> type) {
         return type.getDefaultLootTable().orElseThrow(() -> new IllegalStateException("Entity " + type + " has no loot table"));
+    }
+
+    @Override
+    public void run() {
+        
     }
 }

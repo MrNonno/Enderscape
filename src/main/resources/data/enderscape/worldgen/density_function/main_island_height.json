@@ -1,7 +1,9 @@
 {
-    "type": "y_clamped_gradient",
+    "type": "gradient",
     "from_value": 1,
-    "from_y": 150,
+    "from_coordinate": 150,
     "to_value": -1,
-    "to_y": -46
+    "to_coordinate": -46,
+    "axis": "y",
+    "tiling": "clamp_to_edge"
 }

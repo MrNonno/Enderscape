@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:overgrown_end_stone_brick_slab"
+        "recipes": "enderscape:overgrown_end_stone_brick_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

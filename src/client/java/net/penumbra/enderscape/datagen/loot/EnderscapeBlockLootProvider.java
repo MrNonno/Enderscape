@@ -2,6 +2,8 @@ package net.penumbra.enderscape.datagen.loot;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
+import net.minecraft.advancements.predicates.BlockPredicate;
+import net.minecraft.advancements.predicates.LocationPredicate;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -15,7 +17,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.storage.loot.IntRange;
+import net.minecraft.world.level.storage.loot.IntLimit;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -25,8 +27,7 @@ import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.LimitCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.*;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 import net.penumbra.enderscape.block.VeiledLeafPileBlock;
 import net.penumbra.enderscape.block.state.StateProperties;
 import org.jetbrains.annotations.NotNull;
@@ -46,8 +47,6 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
 
     @Override
     public void generate() {
-        HolderLookup.RegistryLookup<Enchantment> enchantment = registries.lookupOrThrow(Registries.ENCHANTMENT);
-
         dropSelf(DRIFT_JELLY_BLOCK);
 
         add(VEILED_END_STONE, block -> createSingleItemTableWithSilkTouch(block, END_STONE));
@@ -89,7 +88,7 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
                 block -> createSilkTouchDispatchTable(
                         block,
                         applyExplosionCondition(
-                                block, LootItem.lootTableItem(VOID_SHALE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                                block, LootItem.lootTableItem(VOID_SHALE).apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(1)))
                         )
                 )
         );
@@ -100,9 +99,9 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
         add(PURUBERRY_FLOWER, this::createShearsOnlyDrop);
         add(UNRIPE_PURUBERRY_BLOCK, this::createShearsOnlyDrop);
         add(RIPE_PURUBERRY_BLOCK, block -> createSilkTouchOrShearsDispatchTable(block, applyExplosionDecay(block, LootItem.lootTableItem(PURUBERRY)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
+                        .apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 3)))
                         .apply(ApplyBonusCount.addUniformBonusCount(getFortune()))
-                        .apply(LimitCount.limitCount(IntRange.upperBound(6)))
+                        .apply(LimitCount.limitCount(IntLimit.upperBound(6)))
                 )
         ));
 
@@ -117,7 +116,7 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
 
         add(VEILED_LEAVES, block -> createLeavesDrops(block, VEILED_SAPLING));
         add(VEILED_LEAF_PILE, createVeiledLeafPile());
-        add(VEILED_VINES, block -> createSilkTouchOrShearsDispatchTable(block, LootItem.lootTableItem(block).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantment.getOrThrow(Enchantments.FORTUNE), 0.33F, 0.55F, 0.77F, 1.0F))));
+        add(VEILED_VINES, block -> createSilkTouchOrShearsDispatchTable(block, LootItem.lootTableItem(block).when(BonusLevelTableCondition.bonusLevelFlatChance(this.enchantments.getOrThrow(Enchantments.FORTUNE), 0.33F, 0.55F, 0.77F, 1))));
 
         dropSelf(VEILED_PLANKS);
         dropSelf(VEILED_STAIRS);
@@ -229,7 +228,8 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
         dropOther(VOID_LACHRYMA_CAULDRON, Blocks.CAULDRON);
 
         add(VOID_SHALE, block -> {
-            LootItemBlockStatePropertyCondition.Builder isNatural = LootItemBlockStatePropertyCondition.hasBlockStateProperties(VOID_SHALE).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(StateProperties.NATURAL, true));
+            LootItemCondition.Builder isNatural = LocationCheck.checkLocation(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(blocks, VOID_SHALE)
+                    .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(StateProperties.NATURAL, true))));
 
             return applyExplosionDecay(block, LootTable.lootTable()
                     .withPool(LootPool.lootPool()
@@ -252,9 +252,9 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
                 applyExplosionDecay(
                         block,
                         LootItem.lootTableItem(NEBULITE_SHARDS)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
-                                .apply(ApplyBonusCount.addOreBonusCount(enchantment.getOrThrow(Enchantments.FORTUNE)))
-                                .apply(LimitCount.limitCount(IntRange.upperBound(8)))
+                                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 3)))
+                                .apply(ApplyBonusCount.addOreBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
+                                .apply(LimitCount.limitCount(IntLimit.upperBound(8)))
                 )
         );
 
@@ -268,8 +268,8 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
                 applyExplosionDecay(
                         block,
                         LootItem.lootTableItem(RAW_SHADOLINE)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
-                                .apply(ApplyBonusCount.addOreBonusCount(enchantment.getOrThrow(Enchantments.FORTUNE)))
+                                .apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2)))
+                                .apply(ApplyBonusCount.addOreBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE)))
                 )
         );
 
@@ -364,22 +364,26 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
     }
 
     private Function<Block, LootTable.Builder> createVeiledLeafPile() {
-        return block -> LootTable.lootTable().withPool(LootPool.lootPool().when(LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS)).add(AlternativesEntry.alternatives(VeiledLeafPileBlock.LAYERS.getPossibleValues(), integer -> integer == 8 ? LootItem.lootTableItem(VEILED_LEAVES) : LootItem.lootTableItem(VEILED_LEAF_PILE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(integer))).when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SnowLayerBlock.LAYERS, integer))))));
+        return block -> LootTable.lootTable().withPool(LootPool.lootPool().when(LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS))
+                .add(AlternativesEntry.alternatives(VeiledLeafPileBlock.LAYERS.getPossibleValues(),
+                        integer -> integer == 8 ? LootItem.lootTableItem(VEILED_LEAVES) : LootItem.lootTableItem(VEILED_LEAF_PILE)
+                                .apply(SetItemCountFunction.setCount(ContextIntProviders.exactly(integer)))
+                                .when(LocationCheck.checkLocation(LocationPredicate.Builder.location().setBlock(BlockPredicate.Builder.block().of(blocks, block)
+                                        .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(SnowLayerBlock.LAYERS, integer))))))));
     }
 
     public LootTable.Builder createLeavesDrops(Block leaves, ItemLike plant) {
-        HolderLookup.RegistryLookup<Enchantment> enchantment = registries.lookupOrThrow(Registries.ENCHANTMENT);
         return createSilkTouchOrShearsDispatchTable(
                 leaves,
-                applyExplosionCondition(leaves, LootItem.lootTableItem(plant)).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantment.getOrThrow(Enchantments.FORTUNE), 0.05F, 0.0625F, 0.083333336F, 0.1F))
+                applyExplosionCondition(leaves, LootItem.lootTableItem(plant)).when(BonusLevelTableCondition.bonusLevelFlatChance(enchantments.getOrThrow(Enchantments.FORTUNE), 0.05F, 0.0625F, 0.083333336F, 0.1F))
         )
                 .withPool(
                         LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1))
+                                .setRolls(ContextIntProviders.exactly(1))
                                 .when(doesNotHaveShearsOrSilkTouch())
                                 .add(applyExplosionDecay(
-                                        leaves, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
-                                        .when(BonusLevelTableCondition.bonusLevelFlatChance(enchantment.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))
+                                        leaves, LootItem.lootTableItem(Items.STICK).apply(SetItemCountFunction.setCount(ContextIntProviders.between(1, 2))))
+                                        .when(BonusLevelTableCondition.bonusLevelFlatChance(enchantments.getOrThrow(Enchantments.FORTUNE), 0.02F, 0.022222223F, 0.025F, 0.033333335F, 0.1F))
                                 )
                 );
     }
@@ -387,7 +391,7 @@ public class EnderscapeBlockLootProvider extends FabricBlockLootSubProvider {
 
     @NotNull
     private Holder.Reference<Enchantment> getFortune() {
-        return registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.FORTUNE);
+        return enchantments.getOrThrow(Enchantments.FORTUNE);
     }
 
     public LootItemCondition.Builder entityPresent() {

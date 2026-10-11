@@ -22,6 +22,6 @@ public class ImprovedEndermanEyesLayer extends RenderLayer<EndermanRenderState, 
 
     @Override
     public void submit(PoseStack pose, SubmitNodeCollector collector, int i, EndermanRenderState state, float f, float g) {
-        collector.submitModel(getParentModel(), state, pose, ENDERMAN_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+        collector.submitModel(getParentModel(), state, pose, ENDERMAN_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
     }
 }

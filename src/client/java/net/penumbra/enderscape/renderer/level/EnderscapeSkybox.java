@@ -1,14 +1,14 @@
 package net.penumbra.enderscape.renderer.level;
 
-import com.mojang.blaze3d.IndexType;
-import com.mojang.blaze3d.PrimitiveTopology;
-import com.mojang.blaze3d.buffers.GpuBuffer;
-import com.mojang.blaze3d.buffers.GpuBufferSlice;
-import com.mojang.blaze3d.systems.RenderPass;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.textures.GpuTextureView;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import com.mojang.renderpearl.api.buffers.GpuBuffer;
+import com.mojang.renderpearl.api.buffers.GpuBufferSlice;
+import com.mojang.renderpearl.api.commands.RenderPass;
+import com.mojang.renderpearl.api.pipeline.IndexType;
+import com.mojang.renderpearl.api.pipeline.PrimitiveTopology;
+import com.mojang.renderpearl.api.textures.GpuTextureView;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.Identifier;
-import net.minecraft.util.ARGB;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.attribute.EnvironmentAttribute;
@@ -35,8 +34,6 @@ import net.penumbra.enderscape.renderer.value.EndFlashParameters;
 import org.joml.*;
 
 import java.lang.Math;
-import java.util.Optional;
-import java.util.OptionalDouble;
 
 import static net.minecraft.world.attribute.EnvironmentAttributes.STAR_BRIGHTNESS;
 import static net.penumbra.enderscape.registry.level.EnderscapeEnvironmentAttributes.*;
@@ -65,18 +62,18 @@ public class EnderscapeSkybox {
     private final AbstractTexture nebulaTexture1;
     private final AbstractTexture nebulaTexture2;
 
-    public void render(PoseStack pose, ClientLevel level, Camera camera, DeltaTracker tracker) {
+    public void render(RenderPass pass, PoseStack pose, ClientLevel level, Camera camera, DeltaTracker tracker) {
         float partialTicks = tracker.getGameTimeDeltaPartialTick(false);
         float gameTime = (level.getGameTime() + tracker.getGameTimeDeltaTicks()) % 360000;
         float baseSpeed = gameTime * 0.00003F;
 
-        renderSkybox(pose, computeSkyColor(level, camera, partialTicks), baseSpeed);
-        renderNebulae(pose, nightVisionAffectedColor(level, camera, partialTicks, NEBULA_COLOR, NEBULA_BRIGHTNESS), baseSpeed * 5);
-        renderStars(pose, nightVisionAffectedColor(level, camera, partialTicks, STAR_COLOR, STAR_BRIGHTNESS), baseSpeed * 10);
+        renderSkybox(pass, pose, computeSkyColor(level, camera, partialTicks), baseSpeed);
+        renderNebulae(pass, pose, nightVisionAffectedColor(level, camera, partialTicks, NEBULA_COLOR, NEBULA_BRIGHTNESS), baseSpeed * 5);
+        renderStars(pass, pose, nightVisionAffectedColor(level, camera, partialTicks, STAR_COLOR, STAR_BRIGHTNESS), baseSpeed * 10);
     }
 
     private Vector4f computeSkyColor(ClientLevel level, Camera camera, float partialTicks) {
-        Vector3f skyColor = ARGB.vector3fFromRGB24(camera.attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, partialTicks));
+        Vector3fc skyColor = camera.attributeProbe().getValue(EnvironmentAttributes.SKY_COLOR, partialTicks);
         float alpha = 1.0F;
 
         // Skybox alpha decreases with Night Vision intensity, as the noise background looks pretty awful when bright.
@@ -92,9 +89,9 @@ public class EnderscapeSkybox {
         return new Vector4f(skyColor.x(), skyColor.y(), skyColor.z(), Math.clamp(alpha, 0.0F, 1.0F));
     }
 
-    private Vector4f nightVisionAffectedColor(ClientLevel level, Camera camera, float partialTicks, EnvironmentAttribute<Integer> colorAttribute, EnvironmentAttribute<Float> alphaAttribute) {
-        Vector3f color = ARGB.vector3fFromRGB24(camera.attributeProbe().getValue(colorAttribute, partialTicks));
-        Vector3f scaledColor = scaleToMaximum(color, getNightVisionScale(camera, partialTicks));
+    private Vector4f nightVisionAffectedColor(ClientLevel level, Camera camera, float partialTicks, EnvironmentAttribute<Vector3fc> colorAttribute, EnvironmentAttribute<Float> alphaAttribute) {
+        Vector3fc color = camera.attributeProbe().getValue(colorAttribute, partialTicks);
+        Vector3fc scaledColor = scaleToMaximum(color, getNightVisionScale(camera, partialTicks));
         scaledColor = applyVoidDarkness(level, camera, scaledColor);
 
         float alpha = camera.attributeProbe().getValue(alphaAttribute, partialTicks);
@@ -102,7 +99,7 @@ public class EnderscapeSkybox {
         return new Vector4f(scaledColor, alpha);
     }
 
-    public static Vector3f scaleWithoutOverflow(Vector3f color, float factor) {
+    public static Vector3f scaleWithoutOverflow(Vector3fc color, float factor) {
         float x = color.x() * factor;
         float y = color.y() * factor;
         float z = color.z() * factor;
@@ -133,24 +130,23 @@ public class EnderscapeSkybox {
         }
     }
 
-    private static Vector3f applyVoidDarkness(ClientLevel level, Camera camera, Vector3f color) {
+    private static Vector3fc applyVoidDarkness(ClientLevel level, Camera camera, Vector3fc color) {
         float voidDarknessOnsetRange = level.getLevelData().voidDarknessOnsetRange();
 
         if (voidDarknessOnsetRange <= 0.0F) {
             return color;
         } else {
             float darkness = Mth.clamp((voidDarknessOnsetRange + level.getMinY() - (float) camera.position().y) / voidDarknessOnsetRange, 0.0F, 1.0F);
-            color = color.mul(1.0F - darkness);
-            return color;
+            return color.mul(1.0F - darkness, new Vector3f());
         }
     }
 
-    public static Vector3f scaleToMaximum(Vector3f color, float factor) {
+    public static Vector3fc scaleToMaximum(Vector3fc color, float factor) {
         float maximum = Math.max(color.x(), Math.max(color.y(), color.z()));
         if (maximum <= 0.0F) return color;
 
         float scale = 1.0F + factor * ((1.0F / maximum) - 1.0F);
-        return color.mul(scale);
+        return color.mul(scale, new Vector3f());
     }
 
     private static float getNightVisionScale(Camera camera, float partialTicks) {
@@ -197,7 +193,7 @@ public class EnderscapeSkybox {
         }
     }
 
-    private void renderSkybox(PoseStack pose, Vector4f color, float angle) {
+    private void renderSkybox(RenderPass pass, PoseStack pose, Vector4f color, float angle) {
         Matrix4fStack matrix = RenderSystem.getModelViewStack();
 
         matrix.pushMatrix();
@@ -213,15 +209,12 @@ public class EnderscapeSkybox {
         GpuBuffer skyBuffer = buffer.getBuffer(buffers.sky().indexCount());
         IndexType type = buffer.type();
 
-        try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "End sky box", colorView, Optional.empty(),textureView, OptionalDouble.empty())) {
-            pass.setPipeline(RenderPipelines.END_SKY);
-            RenderSystem.bindDefaultUniforms(pass);
-            pass.setUniform("DynamicTransforms", slice);
-            pass.bindTexture("Sampler0", skyTexture.getTextureView(), skyTexture.getSampler());
-            pass.setVertexBuffer(0, buffers.sky().buffer().slice());
-            pass.setIndexBuffer(skyBuffer, type);
-            pass.drawIndexed(buffers.sky().indexCount(), 1, 0, 0, 0);
-        }
+        pass.setPipeline(RenderSystem.getCompiledPipeline(RenderPipelines.END_SKY));
+        pass.setUniform("DynamicTransforms", slice);
+        pass.setUniform("Sampler0", skyTexture.getTextureView(), skyTexture.getSampler());
+        pass.setVertexBuffer(0, buffers.sky().buffer().slice());
+        pass.setIndexBuffer(skyBuffer, type);
+        pass.drawIndexed(buffers.sky().indexCount(), 1, 0, 0, 0);
 
         matrix.popMatrix();
     }
@@ -285,20 +278,20 @@ public class EnderscapeSkybox {
         }
     }
 
-    private void renderNebulae(PoseStack pose, Vector4f color, float angle) {
+    private void renderNebulae(RenderPass pass, PoseStack pose, Vector4f color, float angle) {
         Matrix4fStack matrix = RenderSystem.getModelViewStack();
 
         matrix.pushMatrix();
         matrix.mul(pose.last().pose());
         matrix.mul(new Matrix4f().rotation(SKY_ROTATION_AXIS.rotation(angle)));
 
-        drawIndividualNebulae(buffers.nebula1(), color, nebulaTexture1);
-        drawIndividualNebulae(buffers.nebula2(), color, nebulaTexture2);
+        drawIndividualNebulae(pass, buffers.nebula1(), color, nebulaTexture1);
+        drawIndividualNebulae(pass, buffers.nebula2(), color, nebulaTexture2);
 
         matrix.popMatrix();
     }
 
-    private void drawIndividualNebulae(BufferData data, Vector4f color, AbstractTexture texture) {
+    private void drawIndividualNebulae(RenderPass pass, BufferData data, Vector4f color, AbstractTexture texture) {
         Matrix4fStack matrix = RenderSystem.getModelViewStack();
 
         GpuTextureView colorView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
@@ -310,15 +303,12 @@ public class EnderscapeSkybox {
         GpuBuffer nebulaeBuffer = buffer.getBuffer(data.indexCount());
         IndexType type = buffer.type();
 
-        try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "End sky nebulae", colorView, Optional.empty(), depthView, OptionalDouble.empty())) {
-            pass.setPipeline(EnderscapeRenderPipelines.NEBULAE_PIPELINE);
-            RenderSystem.bindDefaultUniforms(pass);
-            pass.setUniform("DynamicTransforms", slice);
-            pass.bindTexture("Sampler0", texture.getTextureView(), texture.getSampler());
-            pass.setVertexBuffer(0, data.buffer().slice());
-            pass.setIndexBuffer(nebulaeBuffer, type);
-            pass.drawIndexed(data.indexCount(), 1, 0, 0, 0);
-        }
+        pass.setPipeline(RenderSystem.getCompiledPipeline(EnderscapeRenderPipelines.NEBULAE_PIPELINE));
+        pass.setUniform("DynamicTransforms", slice);
+        pass.setUniform("Sampler0", texture.getTextureView(), texture.getSampler());
+        pass.setVertexBuffer(0, data.buffer().slice());
+        pass.setIndexBuffer(nebulaeBuffer, type);
+        pass.drawIndexed(data.indexCount(), 1, 0, 0, 0);
     }
 
     private static BufferData createStarsBuffer(int count, float minSize, float maxSize) {
@@ -356,29 +346,24 @@ public class EnderscapeSkybox {
         }
     }
 
-    private void renderStars(PoseStack pose, Vector4f color, float angle) {
+    private void renderStars(RenderPass pass, PoseStack pose, Vector4f color, float angle) {
         Matrix4fStack matrix = RenderSystem.getModelViewStack();
 
         matrix.pushMatrix();
         matrix.mul(pose.last().pose());
         matrix.mul(new Matrix4f().rotation(SKY_ROTATION_AXIS.rotation(angle)));
 
-        GpuTextureView colorView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getColorTextureView();
-        GpuTextureView depthView = Minecraft.getInstance().gameRenderer.mainRenderTarget().getDepthTextureView();
         GpuBufferSlice slice = RenderSystem.getDynamicUniforms().writeTransform(matrix, color, new Vector3f(), new Matrix4f());
 
         RenderSystem.AutoStorageIndexBuffer buffer = RenderSystem.getSequentialBuffer(PrimitiveTopology.QUADS);
         GpuBuffer starBuffer = buffer.getBuffer(buffers.stars().indexCount());
         IndexType type = buffer.type();
 
-        try (RenderPass pass = RenderSystem.getDevice().createCommandEncoder().createRenderPass(() -> "End sky stars", colorView, Optional.empty(), depthView, OptionalDouble.empty())) {
-            pass.setPipeline(RenderPipelines.STARS);
-            RenderSystem.bindDefaultUniforms(pass);
-            pass.setUniform("DynamicTransforms", slice);
-            pass.setVertexBuffer(0, buffers.stars().buffer().slice());
-            pass.setIndexBuffer(starBuffer, type);
-            pass.drawIndexed(buffers.stars().indexCount(), 1, 0, 0, 0);
-        }
+        pass.setPipeline(RenderSystem.getCompiledPipeline(RenderPipelines.STARS));
+        pass.setUniform("DynamicTransforms", slice);
+        pass.setVertexBuffer(0, buffers.stars().buffer().slice());
+        pass.setIndexBuffer(starBuffer, type);
+        pass.drawIndexed(buffers.stars().indexCount(), 1, 0, 0, 0);
 
         matrix.popMatrix();
     }

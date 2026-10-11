@@ -10,6 +10,7 @@ import net.minecraft.world.attribute.EnvironmentAttributes;
 import net.penumbra.enderscape.config.EnderscapeConfig;
 import net.penumbra.enderscape.config.value.EndFlashStyle;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 
 public class EndFlashParameters {
 
@@ -27,14 +28,12 @@ public class EndFlashParameters {
         return Math.max(1L, (long) (CONFIG.endFlashFrequency * 60F * 20F));
     }
 
-    public static Vector3f getSkyLightColor() {
+    public static Vector3fc getSkyLightColor() {
         Minecraft minecraft = Minecraft.getInstance();
 
         Camera camera = minecraft.gameRenderer.mainCamera();
         DeltaTracker tracker = minecraft.getDeltaTracker();
-        int color = camera.attributeProbe().getValue(EnvironmentAttributes.SKY_LIGHT_COLOR, tracker.getGameTimeDeltaPartialTick(false));
-
-        return ARGB.vector3fFromRGB24(color);
+        return camera.attributeProbe().getValue(EnvironmentAttributes.SKY_LIGHT_COLOR, tracker.getGameTimeDeltaPartialTick(false));
     }
 
     public static float getIntensity(int offset, int duration, long remainder) {

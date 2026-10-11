@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:overgrown_end_stone_bricks_from_celestial_growth"
+        "recipes": "enderscape:overgrown_end_stone_bricks_from_celestial_growth"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veiled_slab"
+        "recipes": "enderscape:veiled_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

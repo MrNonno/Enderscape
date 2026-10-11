@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:cut_shadoline"
+        "recipes": "enderscape:cut_shadoline"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

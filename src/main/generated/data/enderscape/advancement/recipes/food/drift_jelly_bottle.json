@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:drift_jelly_bottle"
+        "recipes": "enderscape:drift_jelly_bottle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:murublight_button_from_celestial_button"
+        "recipes": "enderscape:murublight_button_from_celestial_button"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

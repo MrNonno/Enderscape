@@ -12,16 +12,10 @@ import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 
 public class WispGrowthBlock extends VegetationBlock {
 
-    public static final MapCodec<WispGrowthBlock> CODEC = simpleCodec(WispGrowthBlock::new);
     private static final VoxelShape VOXEL_SHAPE = box(1, 0, 1, 14, 15, 14);
 
     public WispGrowthBlock(Properties settings) {
         super(settings);
-    }
-
-    @Override
-    public MapCodec<WispGrowthBlock> codec() {
-        return CODEC;
     }
 
     @Override

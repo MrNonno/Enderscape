@@ -10,7 +10,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.ActivityData;
 import net.minecraft.world.entity.ai.behavior.*;
@@ -47,7 +46,6 @@ public class RustleAI {
             CANT_REACH_WALK_TARGET_SINCE,
             HURT_BY_ENTITY,
             IS_PANICKING,
-            IS_TEMPTED,
             LOOK_TARGET,
             NEAREST_ATTACKABLE,
             NEAREST_LIVING_ENTITIES,

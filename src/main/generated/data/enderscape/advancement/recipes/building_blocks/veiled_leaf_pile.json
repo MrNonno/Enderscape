@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veiled_leaf_pile"
+        "recipes": "enderscape:veiled_leaf_pile"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

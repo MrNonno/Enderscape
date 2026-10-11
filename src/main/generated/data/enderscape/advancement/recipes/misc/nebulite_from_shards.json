@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:nebulite_from_shards"
+        "recipes": "enderscape:nebulite_from_shards"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

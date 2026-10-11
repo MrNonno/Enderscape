@@ -9,6 +9,7 @@ import net.minecraft.client.multiplayer.ClientCommonPacketListenerImpl;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
@@ -60,10 +61,10 @@ public abstract class ClientPacketListenerMixin extends ClientCommonPacketListen
         }
     }
 
-    @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;displayItemActivation(Lnet/minecraft/world/item/ItemStack;)V"))
-    public void Enderscape$changeTotemActivation(GameRenderer renderer, ItemStack stack, Operation<Void> original) {
+    @WrapOperation(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;displayItemActivation(Lnet/minecraft/world/item/ItemStack;)V"))
+    public void Enderscape$changeTotemActivation(LocalPlayer instance, ItemStack itemStack, Operation<Void> original) {
         EnderscapeClient.clientsideVariables().displayVoidedTotemEffect = Enderscape$entityWasVoided;
-        original.call(renderer, stack);
+        original.call(instance, itemStack);
     }
 
     @ModifyArg(method = "handleEntityEvent", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"), index = 3)

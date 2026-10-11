@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:chiseled_kurodite_from_chiseled_veradite"
+        "recipes": "enderscape:chiseled_kurodite_from_chiseled_veradite"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -9,12 +9,7 @@ import net.minecraft.util.valueproviders.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockColumnConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
+import net.minecraft.world.level.levelgen.feature.*;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
@@ -23,6 +18,7 @@ import net.penumbra.enderscape.Enderscape;
 import net.penumbra.enderscape.block.state.PurifyingPhase;
 import net.penumbra.enderscape.block.state.StateProperties;
 import net.penumbra.enderscape.feature.*;
+import net.penumbra.enderscape.feature.ScatteredOreFeature;
 import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 
@@ -30,147 +26,144 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static net.minecraft.data.worldgen.features.FeatureUtils.register;
-import static net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider.simple;
-
 public class EnderscapeConfiguredFeatures {
 
-    public static final List<ResourceKey<ConfiguredFeature<?, ?>>> CONFIGURED_FEATURES = new ArrayList<>();
+    public static final List<ResourceKey<Feature>> FEATURES = new ArrayList<>();
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BLINKLIGHT_VINES = registerKey("blinklight_vines");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> BULB_FLOWER = registerKey("bulb_flower");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CEILING_NEBULITE_ORE = registerKey("ceiling_nebulite_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CELESTIAL_GROVE_VEGETATION = registerKey("celestial_grove_vegetation");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CELESTIAL_GROWTH = registerKey("celestial_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CHORUS_SPROUTS = registerKey("chorus_sprouts");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_BARRENS_VEGETATION = registerKey("corrupt_barrens_vegetation");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DOWNWARD_CORRUPT_GROWTH = registerKey("downward_corrupt_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE = registerKey("downward_large_murublight_chanterelle");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DOWNWARD_REPULSIVE_MAGNIA_SPROUT = registerKey("downward_repulsive_magnia_sprout");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DOWNWARD_TALL_CORRUPT_GROWTH = registerKey("downward_tall_corrupt_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> DRY_END_GROWTH = registerKey("dry_end_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> ENDERSCAPE_ISLAND = registerKey("enderscape_island");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> KURODITE = registerKey("kurodite");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_CELESTIAL_CHANTERELLE = registerKey("large_celestial_chanterelle");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> LARGE_MAGNIA_SPIKE = registerKey("large_magnia_spike");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MAGNIA_ARCH = registerKey("magnia_arch");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MAGNIA_SPIKE = registerKey("magnia_spike");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MAGNIA_TOWER = registerKey("magnia_tower");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MIRESTONE_BLOB = registerKey("mirestone_blob");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MIRESTONE_PILLARS = registerKey("mirestone_pillars");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MURUBLIGHT_BRACKET = registerKey("murublight_bracket");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> NEBULITE_ORE = registerKey("nebulite_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SCATTERED_SHADOLINE_ORE = registerKey("scattered_shadoline_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOLINE_ORE = registerKey("shadoline_ore");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> UPWARD_ALLURING_MAGNIA_SPROUT = registerKey("upward_alluring_magnia_sprout");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> UPWARD_CORRUPT_GROWTH = registerKey("upward_corrupt_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> UPWARD_LARGE_MURUBLIGHT_CHANTERELLE = registerKey("upward_large_murublight_chanterelle");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> UPWARD_TALL_CORRUPT_GROWTH = registerKey("upward_tall_corrupt_growth");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VEILED_TREE = registerKey("veiled_tree");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VEILED_TREE_FROM_SAPLING = registerKey("veiled_tree_from_sapling");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VEILED_WOODLANDS_VEGETATION = registerKey("veiled_woodlands_vegetation");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VERADITE = registerKey("veradite");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VOID_FIRE = registerKey("void_fire");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VOID_LAKE = registerKey("void_lake");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VOID_SHALE = registerKey("void_shale");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> VOID_SHALE_BLOB = registerKey("void_shale_blob");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> WISP_FLOWER = registerKey("wisp_flower");
+    public static final ResourceKey<Feature> BLINKLIGHT_VINES = registerKey("blinklight_vines");
+    public static final ResourceKey<Feature> BULB_FLOWER = registerKey("bulb_flower");
+    public static final ResourceKey<Feature> CEILING_NEBULITE_ORE = registerKey("ceiling_nebulite_ore");
+    public static final ResourceKey<Feature> CELESTIAL_GROVE_VEGETATION = registerKey("celestial_grove_vegetation");
+    public static final ResourceKey<Feature> CELESTIAL_GROWTH = registerKey("celestial_growth");
+    public static final ResourceKey<Feature> CHORUS_SPROUTS = registerKey("chorus_sprouts");
+    public static final ResourceKey<Feature> CORRUPT_BARRENS_VEGETATION = registerKey("corrupt_barrens_vegetation");
+    public static final ResourceKey<Feature> DOWNWARD_CORRUPT_GROWTH = registerKey("downward_corrupt_growth");
+    public static final ResourceKey<Feature> DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE = registerKey("downward_large_murublight_chanterelle");
+    public static final ResourceKey<Feature> DOWNWARD_REPULSIVE_MAGNIA_SPROUT = registerKey("downward_repulsive_magnia_sprout");
+    public static final ResourceKey<Feature> DOWNWARD_TALL_CORRUPT_GROWTH = registerKey("downward_tall_corrupt_growth");
+    public static final ResourceKey<Feature> DRY_END_GROWTH = registerKey("dry_end_growth");
+    public static final ResourceKey<Feature> ENDERSCAPE_ISLAND = registerKey("enderscape_island");
+    public static final ResourceKey<Feature> KURODITE = registerKey("kurodite");
+    public static final ResourceKey<Feature> LARGE_CELESTIAL_CHANTERELLE = registerKey("large_celestial_chanterelle");
+    public static final ResourceKey<Feature> LARGE_MAGNIA_SPIKE = registerKey("large_magnia_spike");
+    public static final ResourceKey<Feature> MAGNIA_ARCH = registerKey("magnia_arch");
+    public static final ResourceKey<Feature> MAGNIA_SPIKE = registerKey("magnia_spike");
+    public static final ResourceKey<Feature> MAGNIA_TOWER = registerKey("magnia_tower");
+    public static final ResourceKey<Feature> MIRESTONE_BLOB = registerKey("mirestone_blob");
+    public static final ResourceKey<Feature> MIRESTONE_PILLARS = registerKey("mirestone_pillars");
+    public static final ResourceKey<Feature> MURUBLIGHT_BRACKET = registerKey("murublight_bracket");
+    public static final ResourceKey<Feature> NEBULITE_ORE = registerKey("nebulite_ore");
+    public static final ResourceKey<Feature> SCATTERED_SHADOLINE_ORE = registerKey("scattered_shadoline_ore");
+    public static final ResourceKey<Feature> SHADOLINE_ORE = registerKey("shadoline_ore");
+    public static final ResourceKey<Feature> UPWARD_ALLURING_MAGNIA_SPROUT = registerKey("upward_alluring_magnia_sprout");
+    public static final ResourceKey<Feature> UPWARD_CORRUPT_GROWTH = registerKey("upward_corrupt_growth");
+    public static final ResourceKey<Feature> UPWARD_LARGE_MURUBLIGHT_CHANTERELLE = registerKey("upward_large_murublight_chanterelle");
+    public static final ResourceKey<Feature> UPWARD_TALL_CORRUPT_GROWTH = registerKey("upward_tall_corrupt_growth");
+    public static final ResourceKey<Feature> VEILED_TREE = registerKey("veiled_tree");
+    public static final ResourceKey<Feature> VEILED_TREE_FROM_SAPLING = registerKey("veiled_tree_from_sapling");
+    public static final ResourceKey<Feature> VEILED_WOODLANDS_VEGETATION = registerKey("veiled_woodlands_vegetation");
+    public static final ResourceKey<Feature> VERADITE = registerKey("veradite");
+    public static final ResourceKey<Feature> VOID_FIRE = registerKey("void_fire");
+    public static final ResourceKey<Feature> VOID_LAKE = registerKey("void_lake");
+    public static final ResourceKey<Feature> VOID_SHALE = registerKey("void_shale");
+    public static final ResourceKey<Feature> VOID_SHALE_BLOB = registerKey("void_shale_blob");
+    public static final ResourceKey<Feature> WISP_FLOWER = registerKey("wisp_flower");
 
-    private static final List<OreConfiguration.TargetBlockState> KURODITE_TARGETS = List.of(
-            OreConfiguration.target(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.KURODITE.defaultBlockState())
+    private static final List<BlockReplacement> KURODITE_TARGETS = List.of(
+            new BlockReplacement(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.KURODITE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> NEBULITE_ORE_TARGETS = List.of(
-            OreConfiguration.target(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.NEBULITE_ORE.defaultBlockState()),
-            OreConfiguration.target(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.MIRESTONE_NEBULITE_ORE.defaultBlockState())
+    private static final List<BlockReplacement> NEBULITE_ORE_TARGETS = List.of(
+            new BlockReplacement(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.NEBULITE_ORE.defaultBlockState()),
+            new BlockReplacement(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.MIRESTONE_NEBULITE_ORE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> SHADOLINE_ORE_TARGETS = List.of(
-            OreConfiguration.target(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.SHADOLINE_ORE.defaultBlockState()),
-            OreConfiguration.target(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.MIRESTONE_SHADOLINE_ORE.defaultBlockState())
+    private static final List<BlockReplacement> SHADOLINE_ORE_TARGETS = List.of(
+            new BlockReplacement(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.SHADOLINE_ORE.defaultBlockState()),
+            new BlockReplacement(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.MIRESTONE_SHADOLINE_ORE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> VERADITE_TARGETS = List.of(
-            OreConfiguration.target(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.VERADITE.defaultBlockState())
+    private static final List<BlockReplacement> VERADITE_TARGETS = List.of(
+            new BlockReplacement(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.VERADITE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> VOID_SHALE_TARGETS = List.of(
-            OreConfiguration.target(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.VOID_SHALE.defaultBlockState())
+    private static final List<BlockReplacement> VOID_SHALE_TARGETS = List.of(
+            new BlockReplacement(new BlockMatchTest(EnderscapeBlocks.MIRESTONE), EnderscapeBlocks.VOID_SHALE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> VOID_SHALE_BLOBS_TARGETS = List.of(
-            OreConfiguration.target(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.VOID_SHALE.defaultBlockState())
+    private static final List<BlockReplacement> VOID_SHALE_BLOBS_TARGETS = List.of(
+            new BlockReplacement(new TagMatchTest(EnderscapeBlockTags.ORE_REPLACEABLE), EnderscapeBlocks.VOID_SHALE.defaultBlockState())
     );
 
-    private static final List<OreConfiguration.TargetBlockState> MIRESTONE_BLOB_TARGETS = List.of(
-            OreConfiguration.target(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.MIRESTONE.defaultBlockState())
+    private static final List<BlockReplacement> MIRESTONE_BLOB_TARGETS = List.of(
+            new BlockReplacement(new BlockMatchTest(Blocks.END_STONE), EnderscapeBlocks.MIRESTONE.defaultBlockState())
     );
 
-    public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    public static void bootstrap(BootstrapContext<Feature> context) {
         registerVeiledWoodlands(context);
         registerMagniaCrags(context);
         registerCelestialGrove(context);
         registerCorruptBarrens(context);
 
-        register(context, ENDERSCAPE_ISLAND, EnderscapeFeatures.ENDERSCAPE_ISLAND, NoneFeatureConfiguration.NONE);
+        context.register(ENDERSCAPE_ISLAND, new EnderscapeIslandFeature());
 
-        register(context, CHORUS_SPROUTS, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(simple(EnderscapeBlocks.CHORUS_SPROUTS)));
-        register(context, DRY_END_GROWTH, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(simple(EnderscapeBlocks.DRY_END_GROWTH)));
-        register(context, MURUBLIGHT_BRACKET, EnderscapeFeatures.MURUBLIGHT_BRACKET, NoneFeatureConfiguration.NONE);
+        context.register(CHORUS_SPROUTS, new SimpleBlockFeature(BlockStateProvider.of(EnderscapeBlocks.CHORUS_SPROUTS)));
+        context.register(DRY_END_GROWTH, new SimpleBlockFeature(BlockStateProvider.of(EnderscapeBlocks.DRY_END_GROWTH)));
+        context.register(MURUBLIGHT_BRACKET, new MurublightBracketFeature());
 
-        register(context, NEBULITE_ORE, Feature.ORE, new OreConfiguration(NEBULITE_ORE_TARGETS, 4));
-        register(context, CEILING_NEBULITE_ORE, EnderscapeFeatures.CEILING_ORE, new CeilingOreFeature.Config(NEBULITE_ORE_TARGETS, ConstantInt.of(8)));
+        context.register(NEBULITE_ORE, new OreFeature(NEBULITE_ORE_TARGETS, 4));
+        context.register(CEILING_NEBULITE_ORE, new CeilingOreFeature(NEBULITE_ORE_TARGETS, ConstantInt.of(8)));
 
-        register(context, SHADOLINE_ORE, Feature.ORE, new OreConfiguration(SHADOLINE_ORE_TARGETS, 10));
-        register(context, SCATTERED_SHADOLINE_ORE, EnderscapeFeatures.SCATTERED_ORE, new ScatteredOreFeature.Config(SHADOLINE_ORE_TARGETS, UniformInt.of(70, 90), UniformInt.of(-1, 1), ConstantInt.of(1)));
+        context.register(SHADOLINE_ORE, new OreFeature(SHADOLINE_ORE_TARGETS, 10));
+        context.register(SCATTERED_SHADOLINE_ORE, new ScatteredOreFeature(SHADOLINE_ORE_TARGETS, UniformInt.of(70, 90), UniformInt.of(-1, 1), ConstantInt.of(1)));
 
-        register(context, VERADITE, Feature.ORE, new OreConfiguration(VERADITE_TARGETS, 28));
+        context.register(VERADITE, new OreFeature(VERADITE_TARGETS, 28));
 
-        register(context, VOID_FIRE, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(simple(EnderscapeBlocks.VOID_FIRE)));
-        register(context, VOID_LAKE, EnderscapeFeatures.VOID_LAKE, VoidLakeFeature.Config.DEFAULT);
-        register(context, VOID_SHALE, EnderscapeFeatures.VOID_SHALE, new VoidShaleFeature.Config(VOID_SHALE_TARGETS, ConstantInt.of(5)));
-        register(context, VOID_SHALE_BLOB, Feature.ORE, new OreConfiguration(VOID_SHALE_BLOBS_TARGETS, 16, 1));
+        context.register(VOID_FIRE, new SimpleBlockFeature(BlockStateProvider.of(EnderscapeBlocks.VOID_FIRE)));
+        context.register(VOID_LAKE, VoidLakeFeature.DEFAULT);
+        context.register(VOID_SHALE, new VoidShaleFeature(VOID_SHALE_TARGETS, ConstantInt.of(5)));
+        context.register(VOID_SHALE_BLOB, new OreFeature(VOID_SHALE_BLOBS_TARGETS, 16, 1));
 
-        register(context, MIRESTONE_BLOB, Feature.ORE, new OreConfiguration(MIRESTONE_BLOB_TARGETS, 16, 0.5F));
+        context.register(MIRESTONE_BLOB, new OreFeature(MIRESTONE_BLOB_TARGETS, 16, 0.5F));
     }
 
-    private static void registerVeiledWoodlands(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    private static void registerVeiledWoodlands(BootstrapContext<Feature> context) {
 
-        register(context, VEILED_WOODLANDS_VEGETATION, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+        context.register(VEILED_WOODLANDS_VEGETATION, new SimpleBlockFeature(
                 new WeightedStateProvider(new WeightedList.Builder<BlockState>()
                         .add(EnderscapeBlocks.WISP_SPROUTS.defaultBlockState(), 4)
                         .add(EnderscapeBlocks.WISP_GROWTH.defaultBlockState(), 1)
                 )
         ));
 
-        register(context, WISP_FLOWER, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(EnderscapeBlocks.WISP_FLOWER)));
+        context.register(WISP_FLOWER, new SimpleBlockFeature(BlockStateProvider.of(EnderscapeBlocks.WISP_FLOWER)));
 
-        register(context, VEILED_TREE, EnderscapeFeatures.VEILED_TREE, new VeiledTreeFeature.Config(
+        context.register(VEILED_TREE, new VeiledTreeFeature(
                 UniformInt.of(1, 2),
                 UniformInt.of(3, 4),
                 ConstantInt.of(3),
                 UniformInt.of(4, 5),
                 ConstantFloat.of(0.6F),
-                Optional.of(new GrowthFeature.Config(
+                Optional.of(new GrowthFeature(
                         EnderscapeBlocks.VEILED_VINES.defaultBlockState(),
                         UniformInt.of(1, 2),
                         UniformInt.of(1, 6),
                         0.15F)
                 ),
-                Optional.of(new VeiledLeafPileFeature.Config(
+                Optional.of(new VeiledLeafPileFeature(
                         UniformFloat.of(6.0F, 10.0F),
                         ConstantFloat.of(0.2F),
                         UniformInt.of(1, 2)
                 ))
         ));
 
-        register(context, VEILED_TREE_FROM_SAPLING, EnderscapeFeatures.VEILED_TREE, new VeiledTreeFeature.Config(
+        context.register(VEILED_TREE_FROM_SAPLING, new VeiledTreeFeature(
                 UniformInt.of(1, 2),
                 UniformInt.of(3, 4),
                 ConstantInt.of(3),
                 UniformInt.of(4, 5),
                 ConstantFloat.of(0.6F),
-                Optional.of(new GrowthFeature.Config(
+                Optional.of(new GrowthFeature(
                         EnderscapeBlocks.VEILED_VINES.defaultBlockState(),
                         UniformInt.of(1, 2),
                         UniformInt.of(1, 6),
@@ -180,20 +173,20 @@ public class EnderscapeConfiguredFeatures {
         ));
     }
 
-    private static void registerMagniaCrags(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        register(context, UPWARD_ALLURING_MAGNIA_SPROUT, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(simple(EnderscapeBlocks.ALLURING_MAGNIA_SPROUT)));
+    private static void registerMagniaCrags(BootstrapContext<Feature> context) {
+        context.register(UPWARD_ALLURING_MAGNIA_SPROUT, new SimpleBlockFeature(BlockStateProvider.of(EnderscapeBlocks.ALLURING_MAGNIA_SPROUT)));
 
-        register(context, DOWNWARD_REPULSIVE_MAGNIA_SPROUT, Feature.BLOCK_COLUMN,
-                new BlockColumnConfiguration(List.of(
-                        BlockColumnConfiguration.layer(
+        context.register(DOWNWARD_REPULSIVE_MAGNIA_SPROUT,
+                new BlockColumnFeature(List.of(
+                        BlockColumnFeature.layer(
                                 ConstantInt.of(1),
-                                simple(EnderscapeBlocks.REPULSIVE_MAGNIA_SPROUT.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN))
+                                BlockStateProvider.of(EnderscapeBlocks.REPULSIVE_MAGNIA_SPROUT.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN))
                         )
                 ), Direction.DOWN, BlockPredicate.ONLY_IN_AIR_PREDICATE, true));
 
-        register(context, MAGNIA_ARCH, EnderscapeFeatures.MAGNIA_ARCH, new NoneFeatureConfiguration());
+        context.register(MAGNIA_ARCH, new MagniaArchFeature());
 
-        register(context, MAGNIA_TOWER, EnderscapeFeatures.MAGNIA_TOWER, new MagniaTowerFeature.Config(
+        context.register(MAGNIA_TOWER, new MagniaTowerFeature(
                 UniformFloat.of(6.0F, 8.0F),
                 UniformInt.of(12, 18),
                 ConstantInt.of(3),
@@ -202,63 +195,63 @@ public class EnderscapeConfiguredFeatures {
                 ConstantFloat.of(0.05F))
         );
 
-        register(context, MAGNIA_SPIKE, EnderscapeFeatures.MAGNIA_SPIKE, new MagniaSpikeFeature.Config(
+        context.register(MAGNIA_SPIKE, new MagniaSpikeFeature(
                 UniformInt.of(3, 8),
                 ConstantFloat.of(0.05F),
                 2)
         );
 
-        register(context, LARGE_MAGNIA_SPIKE, EnderscapeFeatures.MAGNIA_SPIKE, new MagniaSpikeFeature.Config(
+        context.register(LARGE_MAGNIA_SPIKE, new MagniaSpikeFeature(
                 UniformInt.of(6, 12),
                 ConstantFloat.of(0.05F),
                 6)
         );
     }
 
-    private static void registerCelestialGrove(BootstrapContext<ConfiguredFeature<?, ?>> context) {
+    private static void registerCelestialGrove(BootstrapContext<Feature> context) {
         BlockState poweredBulbFlower = PurifyingPhase.with(EnderscapeBlocks.BULB_FLOWER, PurifyingPhase.INACTIVE);
 
-        register(context, BULB_FLOWER, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(simple(poweredBulbFlower)));
-        register(context, CELESTIAL_GROVE_VEGETATION, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+        context.register(BULB_FLOWER, new SimpleBlockFeature(BlockStateProvider.of(poweredBulbFlower)));
+        context.register(CELESTIAL_GROVE_VEGETATION, new SimpleBlockFeature(
                 new WeightedStateProvider(new WeightedList.Builder<BlockState>()
                         .add(EnderscapeBlocks.CELESTIAL_CHANTERELLE.defaultBlockState(), 8)
                         .add(poweredBulbFlower, 1)
                 )
         ));
-        register(context, CELESTIAL_GROWTH, EnderscapeFeatures.GROWTH, new GrowthFeature.Config(EnderscapeBlocks.CELESTIAL_GROWTH.defaultBlockState(), UniformInt.of(1, 2), UniformInt.of(1, 3), 0.125F));
-        register(context, LARGE_CELESTIAL_CHANTERELLE, EnderscapeFeatures.LARGE_CELESTIAL_CHANTERELLE, new LargeCelestialChanterelleFeature.Config(UniformInt.of(10, 35), 4, 0.75F, 1, 64, 16));
+        context.register(CELESTIAL_GROWTH, new GrowthFeature(EnderscapeBlocks.CELESTIAL_GROWTH.defaultBlockState(), UniformInt.of(1, 2), UniformInt.of(1, 3), 0.125F));
+        context.register(LARGE_CELESTIAL_CHANTERELLE, new LargeCelestialChanterelleFeature(UniformInt.of(10, 35), 4, 0.75F, 1, 64, 16));
     }
 
-    private static void registerCorruptBarrens(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        register(context, MIRESTONE_PILLARS, Feature.BLOCK_COLUMN, BlockColumnConfiguration.simple(BiasedToBottomInt.of(1, 4), simple(EnderscapeBlocks.MIRESTONE)));
+    private static void registerCorruptBarrens(BootstrapContext<Feature> context) {
+        context.register(MIRESTONE_PILLARS, BlockColumnFeature.simple(BiasedToBottomInt.of(1, 4), BlockStateProvider.of(EnderscapeBlocks.MIRESTONE)));
 
-        register(context, KURODITE, Feature.ORE, new OreConfiguration(KURODITE_TARGETS, 28));
+        context.register(KURODITE, new OreFeature(KURODITE_TARGETS, 28));
 
-        register(context, BLINKLIGHT_VINES, Feature.BLOCK_COLUMN,
-                new BlockColumnConfiguration(List.of(
-                        BlockColumnConfiguration.layer(UniformInt.of(4, 15), simple(EnderscapeBlocks.BLINKLIGHT_VINES_BODY)),
-                        BlockColumnConfiguration.layer(ConstantInt.of(1), simple(EnderscapeBlocks.BLINKLIGHT_VINES_HEAD.defaultBlockState().setValue(StateProperties.AGE_25, 25)))
+        context.register(BLINKLIGHT_VINES,
+                new BlockColumnFeature(List.of(
+                        BlockColumnFeature.layer(UniformInt.of(4, 15), BlockStateProvider.of(EnderscapeBlocks.BLINKLIGHT_VINES_BODY)),
+                        BlockColumnFeature.layer(ConstantInt.of(1), BlockStateProvider.of(EnderscapeBlocks.BLINKLIGHT_VINES_HEAD.defaultBlockState().setValue(StateProperties.AGE_25, 25)))
                 ), Direction.DOWN, BlockPredicate.ONLY_IN_AIR_PREDICATE, true));
 
-        register(context, CORRUPT_BARRENS_VEGETATION, Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(
+        context.register(CORRUPT_BARRENS_VEGETATION, new SimpleBlockFeature(
                 new WeightedStateProvider(new WeightedList.Builder<BlockState>()
                         .add(EnderscapeBlocks.MURUBLIGHT_CHANTERELLE.defaultBlockState(), 1)
                 ))
         );
 
-        register(context, UPWARD_CORRUPT_GROWTH, EnderscapeFeatures.GROWTH, new GrowthFeature.Config(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.UP), ConstantInt.of(1), UniformInt.of(0, 1), 0.3F));
-        register(context, UPWARD_TALL_CORRUPT_GROWTH, EnderscapeFeatures.GROWTH, new GrowthFeature.Config(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.UP), UniformInt.of(3, 4), ConstantInt.of(0), 0.0F));
+        context.register(UPWARD_CORRUPT_GROWTH, new GrowthFeature(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.UP), ConstantInt.of(1), UniformInt.of(0, 1), 0.3F));
+        context.register(UPWARD_TALL_CORRUPT_GROWTH, new GrowthFeature(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.UP), UniformInt.of(3, 4), ConstantInt.of(0), 0.0F));
 
-        register(context, DOWNWARD_CORRUPT_GROWTH, EnderscapeFeatures.GROWTH, new GrowthFeature.Config(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN), ConstantInt.of(1), UniformInt.of(1, 2), 0.5F));
-        register(context, DOWNWARD_TALL_CORRUPT_GROWTH, EnderscapeFeatures.GROWTH, new GrowthFeature.Config(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN), UniformInt.of(4, 8), ConstantInt.of(0), 0.0F));
+        context.register(DOWNWARD_CORRUPT_GROWTH, new GrowthFeature(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN), ConstantInt.of(1), UniformInt.of(1, 2), 0.5F));
+        context.register(DOWNWARD_TALL_CORRUPT_GROWTH, new GrowthFeature(EnderscapeBlocks.CORRUPT_GROWTH.defaultBlockState().setValue(StateProperties.FACING, Direction.DOWN), UniformInt.of(4, 8), ConstantInt.of(0), 0.0F));
 
-        register(context, DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE, EnderscapeFeatures.LARGE_MURUBLIGHT_CHANTERELLE, new LargeMurublightChanterelleFeature.Config(Direction.DOWN, UniformInt.of(15, 30), UniformInt.of(4, 6), 32));
-        register(context, UPWARD_LARGE_MURUBLIGHT_CHANTERELLE, EnderscapeFeatures.LARGE_MURUBLIGHT_CHANTERELLE, new LargeMurublightChanterelleFeature.Config(Direction.UP, UniformInt.of(15, 30), UniformInt.of(4, 6), 32));
+        context.register(DOWNWARD_LARGE_MURUBLIGHT_CHANTERELLE, new LargeMurublightChanterelleFeature(Direction.DOWN, UniformInt.of(15, 30), UniformInt.of(4, 6), 32));
+        context.register(UPWARD_LARGE_MURUBLIGHT_CHANTERELLE, new LargeMurublightChanterelleFeature(Direction.UP, UniformInt.of(15, 30), UniformInt.of(4, 6), 32));
     }
 
-    private static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        ResourceKey<ConfiguredFeature<?, ?>> key = ResourceKey.create(Registries.CONFIGURED_FEATURE, Enderscape.id(name));
-        CONFIGURED_FEATURES.add(key);
+    private static ResourceKey<Feature> registerKey(String name) {
+        ResourceKey<Feature> key = ResourceKey.create(Registries.FEATURE, Enderscape.id(name));
+        FEATURES.add(key);
         return key;
     }
 }

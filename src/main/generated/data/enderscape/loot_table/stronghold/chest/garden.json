@@ -10,16 +10,14 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 6,
+              "min": 3
             }
-          ],
+          },
           "name": "minecraft:lapis_lazuli",
           "weight": 5
         },
@@ -40,64 +38,58 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
-              "options": "#minecraft:on_random_loot"
-            }
-          ],
+          "modifier": {
+            "type": "minecraft:enchant_with_levels",
+            "levels": 30,
+            "options": "#minecraft:on_random_loot"
+          },
           "name": "minecraft:book",
           "weight": 5
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 3,
+              "min": 1
             }
-          ],
+          },
           "name": "minecraft:golden_apple",
           "weight": 5
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 6.0,
-                "min": 3.0
-              },
-              "function": "minecraft:set_count"
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "max": 6,
+              "min": 3
             }
-          ],
+          },
           "name": "minecraft:golden_carrot",
           "weight": 5
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_components",
               "components": {
                 "minecraft:potion_contents": {
                   "potion": "minecraft:strong_healing"
                 }
-              },
-              "function": "minecraft:set_components"
+              }
             },
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+                "max": 3,
+                "min": 1
+              }
             }
           ],
           "name": "minecraft:potion",
@@ -105,22 +97,22 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
+              "type": "minecraft:set_components",
               "components": {
                 "minecraft:potion_contents": {
                   "potion": "minecraft:strong_strength"
                 }
-              },
-              "function": "minecraft:set_components"
+              }
             },
             {
+              "type": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "max": 3.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
+                "max": 3,
+                "min": 1
+              }
             }
           ],
           "name": "minecraft:potion",
@@ -128,19 +120,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_sword",
@@ -148,19 +140,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_pickaxe",
@@ -168,19 +160,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_helmet",
@@ -188,19 +180,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_chestplate",
@@ -208,19 +200,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_leggings",
@@ -228,19 +220,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:iron_boots",
@@ -248,19 +240,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:diamond_sword",
@@ -268,19 +260,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:diamond_pickaxe",
@@ -288,19 +280,19 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
+          "modifier": [
             {
-              "function": "minecraft:enchant_with_levels",
-              "levels": 30.0,
+              "type": "minecraft:enchant_with_levels",
+              "levels": 30,
               "options": "#minecraft:on_random_loot"
             },
             {
+              "type": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
                 "max": 0.95,
                 "min": 0.6
-              },
-              "function": "minecraft:set_damage"
+              }
             }
           ],
           "name": "minecraft:diamond_chestplate",
@@ -317,8 +309,8 @@
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 3.0,
-        "min": 2.0
+        "max": 3,
+        "min": 2
       }
     },
     {
@@ -345,28 +337,26 @@
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "effects": [
-                {
-                  "type": "minecraft:regeneration",
-                  "duration": {
-                    "type": "minecraft:uniform",
-                    "max": 10.0,
-                    "min": 7.0
-                  }
+          "modifier": {
+            "type": "minecraft:set_stew_effect",
+            "effects": [
+              {
+                "type": "minecraft:regeneration",
+                "duration": {
+                  "type": "minecraft:uniform",
+                  "max": 10,
+                  "min": 7
                 }
-              ],
-              "function": "minecraft:set_stew_effect"
-            }
-          ],
+              }
+            ]
+          },
           "name": "minecraft:suspicious_stew"
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 4.0,
-        "min": 2.0
+        "max": 4,
+        "min": 2
       }
     }
   ]

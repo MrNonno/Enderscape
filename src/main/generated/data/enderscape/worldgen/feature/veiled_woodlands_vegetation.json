@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:simple_block",
+  "to_place": {
+    "type": "minecraft:weighted",
+    "entries": [
+      {
+        "data": "enderscape:wisp_sprouts",
+        "weight": 4
+      },
+      {
+        "data": "enderscape:wisp_growth",
+        "weight": 1
+      }
+    ]
+  }
+}

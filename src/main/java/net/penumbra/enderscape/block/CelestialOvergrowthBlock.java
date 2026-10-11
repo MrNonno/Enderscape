@@ -7,6 +7,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BonemealSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.penumbra.enderscape.block.properties.DirectionSet;
 import net.penumbra.enderscape.block.state.StateProperties;
@@ -14,9 +15,6 @@ import net.penumbra.enderscape.registry.block.EnderscapeBlocks;
 import net.penumbra.enderscape.registry.sound.EnderscapeBlockSounds;
 
 public class CelestialOvergrowthBlock extends AbstractOvergrowthBlock {
-
-    public static final MapCodec<CelestialOvergrowthBlock> CODEC = simpleCodec(CelestialOvergrowthBlock::new);
-
     private static final UniformInt MAXIMUM_VEGETATION_GENERATED = UniformInt.of(1, 3);
     private static final UniformInt BONE_MEAL_VEGETATION_RADIUS = UniformInt.of(2, 4);
 
@@ -25,13 +23,8 @@ public class CelestialOvergrowthBlock extends AbstractOvergrowthBlock {
     }
 
     @Override
-    protected MapCodec<CelestialOvergrowthBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state) {
-        super.performBonemeal(level, random, origin, state);
+    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos origin, BlockState state, BonemealSource source) {
+        super.performBonemeal(level, random, origin, state, source);
 
         int generated = 0;
 

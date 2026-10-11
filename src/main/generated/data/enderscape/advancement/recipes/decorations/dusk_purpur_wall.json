@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:dusk_purpur_wall"
+        "recipes": "enderscape:dusk_purpur_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

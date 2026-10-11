@@ -3,18 +3,19 @@ package net.penumbra.enderscape.registry.lithostitched;
 import dev.worldgen.lithostitched.api.registry.LithostitchedRegistries;
 import dev.worldgen.lithostitched.api.util.InjectionType;
 import dev.worldgen.lithostitched.api.worldgen.modifier.WorldgenModifier;
-import dev.worldgen.lithostitched.worldgen.modifier.attribute.SetDimensionAttributesModifier;
-import dev.worldgen.lithostitched.worldgen.modifier.attribute.SetTimelineTracksModifier;
+import dev.worldgen.lithostitched.impl.worldgen.modifier.SetDimensionAttributesModifier;
+import dev.worldgen.lithostitched.impl.worldgen.modifier.SetTimelineTracksModifier;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
+import net.minecraft.data.worldgen.material.EndMaterialRules;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.ARGB;
 import net.minecraft.util.KeyframeTrack;
 import net.minecraft.world.attribute.*;
 import net.minecraft.world.attribute.modifier.BooleanModifier;
 import net.minecraft.world.attribute.modifier.FloatModifier;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -45,7 +46,7 @@ public class EnderscapeWorldgenModifiers {
     public static final ResourceKey<WorldgenModifier> FEATURES_BARRENS_VOID_LAKES = register("features/barrens_void_lakes");
     public static final ResourceKey<WorldgenModifier> FEATURES_BARRENS_VEGETATION = register("features/barrens_vegetation");
 
-    public static final ResourceKey<WorldgenModifier> SURFACE_RULES_END = register("surface_rules/end");
+    public static final ResourceKey<WorldgenModifier> MATERIAL_RULES_END = register("material_rules/end");
 
     public static final ResourceKey<WorldgenModifier> TIMELINES_OVERWORLD_DAY = register("timelines/overworld_day");
 
@@ -75,7 +76,7 @@ public class EnderscapeWorldgenModifiers {
                 WorldgenModifier.DEFAULT_PRIORITY,
                 HolderSet.direct(context.lookup(Registries.DIMENSION_TYPE).getOrThrow(BuiltinDimensionTypes.END)),
                 EnvironmentAttributeMap.builder()
-                        .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, 0x1A1E1A)
+                        .set(EnvironmentAttributes.AMBIENT_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x1A1E1A))
                         .set(EnvironmentAttributes.AMBIENT_PARTICLES, AmbientParticle.of(EnderscapeParticles.VOID_STARS, 0.003F))
                         .set(EnvironmentAttributes.AMBIENT_SOUNDS, new AmbientSounds(
                                 Optional.of(EnderscapeBiomeSounds.DEFAULT_END.loop()),
@@ -83,11 +84,11 @@ public class EnderscapeWorldgenModifiers {
                                 List.of(new AmbientAdditionsSettings(EnderscapeBiomeSounds.DEFAULT_END.additions(), 0.00075))
                         ))
                         .set(EnvironmentAttributes.BACKGROUND_MUSIC, new BackgroundMusic(EnderscapeBiomeSounds.DEFAULT_END.music()))
-                        .set(EnvironmentAttributes.BLOCK_LIGHT_TINT, 0xFFA69E)
-                        .set(EnvironmentAttributes.CLOUD_COLOR, EnderscapeBiomes.DEFAULT_CLOUD_COLOR)
-                        .set(EnvironmentAttributes.SKY_COLOR, EnderscapeBiomes.DEFAULT_SKY_COLOR)
-                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, 0x654B82)
-                        .set(EnvironmentAttributes.FOG_COLOR, EnderscapeBiomes.DEFAULT_FOG_COLOR)
+                        .set(EnvironmentAttributes.BLOCK_LIGHT_TINT, ARGB.vector3fFromRGB24(0xFFA69E))
+                        .set(EnvironmentAttributes.CLOUD_COLOR, ARGB.vector4fFromARGB32(EnderscapeBiomes.DEFAULT_CLOUD_COLOR))
+                        .set(EnvironmentAttributes.SKY_COLOR, ARGB.vector3fFromRGB24(EnderscapeBiomes.DEFAULT_SKY_COLOR))
+                        .set(EnvironmentAttributes.SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x654B82))
+                        .set(EnvironmentAttributes.FOG_COLOR, ARGB.vector3fFromRGB24(EnderscapeBiomes.DEFAULT_FOG_COLOR))
                         .set(EnvironmentAttributes.FOG_START_DISTANCE, -20.0F)
                         .set(EnvironmentAttributes.STAR_BRIGHTNESS, EnderscapeEnvironmentAttributes.DEFAULT_STAR_BRIGHTNESS)
                         .modify(EnderscapeEnvironmentAttributes.FOG_END_DENSITY, FloatModifier.MULTIPLY, 0.9F)
@@ -118,7 +119,11 @@ public class EnderscapeWorldgenModifiers {
                 true
         ));
 
-        context.register(SURFACE_RULES_END, WorldgenModifier.builder().addSurfaceRule(Level.END, InjectionType.PREPEND, EnderscapeSurfaceRules.create(context.lookup(Registries.BIOME))));
+        context.register(MATERIAL_RULES_END, WorldgenModifier.builder().setMaterialRule(
+                context.lookup(Registries.MATERIAL_RULE).getOrThrow(EndMaterialRules.END),
+                context.lookup(Registries.MATERIAL_RULE).getOrThrow(EnderscapeSurfaceRules.END),
+                InjectionType.PREPEND)
+        );
     }
 
     private static ResourceKey<WorldgenModifier> register(String name) {

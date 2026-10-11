@@ -25,14 +25,8 @@ import java.util.Optional;
 import java.util.function.ToIntFunction;
 
 public class PolarizedMagniaBlock extends Block implements HasMagniaPolarity, HasMagniaPowerSignal {
-    public static final MapCodec<PolarizedMagniaBlock> CODEC = simpleCodec(PolarizedMagniaBlock::new);
-
     public static final BooleanProperty POWERED = StateProperties.POWERED;
     public static final EnumProperty<MagniaPolarityProperty> POLARITY = StateProperties.MAGNIA_POLARITY;
-
-    protected MapCodec<? extends PolarizedMagniaBlock> codec() {
-        return CODEC;
-    }
 
     public PolarizedMagniaBlock(BlockBehaviour.Properties properties) {
         super(properties);

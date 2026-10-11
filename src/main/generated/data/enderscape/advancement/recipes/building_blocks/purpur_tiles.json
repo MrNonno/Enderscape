@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:purpur_tiles"
+        "recipes": "enderscape:purpur_tiles"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -7,7 +7,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Endermite;
 import net.penumbra.enderscape.registry.tag.EnderscapeBlockTags;
 import org.spongepowered.asm.mixin.Final;
@@ -29,13 +29,13 @@ public abstract class NearestAttackableTargetGoalMixin<T extends LivingEntity> e
 
     @Inject(method = "getTargetConditions", at = @At("RETURN"), cancellable = true)
     public void Enderscape$getTargetConditions(CallbackInfoReturnable<TargetingConditions> info) {
-        if (mob instanceof EnderMan && targetType == Endermite.class) {
+        if (mob instanceof Enderman && targetType == Endermite.class) {
             info.setReturnValue(info.getReturnValue().selector(NearestAttackableTargetGoalMixin::isEndermiteUnsafe));
         }
     }
 
     @Unique
     private static boolean isEndermiteUnsafe(LivingEntity entity, ServerLevel level) {
-        return BlockPos.findClosestMatch(entity.blockPosition(), 6, 6, pos -> level.getBlockState(pos).is(EnderscapeBlockTags.ENDERMITE_SAFE_WHEN_NEARBY)).isEmpty();
+        return level.findBlocksInBoxByManhattanDistance(entity.blockPosition(), 6).filterState(state -> state.is(EnderscapeBlockTags.ENDERMITE_SAFE_WHEN_NEARBY)).findFirst().isEmpty();
     }
 }

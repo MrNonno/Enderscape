@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:void_torch"
+        "recipes": "enderscape:void_torch"
       },
       "trigger": "minecraft:recipe_unlocked"
     },

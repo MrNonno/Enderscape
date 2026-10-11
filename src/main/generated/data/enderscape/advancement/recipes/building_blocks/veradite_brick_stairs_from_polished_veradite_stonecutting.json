@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:veradite_brick_stairs_from_polished_veradite_stonecutting"
+        "recipes": "enderscape:veradite_brick_stairs_from_polished_veradite_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

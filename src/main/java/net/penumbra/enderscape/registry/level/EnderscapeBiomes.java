@@ -7,6 +7,8 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.EndPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ARGB;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.attribute.*;
 import net.minecraft.world.attribute.modifier.ColorModifier;
 import net.minecraft.world.attribute.modifier.FloatModifier;
@@ -17,12 +19,14 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.carver.WorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.penumbra.enderscape.Enderscape;
 import net.penumbra.enderscape.registry.entity.EnderscapeEntities;
 import net.penumbra.enderscape.registry.particle.EnderscapeParticles;
 import net.penumbra.enderscape.registry.sound.EnderscapeBiomeSounds;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,17 +78,13 @@ public class EnderscapeBiomes {
 
     public static Biome celestialGrove(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder()
                 .addSpawn(
-                        MobCategory.CREATURE,
+                        EnderscapeEntities.DRIFTER,
                         6,
-                        new MobSpawnSettings.SpawnerData(
-                                EnderscapeEntities.DRIFTER,
-                                2,
-                                3
-                        )
+                        UniformInt.of(2, 3)
                 );
 
         BiomeDefaultFeatures.endSpawns(spawns);
@@ -113,18 +113,18 @@ public class EnderscapeBiomes {
                 .addFeature(VEGETAL_DECORATION, EnderscapePlacedFeatures.UNCOMMON_MURUBLIGHT_BRACKET);
 
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
-                .set(NEBULA_COLOR, 0x875643)
-                .set(STAR_COLOR, 0xFFA589)
+                .set(NEBULA_COLOR, ARGB.vector3fFromRGB24(0x875643))
+                .set(STAR_COLOR, ARGB.vector3fFromRGB24(0xFFA589))
 
                 .modify(NEBULA_BRIGHTNESS, FloatModifier.MULTIPLY, 1.15F)
                 .modify(STAR_BRIGHTNESS, FloatModifier.MULTIPLY, 1.4F)
 
-                .set(SKY_LIGHT_COLOR, 0x6B3D4D)
-                .set(FOG_COLOR, 0x120D14)
+                .set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x6B3D4D))
+                .set(FOG_COLOR, ARGB.vector3fFromRGB24(0x120D14))
                 .set(FOG_END_DENSITY, 0.85F)
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
 
-                .set(WATER_FOG_COLOR, 0x3d7363)
+                .set(WATER_FOG_COLOR, ARGB.vector3fFromRGB24(0x3d7363))
                 .set(AMBIENT_PARTICLES, AmbientParticle.of(EnderscapeParticles.CELESTIAL_SPORES, 0.012F))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.CELESTIAL_GROVE.loop()),
@@ -141,32 +141,24 @@ public class EnderscapeBiomes {
 
     public static Biome corruptBarrens(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder()
                 .addSpawn(
-                        MobCategory.MONSTER,
+                        EntityTypes.ENDERMITE,
                         RUBBLEMITE_DEFAULT_WEIGHT * 2,
-                        new MobSpawnSettings.SpawnerData(
-                                EntityTypes.ENDERMITE,
-                                1,
-                                1
-                        )
+                        ConstantInt.of(1)
                 )
                 .addSpawn(
-                        MobCategory.MONSTER,
+                        EnderscapeEntities.RUBBLEMITE,
                         RUBBLEMITE_DEFAULT_WEIGHT,
-                        new MobSpawnSettings.SpawnerData(
-                                EnderscapeEntities.RUBBLEMITE,
-                                1,
-                                1
-                        )
+                        ConstantInt.of(1)
                 )
-                .addMobCharge(
+                .addMobSpawnCost(
                         EntityTypes.ENDERMITE,
                         1, 2
                 )
-                .addMobCharge(
+                .addMobSpawnCost(
                         EnderscapeEntities.RUBBLEMITE,
                         1, 1
                 );
@@ -198,20 +190,19 @@ public class EnderscapeBiomes {
                 .addFeature(VEGETAL_DECORATION, EnderscapePlacedFeatures.VOID_FIRE_ON_KURODITE);
 
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
-                .modify(AMBIENT_LIGHT_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.colorFromFloat(1.0F, 0.7F, 0.55F, 0.75F))
+                .modify(AMBIENT_LIGHT_COLOR, ColorModifier.MULTIPLY_RGB, new Vector3f(0.7F, 0.55F, 0.75F))
 
                 .modify(NEBULA_BRIGHTNESS, FloatModifier.MULTIPLY, 0.9F)
                 .modify(STAR_BRIGHTNESS, FloatModifier.MULTIPLY, 1.2F)
 
-                .set(SKY_LIGHT_COLOR, 0x242035)
-                .modify(SKY_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.colorFromFloat(1.0F, 0.4F, 0.3F, 0.5F))
-                .set(SKY_LIGHT_COLOR, 0x242035)
-                .set(FOG_COLOR, 0x07040B)
+                .set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x242035))
+                .modify(SKY_COLOR, ColorModifier.MULTIPLY_RGB, new Vector3f(0.4F, 0.3F, 0.5F))
+                .set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x242035))
+                .set(FOG_COLOR, ARGB.vector3fFromRGB24(0x07040B))
                 .set(FOG_START_DISTANCE, -20.0F)
                 .modify(FOG_END_DENSITY, FloatModifier.MULTIPLY, 0.5F)
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
-
-                .set(WATER_FOG_COLOR, 0x544f63)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
+                .set(WATER_FOG_COLOR, ARGB.vector3fFromRGB24(0x544f63))
                 .set(AMBIENT_PARTICLES, AmbientParticle.of(EnderscapeParticles.VOID_STARS, 0.0045F))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.CORRUPT_BARRENS.loop()),
@@ -228,28 +219,20 @@ public class EnderscapeBiomes {
 
     public static Biome veiledWoodlands(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder()
                 .addSpawn(
-                        MobCategory.CREATURE,
+                        EnderscapeEntities.RUSTLE,
                         6,
-                        new MobSpawnSettings.SpawnerData(
-                                EnderscapeEntities.RUSTLE,
-                                2,
-                                3
-                        )
+                        UniformInt.of(2, 3)
                 )
                 .addSpawn(
-                        MobCategory.MONSTER,
+                        EnderscapeEntities.RUBBLEMITE,
                         RUBBLEMITE_DEFAULT_WEIGHT,
-                        new MobSpawnSettings.SpawnerData(
-                                EnderscapeEntities.RUBBLEMITE,
-                                2,
-                                3
-                        )
+                        UniformInt.of(2, 3)
                 )
-                .addMobCharge(
+                .addMobSpawnCost(
                         EnderscapeEntities.RUBBLEMITE,
                         0.2, 0.6
                 );
@@ -280,18 +263,18 @@ public class EnderscapeBiomes {
                 .addFeature(VEGETAL_DECORATION, EnderscapePlacedFeatures.VOID_FIRE_ON_VOID_SHALE);
 
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
-                .set(NEBULA_COLOR, 0x969BAA)
-                .set(STAR_COLOR, 0xB493FF)
+                .set(NEBULA_COLOR, ARGB.vector3fFromRGB24(0x969BAA))
+                .set(STAR_COLOR, ARGB.vector3fFromRGB24(0xB493FF))
 
                 .modify(NEBULA_BRIGHTNESS, FloatModifier.MULTIPLY, 0.75F)
 
-                .set(SKY_COLOR, 0x161621)
-                .set(SKY_LIGHT_COLOR, 0x242035)
-                .set(FOG_COLOR, 0x101017)
+                .set(SKY_COLOR, ARGB.vector3fFromRGB24(0x161621))
+                .set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x242035))
+                .set(FOG_COLOR, ARGB.vector3fFromRGB24(0x101017))
                 .set(FOG_END_DENSITY, 0.75F)
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
 
-                .set(WATER_FOG_COLOR, 0x464d59)
+                .set(WATER_FOG_COLOR, ARGB.vector3fFromRGB24(0x464d59))
                 .set(AMBIENT_PARTICLES, AmbientParticle.of(EnderscapeParticles.VOID_STARS, 0.003F))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.VEILED_WOODLANDS.loop()),
@@ -308,19 +291,15 @@ public class EnderscapeBiomes {
 
     public static Biome magniaCrags(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         MobSpawnSettings.Builder spawns = new MobSpawnSettings.Builder()
                 .addSpawn(
-                        MobCategory.MONSTER,
-                        RUBBLEMITE_DEFAULT_WEIGHT,
-                        new MobSpawnSettings.SpawnerData(
-                                EnderscapeEntities.RUBBLEMITE,
-                                2,
-                                3
-                        )
+                        EnderscapeEntities.RUBBLEMITE,
+                        RUBBLEMITE_DEFAULT_WEIGHT, 
+                        UniformInt.of(2, 3)
                 )
-                .addMobCharge(
+                .addMobSpawnCost(
                         EnderscapeEntities.RUBBLEMITE,
                         0.2, 0.6
                 );
@@ -355,18 +334,18 @@ public class EnderscapeBiomes {
                 .addFeature(VEGETAL_DECORATION, EnderscapePlacedFeatures.VOID_FIRE_ON_VOID_SHALE);
 
         EnvironmentAttributeMap attributes = EnvironmentAttributeMap.builder()
-                .set(NEBULA_COLOR, 0x96AD9E)
-                .set(STAR_COLOR, 0x89FFD5)
+                .set(NEBULA_COLOR, ARGB.vector3fFromRGB24(0x96AD9E))
+                .set(STAR_COLOR, ARGB.vector3fFromRGB24(0x89FFD5))
 
                 .modify(NEBULA_BRIGHTNESS, FloatModifier.MULTIPLY, 0.5F)
                 .modify(STAR_BRIGHTNESS, FloatModifier.MULTIPLY, 0.85F)
 
-                .set(SKY_COLOR, 0x151616)
-                .set(SKY_LIGHT_COLOR, 0x374745)
-                .set(FOG_COLOR, 0x0F1010)
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(SKY_COLOR, ARGB.vector3fFromRGB24(0x151616))
+                .set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x374745))
+                .set(FOG_COLOR, ARGB.vector3fFromRGB24(0x0F1010))
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
 
-                .set(WATER_FOG_COLOR, 0x5e656e)
+                .set(WATER_FOG_COLOR, ARGB.vector3fFromRGB24(0x5e656e))
                 .set(AMBIENT_PARTICLES, AmbientParticle.of(EnderscapeParticles.VOID_STARS, 0.003F))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.MAGNIA_FIELDS.loop()),
@@ -383,7 +362,7 @@ public class EnderscapeBiomes {
 
     public static Biome voidDepths(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder(features, carvers)
                 .addFeature(UNDERGROUND_ORES, EnderscapePlacedFeatures.VERADITE)
@@ -399,7 +378,7 @@ public class EnderscapeBiomes {
                 .addFeature(VEGETAL_DECORATION, EnderscapePlacedFeatures.VOID_FIRE_ON_VOID_SHALE);
 
         EnvironmentAttributeMap.Builder attributes = EnvironmentAttributeMap.builder()
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.VOID_DEPTHS.loop()),
                         Optional.of(new AmbientMoodSettings(EnderscapeBiomeSounds.VOID_DEPTHS.mood(), 6000, 8, 2)),
@@ -413,7 +392,7 @@ public class EnderscapeBiomes {
 
     public static Biome voidSkies(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder(features, carvers)
                 .addFeature(UNDERGROUND_ORES, EnderscapePlacedFeatures.VERADITE)
@@ -424,7 +403,7 @@ public class EnderscapeBiomes {
                 .addFeature(UNDERGROUND_ORES, EnderscapePlacedFeatures.CEILING_NEBULITE_ORE);
 
         EnvironmentAttributeMap.Builder attributes = EnvironmentAttributeMap.builder()
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.VOID_SKIES.loop()),
                         Optional.of(new AmbientMoodSettings(EnderscapeBiomeSounds.VOID_SKIES.mood(), 6000, 8, 2)),
@@ -438,7 +417,7 @@ public class EnderscapeBiomes {
 
     public static Biome voidSkyIslands(BootstrapContext<Biome> context) {
         HolderGetter<PlacedFeature> features = context.lookup(Registries.PLACED_FEATURE);
-        HolderGetter<ConfiguredWorldCarver<?>> carvers = context.lookup(Registries.CONFIGURED_CARVER);
+        HolderGetter<WorldCarver> carvers = context.lookup(Registries.CARVER);
 
         BiomeGenerationSettings.Builder builder = new BiomeGenerationSettings.Builder(features, carvers)
                 .addFeature(UNDERGROUND_ORES, EnderscapePlacedFeatures.VERADITE)
@@ -450,7 +429,7 @@ public class EnderscapeBiomes {
                 .addFeature(SURFACE_STRUCTURES, EnderscapePlacedFeatures.SMALL_SKY_ISLANDS);
 
         EnvironmentAttributeMap.Builder attributes = EnvironmentAttributeMap.builder()
-                .set(CLOUD_COLOR, DEFAULT_CLOUD_COLOR)
+                .set(CLOUD_COLOR, ARGB.vector4fFromARGB32(DEFAULT_CLOUD_COLOR))
                 .set(AMBIENT_SOUNDS, new AmbientSounds(
                         Optional.of(EnderscapeBiomeSounds.VOID_SKY_ISLANDS.loop()),
                         Optional.of(new AmbientMoodSettings(EnderscapeBiomeSounds.VOID_SKY_ISLANDS.mood(), 6000, 8, 2)),
@@ -465,14 +444,14 @@ public class EnderscapeBiomes {
     private static void voidBiomeEnvironmentAttributes(EnvironmentAttributeMap.Builder attributes) {
         attributes.set(AMBIENT_ENTITY_VOIDING_RATE, 1.0F);
 
-        attributes.modify(AMBIENT_LIGHT_COLOR, ColorModifier.MULTIPLY_RGB, VOID_BIOMES_BLEND_COLOR);
-        attributes.set(SKY_LIGHT_COLOR, 0x000000);
+        attributes.modify(AMBIENT_LIGHT_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.vector3fFromRGB24(VOID_BIOMES_BLEND_COLOR));
+        attributes.set(SKY_LIGHT_COLOR, ARGB.vector3fFromRGB24(0x000000));
 
-        attributes.modify(SKY_COLOR, ColorModifier.MULTIPLY_RGB, VOID_BIOMES_BLEND_COLOR);
-        attributes.modify(FOG_COLOR, ColorModifier.MULTIPLY_RGB, VOID_BIOMES_BLEND_COLOR);
+        attributes.modify(SKY_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.vector3fFromRGB24(VOID_BIOMES_BLEND_COLOR));
+        attributes.modify(FOG_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.vector3fFromRGB24(VOID_BIOMES_BLEND_COLOR));
 
-        attributes.modify(NEBULA_COLOR, ColorModifier.MULTIPLY_RGB, VOID_BIOMES_BLEND_COLOR);
-        attributes.modify(STAR_COLOR, ColorModifier.MULTIPLY_RGB, VOID_BIOMES_BLEND_COLOR);
+        attributes.modify(NEBULA_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.vector3fFromRGB24(VOID_BIOMES_BLEND_COLOR));
+        attributes.modify(STAR_COLOR, ColorModifier.MULTIPLY_RGB, ARGB.vector3fFromRGB24(VOID_BIOMES_BLEND_COLOR));
 
         attributes.modify(NEBULA_BRIGHTNESS, FloatModifier.MULTIPLY, 0.9F);
         attributes.modify(STAR_BRIGHTNESS, FloatModifier.MULTIPLY, 1.2F);

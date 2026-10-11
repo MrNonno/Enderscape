@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:kurodite_brick_slab_from_kurodite_stonecutting"
+        "recipes": "enderscape:kurodite_brick_slab_from_kurodite_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

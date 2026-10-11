@@ -1,6 +1,7 @@
 package net.penumbra.enderscape.mixin.client.renderer;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.renderpearl.api.pipeline.CompiledRenderPipeline;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.Lightmap;
@@ -21,14 +22,14 @@ public class LightmapMixin {
     @Unique
     private final Minecraft minecraft = Minecraft.getInstance();
 
-    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderPass;setPipeline(Lcom/mojang/blaze3d/pipeline/RenderPipeline;)V"))
-    private RenderPipeline Enderscape$changeEndLightmap(RenderPipeline pipeline) {
+    @ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lcom/mojang/renderpearl/api/commands/RenderPass;setPipeline(Lcom/mojang/renderpearl/api/pipeline/CompiledRenderPipeline;)V"))
+    private CompiledRenderPipeline Enderscape$changeEndLightmap(CompiledRenderPipeline pipeline) {
         ClientLevel level = minecraft.level;
 
         if (level != null && level.dimension().equals(Level.END)) {
             return switch (CONFIG.lightingStyle) {
-                case IMPROVED -> EnderscapeRenderPipelines.IMPROVED_LIGHTMAP;
-                case MIDNIGHT -> EnderscapeRenderPipelines.MIDNIGHT_LIGHTMAP;
+                case IMPROVED -> RenderSystem.getCompiledPipeline(EnderscapeRenderPipelines.IMPROVED_LIGHTMAP);
+                case MIDNIGHT -> RenderSystem.getCompiledPipeline(EnderscapeRenderPipelines.MIDNIGHT_LIGHTMAP);
                 default -> pipeline;
             };
         }

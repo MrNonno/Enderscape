@@ -22,6 +22,6 @@ public class RubblemiteEyesLayer extends RenderLayer<RubblemiteRenderState, Rubb
 
     @Override
     public void submit(PoseStack pose, SubmitNodeCollector collector, int i, RubblemiteRenderState state, float f, float g) {
-        collector.submitModel(getParentModel(), state, pose, RUBBLEMITE_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+        collector.submitModel(getParentModel(), state, pose, RUBBLEMITE_EYES, i, OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor);
     }
 }

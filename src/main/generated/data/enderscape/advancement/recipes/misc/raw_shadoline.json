@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:raw_shadoline"
+        "recipes": "enderscape:raw_shadoline"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

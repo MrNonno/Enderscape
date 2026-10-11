@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.Prediction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -212,7 +213,7 @@ public class Drifter extends Animal {
                 stack.consume(1, player);
 
                 ItemStack jelly = new ItemStack(EnderscapeItems.DRIFT_JELLY_BOTTLE);
-                if (!player.getInventory().add(jelly)) player.drop(jelly, false);
+                if (!player.getInventory().add(jelly)) player.drop(jelly, false, Prediction.SERVER_ONLY);
 
                 gameEvent(GameEvent.ENTITY_INTERACT, player);
                 playSound(DRIFTER_MILK, 0.5F, 1);

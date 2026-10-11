@@ -6,8 +6,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:magenta_candle",
-              "Properties": {
+              "id": "minecraft:magenta_candle",
+              "properties": {
                 "candles": "4",
                 "lit": "true",
                 "waterlogged": "false"
@@ -20,8 +20,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "minecraft:magenta_candle",
-            "Properties": {
+            "id": "minecraft:magenta_candle",
+            "properties": {
               "candles": "4",
               "lit": "false",
               "waterlogged": "false"
@@ -31,8 +31,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:magenta_candle",
-              "Properties": {
+              "id": "minecraft:magenta_candle",
+              "properties": {
                 "candles": "3",
                 "lit": "true",
                 "waterlogged": "false"
@@ -45,8 +45,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "minecraft:magenta_candle",
-            "Properties": {
+            "id": "minecraft:magenta_candle",
+            "properties": {
               "candles": "3",
               "lit": "false",
               "waterlogged": "false"
@@ -56,8 +56,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:magenta_candle",
-              "Properties": {
+              "id": "minecraft:magenta_candle",
+              "properties": {
                 "candles": "2",
                 "lit": "true",
                 "waterlogged": "false"
@@ -70,8 +70,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "minecraft:magenta_candle",
-            "Properties": {
+            "id": "minecraft:magenta_candle",
+            "properties": {
               "candles": "2",
               "lit": "false",
               "waterlogged": "false"
@@ -81,8 +81,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:magenta_candle",
-              "Properties": {
+              "id": "minecraft:magenta_candle",
+              "properties": {
                 "candles": "1",
                 "lit": "true",
                 "waterlogged": "false"
@@ -94,14 +94,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "minecraft:magenta_candle",
-            "Properties": {
-              "candles": "1",
-              "lit": "false",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "minecraft:magenta_candle"
         }
       ]
     },
@@ -111,8 +104,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_slab",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_slab",
+              "properties": {
                 "type": "top",
                 "waterlogged": "false"
               }
@@ -124,8 +117,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "top",
               "waterlogged": "false"
             }
@@ -133,32 +126,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_slab"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_slab",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_slab",
+              "properties": {
                 "type": "double",
                 "waterlogged": "false"
               }
@@ -170,8 +151,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "double",
               "waterlogged": "false"
             }
@@ -180,8 +161,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_slab",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_slab",
+              "properties": {
                 "type": "bottom",
                 "waterlogged": "true"
               }
@@ -193,8 +174,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "bottom",
               "waterlogged": "true"
             }
@@ -202,59 +183,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_slab"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "south",
                 "half": "bottom",
                 "shape": "straight",
@@ -268,8 +221,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "south",
               "half": "bottom",
               "shape": "straight",
@@ -280,8 +233,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "west",
                 "half": "bottom",
                 "shape": "straight",
@@ -295,8 +248,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "west",
               "half": "bottom",
               "shape": "straight",
@@ -307,8 +260,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "east",
                 "half": "bottom",
                 "shape": "straight",
@@ -322,8 +275,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "east",
               "half": "bottom",
               "shape": "straight",
@@ -334,8 +287,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "top",
                 "shape": "straight",
@@ -349,8 +302,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "top",
               "shape": "straight",
@@ -360,63 +313,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_left",
@@ -430,8 +351,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_left",
@@ -442,8 +363,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_right",
@@ -457,8 +378,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_right",
@@ -469,8 +390,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_left",
@@ -484,8 +405,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_left",
@@ -496,8 +417,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_right",
@@ -511,8 +432,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_right",
@@ -523,8 +444,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "straight",
@@ -538,8 +459,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "straight",
@@ -549,67 +470,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "low",
                 "north": "none",
                 "south": "none",
@@ -625,8 +510,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "low",
               "north": "none",
               "south": "none",
@@ -639,8 +524,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "tall",
                 "north": "none",
                 "south": "none",
@@ -656,8 +541,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "tall",
               "north": "none",
               "south": "none",
@@ -669,40 +554,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "low",
                 "south": "none",
@@ -718,8 +583,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "low",
               "south": "none",
@@ -732,8 +597,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "tall",
                 "south": "none",
@@ -749,8 +614,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "tall",
               "south": "none",
@@ -762,40 +627,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "low",
@@ -811,8 +656,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "low",
@@ -825,8 +670,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "tall",
@@ -842,8 +687,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "tall",
@@ -855,40 +700,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -904,8 +729,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -918,8 +743,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -935,8 +760,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -948,71 +773,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "enderscape:polished_end_stone_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -1028,8 +813,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -1042,8 +827,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "enderscape:polished_end_stone_wall",
-              "Properties": {
+              "id": "enderscape:polished_end_stone_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -1059,8 +844,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -1073,8 +858,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "top",
                 "waterlogged": "false"
               }
@@ -1086,8 +871,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "top",
               "waterlogged": "false"
             }
@@ -1095,32 +880,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_slab"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "double",
                 "waterlogged": "false"
               }
@@ -1132,8 +905,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "double",
               "waterlogged": "false"
             }
@@ -1142,8 +915,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "bottom",
                 "waterlogged": "true"
               }
@@ -1155,8 +928,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
+            "id": "enderscape:end_stone_slab",
+            "properties": {
               "type": "bottom",
               "waterlogged": "true"
             }
@@ -1164,59 +937,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_slab"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "south",
                 "half": "bottom",
                 "shape": "straight",
@@ -1230,8 +975,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "south",
               "half": "bottom",
               "shape": "straight",
@@ -1242,8 +987,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "west",
                 "half": "bottom",
                 "shape": "straight",
@@ -1257,8 +1002,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "west",
               "half": "bottom",
               "shape": "straight",
@@ -1269,8 +1014,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "east",
                 "half": "bottom",
                 "shape": "straight",
@@ -1284,8 +1029,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "east",
               "half": "bottom",
               "shape": "straight",
@@ -1296,8 +1041,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "top",
                 "shape": "straight",
@@ -1311,8 +1056,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "top",
               "shape": "straight",
@@ -1322,63 +1067,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_left",
@@ -1392,8 +1105,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_left",
@@ -1404,8 +1117,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_right",
@@ -1419,8 +1132,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_right",
@@ -1431,8 +1144,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_left",
@@ -1446,8 +1159,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_left",
@@ -1458,8 +1171,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_right",
@@ -1473,8 +1186,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_right",
@@ -1485,8 +1198,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "straight",
@@ -1500,8 +1213,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
+            "id": "enderscape:end_stone_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "straight",
@@ -1511,67 +1224,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:end_stone_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "low",
                 "north": "none",
                 "south": "none",
@@ -1587,8 +1264,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "low",
               "north": "none",
               "south": "none",
@@ -1601,8 +1278,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "tall",
                 "north": "none",
                 "south": "none",
@@ -1618,8 +1295,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "tall",
               "north": "none",
               "south": "none",
@@ -1631,40 +1308,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "low",
                 "south": "none",
@@ -1680,8 +1337,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "low",
               "south": "none",
@@ -1694,8 +1351,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "tall",
                 "south": "none",
@@ -1711,8 +1368,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "tall",
               "south": "none",
@@ -1724,40 +1381,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "low",
@@ -1773,8 +1410,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "low",
@@ -1787,8 +1424,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "tall",
@@ -1804,8 +1441,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "tall",
@@ -1817,40 +1454,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -1866,8 +1483,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -1880,8 +1497,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -1897,8 +1514,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -1910,71 +1527,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.1
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:end_stone_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -1990,8 +1567,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -2004,8 +1581,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -2021,8 +1598,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:end_stone_wall",
-            "Properties": {
+            "id": "enderscape:end_stone_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -2035,8 +1612,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "top",
                 "waterlogged": "false"
               }
@@ -2048,8 +1625,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_slab",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_slab",
+            "properties": {
               "type": "top",
               "waterlogged": "false"
             }
@@ -2057,32 +1634,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_slab"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "double",
                 "waterlogged": "false"
               }
@@ -2094,8 +1659,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_slab",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_slab",
+            "properties": {
               "type": "double",
               "waterlogged": "false"
             }
@@ -2104,8 +1669,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_slab",
+              "properties": {
                 "type": "bottom",
                 "waterlogged": "true"
               }
@@ -2117,8 +1682,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_slab",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_slab",
+            "properties": {
               "type": "bottom",
               "waterlogged": "true"
             }
@@ -2126,59 +1691,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_slab",
-              "Properties": {
-                "type": "bottom",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_slab",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_slab",
-            "Properties": {
-              "type": "bottom",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_slab"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "south",
                 "half": "bottom",
                 "shape": "straight",
@@ -2192,8 +1729,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "south",
               "half": "bottom",
               "shape": "straight",
@@ -2204,8 +1741,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "west",
                 "half": "bottom",
                 "shape": "straight",
@@ -2219,8 +1756,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "west",
               "half": "bottom",
               "shape": "straight",
@@ -2231,8 +1768,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "east",
                 "half": "bottom",
                 "shape": "straight",
@@ -2246,8 +1783,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "east",
               "half": "bottom",
               "shape": "straight",
@@ -2258,8 +1795,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "top",
                 "shape": "straight",
@@ -2273,8 +1810,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "top",
               "shape": "straight",
@@ -2284,63 +1821,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_stairs"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_left",
@@ -2354,8 +1859,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_left",
@@ -2366,8 +1871,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "inner_right",
@@ -2381,8 +1886,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "inner_right",
@@ -2393,8 +1898,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_left",
@@ -2408,8 +1913,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_left",
@@ -2420,8 +1925,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "outer_right",
@@ -2435,8 +1940,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "outer_right",
@@ -2447,8 +1952,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_stairs",
+              "properties": {
                 "facing": "north",
                 "half": "bottom",
                 "shape": "straight",
@@ -2462,8 +1967,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_stairs",
+            "properties": {
               "facing": "north",
               "half": "bottom",
               "shape": "straight",
@@ -2473,67 +1978,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_stairs",
-              "Properties": {
-                "facing": "north",
-                "half": "bottom",
-                "shape": "straight",
-                "waterlogged": "false"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_stairs",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_stairs",
-            "Properties": {
-              "facing": "north",
-              "half": "bottom",
-              "shape": "straight",
-              "waterlogged": "false"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_stairs"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "low",
                 "north": "none",
                 "south": "none",
@@ -2549,8 +2018,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "low",
               "north": "none",
               "south": "none",
@@ -2563,8 +2032,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "tall",
                 "north": "none",
                 "south": "none",
@@ -2580,8 +2049,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "tall",
               "north": "none",
               "south": "none",
@@ -2593,40 +2062,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "low",
                 "south": "none",
@@ -2642,8 +2091,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "low",
               "south": "none",
@@ -2656,8 +2105,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "tall",
                 "south": "none",
@@ -2673,8 +2122,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "tall",
               "south": "none",
@@ -2686,40 +2135,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "low",
@@ -2735,8 +2164,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "low",
@@ -2749,8 +2178,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "tall",
@@ -2766,8 +2195,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "tall",
@@ -2779,40 +2208,20 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -2828,8 +2237,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -2842,8 +2251,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -2859,8 +2268,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -2872,71 +2281,31 @@
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
-            "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
-                "east": "none",
-                "north": "none",
-                "south": "none",
-                "up": "true",
-                "waterlogged": "false",
-                "west": "none"
-              }
-            },
+            "block_state": "minecraft:end_stone_brick_wall",
             "predicate_type": "minecraft:random_blockstate_match",
             "probability": 0.2
           },
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
-              "east": "none",
-              "north": "none",
-              "south": "none",
-              "up": "true",
-              "waterlogged": "false",
-              "west": "none"
-            }
-          }
+          "output_state": "enderscape:overgrown_end_stone_brick_wall"
         },
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -2952,8 +2321,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -2966,8 +2335,8 @@
         {
           "input_predicate": {
             "block_state": {
-              "Name": "minecraft:end_stone_brick_wall",
-              "Properties": {
+              "id": "minecraft:end_stone_brick_wall",
+              "properties": {
                 "east": "none",
                 "north": "none",
                 "south": "none",
@@ -2983,8 +2352,8 @@
             "predicate_type": "minecraft:always_true"
           },
           "output_state": {
-            "Name": "enderscape:overgrown_end_stone_brick_wall",
-            "Properties": {
+            "id": "enderscape:overgrown_end_stone_brick_wall",
+            "properties": {
               "east": "none",
               "north": "none",
               "south": "none",
@@ -3003,9 +2372,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:cracked_end_stone_bricks"
-          }
+          "output_state": "enderscape:cracked_end_stone_bricks"
         },
         {
           "input_predicate": {
@@ -3016,9 +2383,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "enderscape:overgrown_end_stone_bricks"
-          }
+          "output_state": "enderscape:overgrown_end_stone_bricks"
         },
         {
           "input_predicate": {
@@ -3029,9 +2394,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "minecraft:end_stone"
-          }
+          "output_state": "minecraft:end_stone"
         },
         {
           "input_predicate": {
@@ -3042,9 +2405,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "minecraft:end_stone"
-          }
+          "output_state": "minecraft:end_stone"
         },
         {
           "input_predicate": {
@@ -3055,9 +2416,7 @@
           "location_predicate": {
             "predicate_type": "minecraft:always_true"
           },
-          "output_state": {
-            "Name": "minecraft:end_stone"
-          }
+          "output_state": "minecraft:end_stone"
         }
       ]
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:overgrown_mirestone_brick_slab_from_overgrown_mirestone_bricks_stonecutting"
+        "recipes": "enderscape:overgrown_mirestone_brick_slab_from_overgrown_mirestone_bricks_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

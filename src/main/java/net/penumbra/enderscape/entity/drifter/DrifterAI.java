@@ -37,7 +37,6 @@ public class DrifterAI {
             EnderscapeMemory.DRIFTER_JELLY_CHANGE_COOLDOWN,
             EnderscapeMemory.HURT_BY_ENTITY,
             EnderscapeMemory.IS_PANICKING,
-            EnderscapeMemory.IS_TEMPTED,
             EnderscapeMemory.LOOK_TARGET,
             EnderscapeMemory.NEAREST_ATTACKABLE,
             EnderscapeMemory.NEAREST_INTIMIDATOR,

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:polished_kurodite_wall"
+        "recipes": "enderscape:polished_kurodite_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

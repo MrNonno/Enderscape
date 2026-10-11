@@ -12,9 +12,7 @@
             "block": "enderscape:mirestone",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:mirestone"
-          }
+          "output_state": "enderscape:mirestone"
         },
         {
           "input_predicate": {
@@ -25,12 +23,7 @@
             "block": "enderscape:veiled_end_stone",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:veiled_end_stone",
-            "Properties": {
-              "facing": "up"
-            }
-          }
+          "output_state": "enderscape:veiled_end_stone"
         },
         {
           "input_predicate": {
@@ -41,12 +34,7 @@
             "block": "enderscape:celestial_overgrowth",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:celestial_overgrowth",
-            "Properties": {
-              "facing": "up"
-            }
-          }
+          "output_state": "enderscape:celestial_overgrowth"
         },
         {
           "input_predicate": {
@@ -57,9 +45,7 @@
             "block": "enderscape:veradite",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:veradite"
-          }
+          "output_state": "enderscape:veradite"
         },
         {
           "input_predicate": {
@@ -70,9 +56,7 @@
             "block": "enderscape:kurodite",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:kurodite"
-          }
+          "output_state": "enderscape:kurodite"
         },
         {
           "input_predicate": {
@@ -83,12 +67,7 @@
             "block": "enderscape:alluring_magnia",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:alluring_magnia",
-            "Properties": {
-              "power": "0"
-            }
-          }
+          "output_state": "enderscape:alluring_magnia"
         },
         {
           "input_predicate": {
@@ -99,12 +78,7 @@
             "block": "enderscape:repulsive_magnia",
             "predicate_type": "minecraft:block_match"
           },
-          "output_state": {
-            "Name": "enderscape:repulsive_magnia",
-            "Properties": {
-              "power": "0"
-            }
-          }
+          "output_state": "enderscape:repulsive_magnia"
         }
       ]
     }

@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderscape:mirestone_brick_wall"
+        "recipes": "enderscape:mirestone_brick_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
