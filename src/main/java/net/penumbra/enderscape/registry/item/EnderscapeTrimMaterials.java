@@ -22,8 +22,8 @@ public class EnderscapeTrimMaterials {
     public static final ResourceKey<TrimMaterial> SHADOLINE = register("shadoline");
 
     public static void bootstrap(BootstrapContext<TrimMaterial> context) {
-        register(context, NEBULITE, Style.EMPTY.withColor(0xFF66FF), Enderscape.id("nebulite"));
-        register(context, SHADOLINE, Style.EMPTY.withColor(0x315B4D), Enderscape.id("shadoline"));
+        register(context, NEBULITE, Style.EMPTY.withColor(0xFF66FF), Enderscape.id("trim/nebulite"));
+        register(context, SHADOLINE, Style.EMPTY.withColor(0x315B4D), Enderscape.id("trim/shadoline"));
     }
 
     private static void register(BootstrapContext<TrimMaterial> context, ResourceKey<TrimMaterial> key, Style style, Identifier paletteId) {
